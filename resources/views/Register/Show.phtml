@@ -1,0 +1,93 @@
+<?php
+    $vb = $this->viewBag;
+    $controller = $vb->obj;
+    
+    //
+    // Create a json string of the post.
+    //
+    $jsonObj = json_encode( $_POST );
+?>
+<script type="text/javascript">
+    $(document).ready(function() 
+    {
+        //
+        // Create a json object of the json string.
+        //
+        fillInputs( $.parseJSON('<?= $jsonObj ?>') ); 
+
+        function fillInputs(jsonObj)
+        {
+            $.each(jsonObj, function(key, value)  
+            {
+                $("[name='"+key+"']", "#form").val(value); 
+            });
+        }
+    });
+</script>
+
+<div class="errord"><?= $controller->out ?></div >
+<div class="form centerdiv">
+    <form method="post" id="form">
+        <table class="<?= $vb->cssClass ?>">
+            <tr><th colspan="4"><h2>Kom ook bij ons!</h2></th></tr>
+            <tr>
+                <td>Naam:*</td>
+                <td><input type="text" name="firstname" class="vp" id="firstname" placeholder="naam"></td>
+            </tr>
+            <tr>
+                <td>Tussenvoegsel:</td>
+                <td><input type="text" name="tv" class="" id="tv" placeholder="tussenvoegsel"></td>
+            </tr>
+            <tr>
+                <td>Achternaam:*</td>
+                <td><input type="text" name="lastname" class="vp" id="lastname" placeholder="achternaam"></td>
+            </tr>
+            <tr>
+                <td>Adres:*</td>
+                <td><input type="text" name="adres" class="vp" id="address" placeholder="adres"></td>
+            </tr>
+            <tr>
+                <td>Huisnummer:*</td> 
+                <td><input type="text" name="HuisNr" class="vp" placeholder="huisnummer" /></td>
+            </tr>
+            <tr>
+                <td>Postcode:*</td>
+                <td><input type="text" name="postcode" class="vp postcode" id="postcode" placeholder="postcode"></td>
+            </tr>
+            <tr>
+                <td>Woonplaats:*</td>
+                <td><input type="text" name="city" class="vp" id="city" placeholder="woonplaats"></td>
+            </tr>
+            <tr>
+                <td>Telefoonnummer:*</td>
+                <td><input type="text" name="telefoonnummer" class="vp phone" id="phonenumber" placeholder="telefoon nummer"></td>
+            </tr>
+            <tr>
+                <td>Geboortedatum:*</td>
+                <td><input type="date" name="birthday" class="vp bd" id="birthday" placeholder="geboortedatum"></td>
+            </tr>
+            <tr>
+                <td>E-Mail:*</td>
+                <td><input type="text" name="email" class="vp email" id="email" placeholder="E-Mail"></td>
+            </tr>
+            <tr>
+                <td>Gebruikersnaam:*</td>
+                <td><input type="text" name="username" class="vp min2" id="username" placeholder="gebruikersnaam"></td>
+            </tr>
+            <tr>
+                <td>Wachtwoord:*</td>
+                <td><input type="password" name="password" class="vp min2" id="password" placeholder="wachtwoord"></td> 
+            </tr>
+            <tr>
+                <td><input name="knop" type="submit" id="button" value="verstuur"></td>
+                <td><h6>(*)verplicht</h6><td>
+            </tr>
+        </table>
+
+        <div id="message">
+            <p></p>
+            <p></p>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,78 @@
+<?php
+
+    if ( isset($_SESSION))
+    { 
+        $obj = $this->viewBag->obj;
+        $user = $obj->_user;
+        $aRights = ["User", "Admin", "Owner", "Teacher"];
+    ?>
+    <script src="/js/Register.js"></script>
+<div class="logout centerdiv">
+    <form method="post">
+        <table>
+            <tr>
+                <td>
+                    <div>
+                        <table>
+                            <tr class="th">
+                                <td colspan="2"><h1>Wijzig gegevens</h1></td>
+                            </tr>
+                            <tr>
+                                <td>Voornaam:</td>
+                                <td><input type="text" class="vp"  name="firstname" value="<?= $user['name'] ?>" placeholder="voornaam"></td>
+                            </tr>
+                            <tr>
+                                <td>Tussenvoegsel</td>
+                                <td><input type="text" name="tv" value="<?= $user['tv'] ?>" placeholder="Tussenvoegsel"></td>
+                            </tr>
+                            <tr>
+                                <td>Achternaam:</td>
+                                <td><input type="text" class="vp"  name="lastname" value="<?= $user['Lastname'] ?>" placeholder="achternaam"></td>
+                            </tr>
+                            <tr>
+                                <td>Geboortedatum:</td>
+                                <!-- datum van US notatie naar EU notatie -->
+                                <td><input type="date" class="vp"  name="birthday" value="<?= $user['geboortedatum']?>" placeholder="geboortedatum"></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><input type="text" class="vp emial"  name="email" value="<?= $user['email'] ?>" placeholder="email"></td>
+                            </tr>
+                            <tr>
+                                <td>Woonplaats:</td>
+                                <td><input type="text" class="vp"  name="city" value="<?= $user['city'] ?>" placeholder="woonplaats"></td>
+                            </tr>
+                            <tr>
+                                <td>Adres:</td>
+                                <td><input type="text" class="vp"  name="address" value="<?= $user['straat']  ?>" placeholder="adres"></td>
+                            </tr>
+                            <tr>
+                                <td>Huisnummer:</td>
+                                <td><input type="text" class="vp"  name="huisnr" value="<?= $user['huisnr'] ?>" placeholder="huisnummer"></td>
+                            </tr>
+                            <tr>
+                                <td>telefoonnummer:</td>
+                                <td><input type="text" class="vp"  name="telefoonnummer" value="<?= $user['telefoonnummer'] ?>" placeholder="telefoonnummer"></td>
+                            </tr>
+                            <tr>
+                                <td>Postcode:</td>
+                                <td><input type="text" class="vp"  name="postcode" value="<?= $user['postcode'] ?>" placeholder="postcode"></td>
+                            </tr>
+                            <tr>
+                                <td>Gebruikersnaam:</td>
+                                <td><?= $user['username'] ?></td>
+                            </tr>
+                            <tr>
+                                <td>rechten:</td>
+                                <td><?= $aRights[$user['rights']] ?></td>
+                            </tr>
+                        </table>
+                        <input type="submit" name="btnSave" value="sla nieuwe gegevens op" id="button">
+                        <?= $obj->out; ?>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<?php }

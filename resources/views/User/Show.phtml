@@ -1,0 +1,83 @@
+<?php
+
+    if ( isset($_SESSION))
+    { 
+        $obj = $this->viewBag->obj;
+        $extraPath = $this->viewBag->LocalHostPath;
+        $user = $obj->_user;
+        $aRights = ["Gebruiker", "Beheerder", "Eigenaar", "Leraar"];
+    ?>
+<div class="<?= $this->viewBag->cssClass ?>">
+        <form method="post">
+        <div class="centerdiv">
+
+        <table class="viewTable">
+
+            <tr class="th">
+                <th colspan="2"><h1>Gegevens</h1></th>
+            </tr>
+
+            <tr>
+                <td>Voornaam</td>
+                <td><?= $user['name'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Achternaam</td>
+                <td><?= $user['tv'] . " " . $user['Lastname'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Geboortedatum</td>
+                <!-- datum van US notatie naar EU notatie -->
+                <td><?= $obj->getDate( $user['geboortedatum'] ) ?></td>
+            </tr>
+
+            <tr>
+                <td>Email</td>
+                <td><?= $user['email'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Plaats</td>
+                <td><?= $user['city'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Adres</td>
+                <td><?= $user['straat'] ." ". $user['huisnr'] ?></td>
+            </tr> 
+
+            <tr>
+                <td>telefoonnummer</td>
+                <td><?= $user['telefoonnummer'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Postcode</td>
+                <td><?= $user['postcode'] ?></td>
+            </tr>
+
+            <tr>
+                <td>Gebruikersnaam</td>
+                <td><?= $user['username'] ?></td>
+            </tr>
+
+            <tr>
+                <td>rechten</td>
+                <td><?= $aRights[$user['rights']] ?></td>
+            </tr>
+
+            <tr>
+                <td><a class="a-button a-update" href="<?= $extraPath ?>user/update">Account bijwerken</a></td>
+                <td><a class="a-button a-cancel" href="<?= $extraPath ?>user/change">Wachtwoord wijzigen</a></td></td>
+            </tr>
+    
+
+        </table>
+        
+        </div>
+        </form>
+        <?= $obj->out; ?>
+</div>
+<?php }

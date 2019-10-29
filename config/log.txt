@@ -1,0 +1,27 @@
+[24-09-2019 16:52:31]	'rhadbe001': Connection failed: Een verbindingspoging is mislukt omdat de verbonden party niet correct heeft geantwoord na een bepaalde tijd, of de gemaakte verbinding is mislukt omdat de verbonden host niet heeft geantwoord.
+	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\Database.php(35): App\Core\Database->CreateConnection('../config/conn....')
+#1 D:\_xampp\htdocs\WideWorldImporters\App\Core\Database.php(58): App\Core\Database->__construct()
+#2 D:\_xampp\htdocs\WideWorldImporters\App\Core\NavigationBar.php(28): App\Core\Database::getConnection()
+#3 D:\_xampp\htdocs\WideWorldImporters\App\Core\SiteController.php(147): App\Core\NavigationBar->navShow()
+#4 D:\_xampp\htdocs\WideWorldImporters\App\Core\SiteController.php(62): App\Core\SiteController->getNav()
+#5 D:\_xampp\htdocs\WideWorldImporters\public\index.php(16): App\Core\SiteController->getSite()
+#6 {main}
+
+
+
+[25-09-2019 15:14:59]	'rhaalr001': cannot find file ..//SiteController.php
+#0 [internal function]: Autoloader->loadClass('SiteController....')
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): spl_autoload_call('SiteController')
+#2 {main}
+
+
+
+[25-09-2019 15:32:19]	'rhaalr001': cannot find file ..//App/Core/Auth.php
+#0 [internal function]: Autoloader->loadClass('App/Core/Auth.p...')
+#1 D:\_xampp\htdocs\WideWorldImporters\App\Core\SiteController.php(128): spl_autoload_call('App\\Core\\Auth')
+#2 D:\_xampp\htdocs\WideWorldImporters\App\Core\SiteController.php(67): App\Core\SiteController->getLoginClass()
+#3 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\SiteController->getSite()
+#4 {main}
+
+
+
