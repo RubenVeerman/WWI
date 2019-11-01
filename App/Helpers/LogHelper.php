@@ -17,16 +17,13 @@ class LogHelper
 	 */
 	public static function WriteToLogFile(string $text)
 	{
-		if (file_exists(self::$logFilePath)) 
-		{			
-			$now = date("d-m-Y H:i:s");
-			// Open the file to get existing content.
-			$content = self::ReadFile();
-			// Append a new person to the file.
-			$content .= "[{$now}]\t{$text}\n\n";
-			// Write the contents back to the file.
-			self::WriteToFile($content);
-		}
+		$now = date("d-m-Y H:i:s");
+		// Open the file to get existing content.
+		$content = self::ReadFile();
+		// Append a new person to the file.
+		$content .= "[{$now}]\t{$text}\n\n";
+		// Write the contents back to the file.
+		self::WriteToFile($content);
 	}
 
 	public static function WriteToFile(string $text) 
@@ -35,6 +32,12 @@ class LogHelper
 		{
 			file_put_contents(self::$logFilePath, $text);
 		}
+		else 
+		{
+			$logfile = fopen(self::$logFilePath, "w") or die("Unable to open file!");
+			fwrite($logfile, $text);
+			fclose($logfile);
+		}
 	}
 	
 	/**
@@ -42,7 +45,12 @@ class LogHelper
 	 */
 	public static function ReadFile()
 	{
-		return file_get_contents(self::$logFilePath);
+		if (file_exists(self::$logFilePath)) 
+		{
+			return file_get_contents(self::$logFilePath);
+		}
+		
+		return "";
 	}
 }
 

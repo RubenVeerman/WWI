@@ -13,7 +13,7 @@ abstract class Controller
 	 */
 	protected function HandleUnexpectedException(\Exception $ex, bool $showErrorToUser)
 	{
-		App\Helpers\Utility::HandleUnexpectedException($ex, $showErrorToUser);
+		\App\Helpers\Utility::HandleUnexpectedException($ex, $showErrorToUser);
 	}
 }
 ?>

@@ -1,10 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Helpers;
-use App\Helpers\ChangeTextHelper;
 use App\Enum\MessageCodes;
-use App\Models\ROT13;
+use App\Core\SiteException;
 
 /**
  * Class HomeController
@@ -15,9 +13,7 @@ use App\Models\ROT13;
  * @author R Haan
  */
 class HomeController extends Controller
-{
-	private $conn;
-	
+{	
 	public $string, $out;
 
     /**
@@ -51,7 +47,7 @@ class HomeController extends Controller
 	{
 		if (!file_exists($path)) 
 		{
-			throw new SiteException(MessageCodes::rhahcr001 ,"Error Processing Request");			
+			throw new SiteException(MessageCodes::wwihcr001 ,"Error Processing Request");			
 		}
 
 		return file_get_contents($path);
