@@ -131,7 +131,7 @@ abstract class StartUpBase
 	/**
 	 * Handles the unexpected exception.
 	 */
-	private function HandleUnexpectedException(\Exception $ex, bool $showErrorToUser)
+	protected function HandleUnexpectedException(\Exception $ex, bool $showErrorToUser)
 	{
 		Utility::HandleUnexpectedException($ex, $showErrorToUser);
 	}

@@ -34,7 +34,7 @@ class HomeController extends Controller
 			// 	"Uryyb Jbeyq!
 			// 	yrccf rccvdrrc nvcbfd sza uv vvijkv kvok ze yvk evuvicreuj xvjtyivmve uffi uftvek mre yvk mrb jvtlizkp yvuve zj yvk wvsilriz uv knvvuv drreu mre yvk arri nv yvssve xvbfzve mffi vve ifk rcxfikzdv jlttvj dvk fgcfjjve drri rcj av uzk blek cvzve zj yvk av rc xvclbk xfvu xvurre");
 
-			$this->string = $this->GetContent("../resources/views/Home/HomeContent.html"); 		
+			$this->out = $this->GetContent("../resources/views/Home/HomeContent.html"); 		
 		}
 		catch(\Exception $ex)
 		{

@@ -57,7 +57,7 @@ class AdminController
         }
         catch(\Exception $ex)
         {
-            $this->HandleUnexpectedException($ex);
+            $this->HandleUnexpectedException($ex, false);
         }
     }
 
@@ -81,7 +81,7 @@ class AdminController
                     //
                     // If the radiobutton is pressed and the delete action can be and is executed
                     //
-                    if(isset($_POST['rbtnAction']) && $this->database->Delete(nav::getSiteUsers(), $_POST["rbtnAction"]))
+                    if(isset($_POST['rbtnAction']) && $this->database->Delete(nav::getSiteUsers(), 'PersonID', $_POST["rbtnAction"]))
                     {
                         $this->message = "Account Verwijderd";
                     }
@@ -181,7 +181,7 @@ class AdminController
         }
         catch(\Exception $ex)
         {
-            $this->HandleUnexpectedException($ex);
+            $this->HandleUnexpectedException($ex, true);
         }
     }
 

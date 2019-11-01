@@ -3,8 +3,7 @@ namespace App\Core;
 
 use App\Enum\{ MessageCodes, ErrorPages };
 use App\Models\ViewBag;
-use App\Helpers\LoginHelper;
-use App\Helpers\Utility;
+use App\Helpers\{ LoginHelper, Utility };
 
 /**
  * Class StartUp will start the site and handle the start.
@@ -33,7 +32,7 @@ class StartUp extends StartUpBase
 	{	
 		try
 		{
-			// if $_GET values are empty, set default
+			// if $_GET values are empty, set default values
 			$controllerName = $this->SetDefaultWhenEmpty($_GET['controller'] ?? "", "home");
 	        $actionName = $this->SetDefaultWhenEmpty($_GET['action'] ?? "", "show");
 			
