@@ -9,7 +9,7 @@ use App\Enum\ErrorPages;
 /**
  * class to get the mvc of the website
  */
-class StartUpBase
+abstract class StartUpBase
 {
 	/**
 	 * method to check if the given controller and the given method of that controller
