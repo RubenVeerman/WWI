@@ -13,7 +13,7 @@ use App\Helpers\LoginHelper;
  * @version 1.2
  * @author R Haan
  */
-class SiteController extends Site
+class StartUp extends StartUpBase
 {
 	protected $viewBag;
 	protected $authorizedPages;

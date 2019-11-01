@@ -6,11 +6,11 @@
 session_start();
 require_once "../boot/autoloader.php";
 
-use App\Core\SiteController;
+use App\Core\StartUp;
 
 $autoloader = new AutoLoader();
 $autoloader->addDirectories( [ "../" ] );
 $autoloader->register();
 
-echo (new SiteController())->loadSiteData();
+echo (new StartUp())->loadSiteData();
 ?>
