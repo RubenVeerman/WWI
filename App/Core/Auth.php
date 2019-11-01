@@ -4,7 +4,6 @@ namespace App\Core;
 use App\Enum\EUserTable;
 use app\Helpers\LoginHelper;
 use App\Helpers\NavigationHelper as nav;
-use App\Models\ModalDialog;
 
 /**
  * Class login

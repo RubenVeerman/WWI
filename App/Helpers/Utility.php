@@ -28,6 +28,11 @@ class Utility
         $textToLog = "{$ex->getMessage()}\t{$ex->getTraceAsString()}\n\n";
 	    
         LogHelper::WriteToLogFile($textToLog);
-	}
+    }
+    
+    public static function strIsNullOrEmpty(string $str) 
+    {
+        return $str == null || $str == "";
+    }
 }
 ?>

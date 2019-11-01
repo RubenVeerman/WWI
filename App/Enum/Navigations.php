@@ -28,7 +28,7 @@ class Navigations
 	public const LOCALHOST_FILEPATH = "/wideworldimporters/public/";
 
 	#region SQL-databases
-	protected const SITE_USERS_TABLE = "site_users";
+	protected const SITE_USERS_TABLE = "people";
 
 	protected const SITE_CONTENT_TABLE = "content";
 	#endregion SQL-databases

@@ -1,7 +1,6 @@
 <?php
 namespace App\Core;
 
-use App\Core\NavigationBar;
 use App\Enum\{ MessageCodes, ErrorPages };
 use App\Models\ViewBag;
 use App\Helpers\LoginHelper;
@@ -10,7 +9,6 @@ use App\Helpers\LoginHelper;
 /**
  * Class mvc
  * this class is used to load the page
- * @see App\Core\NavigationBar
  * @since 30-03-2017
  * @version 1.2
  * @author R Haan
@@ -37,18 +35,13 @@ class SiteController extends Site
 		try
 		{
 			// if $_GET values are empty, set default
-			SetWhenEmpty($_GET['controller'], "home");
-	        SetWhenEmpty($_GET['action'], "show");
+			$this->SetWhenEmpty($_GET['controller'], "home");
+	        $this->SetWhenEmpty($_GET['action'], "show");
 			
 	        //
 	        // loading the layout first.
 	        //
 	        $this->loadLayout();
-
-	        //
-	        // get the navigation bar.
-	        //
-	        $this->loadNavigationBar();
 
 	        //
 	        // Get the login class.
@@ -96,7 +89,7 @@ class SiteController extends Site
 	        }
 	        else
 	        {
-	        	throw new SiteException(MessageCodes::rhascr001, "File '{$file}' does not exist.");	        	
+	        	throw new SiteException(MessageCodes::wwiscr001, "File '{$file}' does not exist.");	        	
 	        }
 	        eval("?>{$layout}");
 	        return ob_get_clean();
@@ -120,21 +113,6 @@ class SiteController extends Site
 			$this->viewBag->username = $auth->username;	
 		}
 		catch(\Exception $ex)
-		{
-        	$this->HandleUnexpectedException($ex, false);
-		}
-	}
-
-	/**
-	 * method to get the navigation bar
-	 */
-	private function loadNavigationBar()
-	{		
-    	try
-    	{
-			$this->viewBag->nav = (new NavigationBar())->navShow();
-		}
-		catch(Exception $ex)
 		{
         	$this->HandleUnexpectedException($ex, false);
 		}
@@ -180,12 +158,13 @@ class SiteController extends Site
 		$this->viewBag->layout = $chozen;
 	}		
 
-	private function SetWhenEmpty($checkValue, $setValue) {
+	private function SetWhenEmpty($checkValue, $setValue) 
+	{
 		if ( empty($checkValue) )
 		{
 			return "home";
 		}
 
-		return $checkValue;
+		return $setValue;
 	}
 } 

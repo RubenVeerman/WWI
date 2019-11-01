@@ -6,28 +6,28 @@ namespace App\Enum;
  */
 class MessageCodes
 {
-    public const rhaalr001 = "rhaalr01";
+    public const wwialr001 = "wwialr001";
 
-    public const rhadbe001 = "rhadbe001";
-    public const rhadbe002 = "rhadbe002";
-    public const rhadbe003 = "rhadbe003";
-    public const rhadbe004 = "rhadbe004";
-    public const rhadbe005 = "rhadbe005";
-    public const rhadbe006 = "rhadbe006";
-    public const rhadbe007 = "rhadbe007";
-    public const rhadbe008 = "rhadbe008";
-    public const rhadbe009 = "rhadbe009";
-    public const rhadbe010 = "rhadbe010";
-    public const rhadbe011 = "rhadbe011";
-    public const rhadbe012 = "rhadbe012";
-    public const rhadbe013 = "rhadbe013";
+    public const wwidbe001 = "wwidbe001";
+    public const wwidbe002 = "wwidbe002";
+    public const wwidbe003 = "wwidbe003";
+    public const wwidbe004 = "wwidbe004";
+    public const wwidbe005 = "wwidbe005";
+    public const wwidbe006 = "wwidbe006";
+    public const wwidbe007 = "wwidbe007";
+    public const wwidbe008 = "wwidbe008";
+    public const wwidbe009 = "wwidbe009";
+    public const wwidbe010 = "wwidbe010";
+    public const wwidbe011 = "wwidbe011";
+    public const wwidbe012 = "wwidbe012";
+    public const wwidbe013 = "wwidbe013";
 
-    public const rhascr001 = "rhascr001"; 
+    public const wwiscr001 = "wwiscr001"; 
 
-    public const rhasie001 = "rhasie001";
-    public const rhasie002 = "rhasie002";
-    public const rhasie003 = "rhasie003";
-    public const rhasie004 = "rhasie004";
+    public const wwisie001 = "wwisie001";
+    public const wwisie002 = "wwisie002";
+    public const wwisie003 = "wwisie003";
+    public const wwisie004 = "wwisie004";
 }
 
 

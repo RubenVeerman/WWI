@@ -22,6 +22,18 @@ class SiteException extends \Exception
     {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
+
+    function replaceFirstPatternChar($searchChar, $replaceChar, $str)
+    {
+        for ($i = 0; $i < strlen($str); $i++) {
+            if ($str[$i] == $searchChar) {
+                $str[$i] = $replaceChar;
+                break;
+            }
+        }
+
+        return $str;
+    }
 }
 
 ?>

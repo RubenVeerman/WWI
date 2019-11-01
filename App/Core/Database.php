@@ -1,10 +1,8 @@
 <?php
 namespace App\Core;
 
-use App\Helpers\{ Utility, NavigationHelper as nav };
+use App\Helpers\Utility;
 use App\Enum\MessageCodes;
-use App\Enum\EUserTable;
-use App\Enum\EArticleTable;
 
 /**
  * Class db to connect with the database and send querys to database.
@@ -26,17 +24,13 @@ class Database
     {  
         try 
         {
-            $path = "../config/conn.ini";
-            if(nav::isOnLocalHost())
-            {
-                 $path = "../config/db.ini";
-            }
+            $path = "../config/db.ini";
 
             $this->connection = $this->CreateConnection($path);  
         }
         catch (\Exception $ex) 
         {
-            $this->HandleUnexpectedException($ex);
+            $this->HandleUnexpectedException($ex, false);
         }      
        
     }
@@ -94,19 +88,19 @@ class Database
                     //
                     // Show the error and stop loading the website.
                     //
-                    throw new SiteException(MessageCodes::rhadbe001, "Connection failed: {$conn->connect_error}");
+                    throw new SiteException(MessageCodes::wwidbe001, "Connection failed: {$conn->connect_error}");
                 } 
 
                 if(!$conn)
                 {
-                    throw new SiteException(MessageCodes::rhadbe002, "Something goes wrong mate!");
+                    throw new SiteException(MessageCodes::wwidbe002, "Something goes wrong mate!");
                 }
 
                 return $conn;          
             }
             else
             {
-                throw new SiteException(MessageCodes::rhadbe003, "Config file {$path} not found.", 1);
+                throw new SiteException(MessageCodes::wwidbe003, "Config file {$path} not found.");
                 
             }
         }
@@ -122,36 +116,35 @@ class Database
      */
 	public function queryResultsToArray( string $sql )
 	{
-        if($sql == null || $sql == "")
+        if(Utility::strIsNullOrEmpty($sql))
         {
-            throw new SiteException(MessageCodes::rhadbe004, "The given SQL statement is empty.");
+            throw new SiteException(MessageCodes::wwidbe004, "The given SQL statement is empty.");
         }
 
         try
         {
             $sanitizedQuery = $this->sanitize($sql);
+
             //
             // Sanitize and get the needed information from the connected database.
             //
-    		$result = $this->connection->query($sanitizedQuery);
+    		$result = $this->ExecuteQuery($sanitizedQuery);
 
 
-            $array = [];
-            $i = 0;
-
+            $data = [];
             //
             // set the given query results into an array.
             //
     		while ($row = $result->fetch_assoc()) 
     		{
-    			$array[$i++] = $row;
+    			array_push($data, $row);
     		}
 
-    		return $array;          
+    		return $data;          
         }
         catch (\Exception $ex) 
         {
-            throw new SiteException(MessageCodes::rhadbe005, "The SQL statement could not be converted to an array.", $ex);
+            throw new SiteException(MessageCodes::wwidbe005, "The SQL statement could not be converted to an array.", $ex);
         } 
 	}
 
@@ -161,23 +154,21 @@ class Database
      * @param int $id
      * @return bool true when the query is executed successfully, false otherwise
      */
-	public function Delete( string $table , string $id )
+	public function Delete(string $table , string $columnName, string $value )
 	{
         try
         {
-            $query = "DELETE FROM `{$table}` 
-                      WHERE `" . EUserTable::ID . "` = '{$id}'";
             //
             // If the row of the table can and is deleted.
             //
-            return (bool)$this->connection->query($query);
+            return (bool)$this->ExecuteQuery("DELETE FROM `{$table}` WHERE `{$columnName}` = '{$value}'");
           
         }
         catch (\Exception $ex) 
         {
-            throw new SiteException(MessageCodes::rhadbe006, "The user with id '$id' could not be deleted", $ex);
+            throw new SiteException(MessageCodes::wwidbe006, "The table row with column '$columnName' of table '$table' with value '$value' could not be deleted", $ex);
         } 	        
-	}
+    }
 
     /**
      * method to sanitize the given query.
@@ -193,7 +184,7 @@ class Database
         }
         catch (\Exception $ex) 
         {
-            throw new SiteException(MessageCodes::rhadbe008, "The query could not be sanitized.", $ex);
+            throw new SiteException(MessageCodes::wwidbe008, "The query could not be sanitized.", $ex);
         } 
 	}
 
@@ -208,7 +199,7 @@ class Database
         $statement = ""; 
         try
         {
-            foreach ($array as $key => $value) 
+            foreach ($data as $key => $value) 
             { 
                 if ($key == "Columns") 
                 {
@@ -231,7 +222,7 @@ class Database
             //
             // Insert a new article in datatable content
             //
-            $query = $this->connection->query($statement);
+            $query = $this->ExecuteQuery($statement);
 
             //
             // If the query above can be and is executed,
@@ -241,7 +232,7 @@ class Database
         }
         catch (\Exception $ex) 
         {
-            throw new SiteException(MessageCodes::rhadbe012, "The article could not be created.", $ex);
+            throw new SiteException(MessageCodes::wwidbe012, "The article could not be created.", $ex);
         } 
     }
 
@@ -278,7 +269,7 @@ class Database
                     $i++;
                 }                
 
-            $query = $this->connection->query($statement);
+            $query = $this->ExecuteQuery($statement);
 
             //
             // If the query above can be and is executed,
@@ -290,7 +281,7 @@ class Database
         }
         catch (\Exception $ex) 
         {
-            throw new SiteException(MessageCodes::rhadbe013, "The table '{$tableName}' could not be updated.", $ex);
+            throw new SiteException(MessageCodes::wwidbe013, "The table '{$tableName}' could not be updated.", $ex);
         } 
     }
     
@@ -302,6 +293,11 @@ class Database
 	protected function HandleUnexpectedException(\Exception $ex, bool $showErrorToUser)
 	{
 		Utility::HandleUnexpectedException($ex, $showErrorToUser);
-	}
+    }    
+
+    private function ExecuteQuery(string $query) 
+    {
+        return $this->connection->query($query);
+    }
 }
 ?>

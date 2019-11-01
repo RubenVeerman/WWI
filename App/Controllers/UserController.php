@@ -27,7 +27,7 @@ class UserController extends Controller
     public function __construct()
     {        
         $this->database = Database::getConnection();
-        $this->_users = $this->database->queryResultsToArray("SELECT * FROM `" . nav::getSiteUsers() . "`");
+        $this->_users = $this->database->queryResultsToArray("SELECT * FROM `people`");
     }
 
     /**

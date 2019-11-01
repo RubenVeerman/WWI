@@ -34,7 +34,7 @@ class Site
             //
             if (!file_exists($file = '../App/Controllers/'.$controller.'.php'))
             {                
-                throw new SiteException(MessageCodes::rhasie001, "given file '{$file}' does not exist");
+                throw new SiteException(MessageCodes::wwisie001, "given file '{$file}' does not exist");
             }
             else
             {
@@ -49,7 +49,7 @@ class Site
                 //
                 if (!method_exists($controller, $tryMethod))
                 {
-                    throw new SiteException(MessageCodes::rhasie002, "given action '{$tryMethod}' does not exist in class '{$controller}'.", 1);                    
+                    throw new SiteException(MessageCodes::wwisie002, "given action '{$tryMethod}' does not exist in class '{$controller}'.");                    
                 }
                 else
                 {
@@ -60,7 +60,7 @@ class Site
 
                     if (!$reflection->isPublic())
                     {
-                        throw new SiteException(MessageCodes::rhasie003, "given action does not exist as public action", 1);
+                        throw new SiteException(MessageCodes::wwisie003, "given action does not exist as public action");
                     }
 
                     $method = $tryMethod;
@@ -106,7 +106,7 @@ class Site
 			}
 			else
 			{
-				throw new SiteException(MessageCodes::rhasie004, "The view '" . ucfirst($_GET['action']) . "' does not exist");			
+				throw new SiteException(MessageCodes::wwisie004, "The view '" . ucfirst($_GET['action']) . "' does not exist");			
 			}
         }
         catch(\Exception $ex)

@@ -33,7 +33,7 @@ class Autoloader
                 }
                 else
                 {
-                    throw new \Exception("'rhaalr001': cannot find file {$path}");                
+                    throw new \Exception("'wwialr001': cannot find file {$path}");                
                 }
             }
         }
