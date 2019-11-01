@@ -10,6 +10,7 @@ namespace App\Enum;
  */
 class Navigations
 {
+	#region site paths
 	protected const HOME_PAGE = "/home";
 
 	protected const ARTICLE_PAGE = "/article/index";
@@ -26,6 +27,7 @@ class Navigations
 	protected const ROOT_DIRECTORY = "../";
 
 	public const LOCALHOST_FILEPATH = "/wideworldimporters/public/";
+	#endregion site paths
 
 	#region SQL-databases
 	protected const SITE_USERS_TABLE = "people";

@@ -4,11 +4,10 @@ namespace App\Core;
 use App\Enum\{ MessageCodes, ErrorPages };
 use App\Models\ViewBag;
 use App\Helpers\LoginHelper;
-
+use App\Helpers\Utility;
 
 /**
- * Class mvc
- * this class is used to load the page
+ * Class StartUp will start the site and handle the start.
  * @since 30-03-2017
  * @version 1.2
  * @author R Haan
@@ -35,13 +34,13 @@ class StartUp extends StartUpBase
 		try
 		{
 			// if $_GET values are empty, set default
-			$this->SetWhenEmpty($_GET['controller'], "home");
-	        $this->SetWhenEmpty($_GET['action'], "show");
+			$controllerName = $this->SetDefaultWhenEmpty($_GET['controller'] ?? "", "home");
+	        $actionName = $this->SetDefaultWhenEmpty($_GET['action'] ?? "", "show");
 			
 	        //
 	        // loading the layout first.
 	        //
-	        $this->loadLayout();
+	        $this->getLayout();
 
 	        //
 	        // Get the login class.
@@ -51,14 +50,14 @@ class StartUp extends StartUpBase
 			//
 			// Get the needed CSS and JS files.
 			//
-			$this->loadStyleSheets();
-			$this->loadJavascript();
+			$this->loadStyleSheets($controllerName);
+			$this->loadJavascript($controllerName);
 
-			if(LoginHelper::IsLoggedIn() && $_GET['controller'] == $this->adminPage)
+			if(LoginHelper::IsLoggedIn() && $controllerName == $this->adminPage)
 			{
 				$this->viewBag->content = $this->getErrorPage(ErrorPages::Unauthorized);				
 			}
-			else if (!LoginHelper::IsLoggedIn() && in_array($_GET['controller'], $this->authorizedPages))
+			else if (!LoginHelper::IsLoggedIn() && in_array($controllerName, $this->authorizedPages))
 			{
 				$this->viewBag->content = $this->getErrorPage(ErrorPages::Unauthorized);
 			}
@@ -67,9 +66,9 @@ class StartUp extends StartUpBase
 				//
 				// Get the needed controller.
 				// 
-				$this->viewBag->obj = $this->getController();	
+				$this->viewBag->obj = $this->getController($controllerName, $actionName);	
 
-				$content = $this->getView();
+				$content = $this->getView($controllerName, $actionName);
 
 				if (empty($content)) 
 				{
@@ -121,9 +120,9 @@ class StartUp extends StartUpBase
 	/**
 	 * method to get the needed css.
 	 */
-	private function loadStyleSheets()
+	private function loadStyleSheets(string $filename)
 	{
-		$css = ucfirst($_GET['controller']);
+		$css = ucfirst($filename);
 		$this->viewBag->css = "";
 
 		if (file_exists("./css/{$css}.css")) 
@@ -133,11 +132,11 @@ class StartUp extends StartUpBase
 	}	
 
 	/**
-	 * method to get the Javascript
+	 * loads the needed Javascript
 	 */
-	private function loadJavascript()
+	private function loadJavascript(string $filename)
 	{
-		$js = ucfirst($_GET['controller']);
+		$js = ucfirst($filename);
 		$this->viewBag->js = "";
 
 		if (file_exists($path = "./js/{$js}.js")) 
@@ -147,24 +146,26 @@ class StartUp extends StartUpBase
 	}
 
 	/**
-	 * method to get the layout
+	 * gets the layout
 	 */
-	private function loadLayout()
+	private function getLayout()
 	{
-		$chozen = "Grid";
-		$cssClass = "gridbox";
-
-		$this->viewBag->cssClass = $cssClass;
-		$this->viewBag->layout = $chozen;
+		$this->viewBag->cssClass = "gridbox";
+		$this->viewBag->layout = "Grid";
 	}		
 
-	private function SetWhenEmpty($checkValue, $setValue) 
+	/**
+	 * Sets a default value when the given value is null or empty
+	 * @param mixed $value, the value that will be checked.
+	 * @param mixed $defaultValue, the value that will be returned if the $value is null or empty.
+	 */
+	private function SetDefaultWhenEmpty($value, $defaultValue) 
 	{
-		if ( empty($checkValue) )
+		if (Utility::strIsNullOrEmpty($value))
 		{
-			return "home";
+			return $defaultValue;
 		}
 
-		return $setValue;
+		return $value;
 	}
 } 

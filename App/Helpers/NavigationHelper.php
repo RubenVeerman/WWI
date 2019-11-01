@@ -48,7 +48,7 @@ class NavigationHelper extends Navigations
 
 		if (self::isOnLocalHost()) 
 		{
-			$alink .= "/RHaan-ict/public";
+			$alink .= "/worldwideimporters/public";
 		}
 
 		$alink .= $link;

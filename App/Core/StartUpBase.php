@@ -2,12 +2,11 @@
 namespace App\Core;
 
 use App\Helpers\Utility;
-use App\Controllers;
 use App\Enum\MessageCodes;
 use App\Enum\ErrorPages;
 
 /**
- * class to get the mvc of the website
+ * The class with the generic actions of the site
  */
 abstract class StartUpBase
 {
@@ -16,19 +15,19 @@ abstract class StartUpBase
 	 * and making the controller usefull in $view
      * @return The controller;
 	 */
-	protected function getController()
+	protected function getController(string $controllerName, string $actionName)
 	{
 	    try
         {
             //
             // Get the controller by the get value controller.
             //
-            $controller = ucfirst($_GET['controller']).'Controller';
+            $controller = ucfirst($controllerName).'Controller';
 
             //
             // Get the action method by the get value action.
             //
-            $tryMethod = 'get'.ucfirst($_GET['action']);
+            $tryMethod = 'get'.ucfirst($actionName);
             //
             // Check if given controller exists.
             //
@@ -87,14 +86,14 @@ abstract class StartUpBase
 	 * Method to get the view.
      * @return The view.
 	 */
-	protected function getView()
+	protected function getView(string $controllerName, string $actionName)
 	{	
 		try
 		{
 			//
 			// Checking if the requested view exists.
 			//
-			if (file_exists($path = "../resources/views/". ucfirst( $_GET['controller'] ). "/".ucfirst($_GET['action']).".phtml"))
+			if (file_exists($path = "../resources/views/". ucfirst( $controllerName ). "/".ucfirst($actionName).".phtml"))
 			{			
 				//
 				// Load view.
@@ -106,7 +105,7 @@ abstract class StartUpBase
 			}
 			else
 			{
-				throw new SiteException(MessageCodes::wwisie004, "The view '" . ucfirst($_GET['action']) . "' does not exist");			
+				throw new SiteException(MessageCodes::wwisie004, "The view '" . ucfirst($actionName) . "' does not exist");			
 			}
         }
         catch(\Exception $ex)

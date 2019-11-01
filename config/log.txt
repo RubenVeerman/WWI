@@ -46,3 +46,51 @@
 
 
 
+[01-11-2019 13:21:53]	'wwisie002': given action 'get' does not exist in class 'App\Controllers\Controller'.	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(70): App\Core\StartUpBase->getController()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:21:53]	'wwisie004': The view '' does not exist	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(72): App\Core\StartUpBase->getView()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:21:54]	'wwisie002': given action 'get' does not exist in class 'App\Controllers\Controller'.	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(70): App\Core\StartUpBase->getController()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:21:54]	'wwisie004': The view '' does not exist	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(72): App\Core\StartUpBase->getView()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:22:17]	'wwisie002': given action 'get' does not exist in class 'App\Controllers\Controller'.	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(70): App\Core\StartUpBase->getController()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:22:17]	'wwisie004': The view '' does not exist	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(72): App\Core\StartUpBase->getView()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:22:18]	'wwisie002': given action 'get' does not exist in class 'App\Controllers\Controller'.	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(70): App\Core\StartUpBase->getController()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+
+[01-11-2019 13:22:18]	'wwisie004': The view '' does not exist	#0 D:\_xampp\htdocs\WideWorldImporters\App\Core\StartUp.php(72): App\Core\StartUpBase->getView()
+#1 D:\_xampp\htdocs\WideWorldImporters\public\index.php(15): App\Core\StartUp->loadSiteData()
+#2 {main}
+
+
+

@@ -1,6 +1,7 @@
 <?php 
 $vb = $this->viewBag; 
     
+// rootpath of the website. With this path leads to the Public folder.
 $path = $vb->rootPath;
 ?>
 <!DOCTYPE html>
@@ -9,7 +10,7 @@ $path = $vb->rootPath;
 	<title><?= $vb->obj->title ?></title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" type="image/ico" href="<?= $path ?>img/bible.png">
+	<!-- <link rel="icon" type="image/ico" href="<?= $path ?>img/{name}.png"> **{name} = naam van de afbeelding-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= $path ?>css/<?= $vb->css; ?>.css">   
 
