@@ -30,6 +30,8 @@ class MessageCodes
     public const wwisie004 = "wwisie004";
 
     public const wwihcr001 = "wwihcr001";
+
+    public const wwilhr001 = "wwilhr001";
 }
 
 

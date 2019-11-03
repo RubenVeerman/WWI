@@ -13,23 +13,24 @@ class Utility
     /**
      * Handles the Unexpected exception and writes this error to the log.
      * @param $ex, the exception
-     * @param $showErrorToUser, decides if the user will see the error.
+     * @param $showErrorToUser, when true, the error will be shown to the user, false otherwise.
      */
 	public static function HandleUnexpectedException(\Exception $ex, $showErrorToUser = true)
 	{
 	    if ($showErrorToUser)
 	    {
-            $out = '<script language="javascript">';
-            $out .= "alert(\"" . $ex->getMessage() . "\");";
-            $out .= '</script>';
-            echo $out;
+            echo `<script>
+                    alert("{$ex->getMessage()}");
+                </script>`;
         }
 
-        $textToLog = "{$ex->getMessage()}\t{$ex->getTraceAsString()}\n\n";
-	    
-        LogHelper::WriteToLogFile($textToLog);
+        LogHelper::WriteToLogFile("{$ex->getMessage()}\t{$ex->getTraceAsString()}\n\n");
     }
     
+    /**
+     * Checks if a string is null or empty.
+     * @return bool
+     */
     public static function strIsNullOrEmpty(string $str) 
     {
         return $str == null || $str == "";

@@ -1,6 +1,9 @@
 <?php 
 namespace App\Helpers;
 
+use App\Core\SiteException;
+use App\Enum\MessageCodes;
+
 /**
  * Class to write to the log file
  * @since 17-12-2017
@@ -28,16 +31,14 @@ class LogHelper
 
 	public static function WriteToFile(string $text) 
 	{
-		if (file_exists(self::$logFilePath)) 
-		{
-			file_put_contents(self::$logFilePath, $text);
-		}
-		else 
+		if (!file_exists(self::$logFilePath)) 
 		{
 			$logfile = fopen(self::$logFilePath, "w") or die("Unable to open file!");
-			fwrite($logfile, $text);
+			fwrite($logfile, "");
 			fclose($logfile);
 		}
+		
+		file_put_contents(self::$logFilePath, $text);
 	}
 	
 	/**
@@ -50,7 +51,7 @@ class LogHelper
 			return file_get_contents(self::$logFilePath);
 		}
 		
-		return "";
+		throw new SiteException(MessageCodes::wwilhr001, "The log file doesn't exists.");
 	}
 }
 
