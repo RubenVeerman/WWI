@@ -75,3 +75,12 @@ function bewerkKlant($connection, $nummer, $naam, $woonplaats)
 
 // products
 
+
+function selectProducts()
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockitems";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}

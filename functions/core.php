@@ -64,3 +64,10 @@ function getValueFromArray($key, $array)
 {
     return isset($array[$key]) ? $array[$key] : null;
 }
+
+function setWhenActive($tabname)
+{
+    $page = getValueFromArray("page", $_GET) ?? "";
+
+    return strtolower($page) == strtolower($tabname);
+}

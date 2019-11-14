@@ -34,11 +34,11 @@ require_once "./functions/core.php";
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Deals</a></li>
-        <li><a href="#">Stores</a></li>
-        <li><a href="#">Contact</a></li>
+        <li class="<?= setWhenActive("home") ? "active" : "" ?>"><a href="?page=home">Home</a></li>
+        <li class="<?= setWhenActive("product") ? "active" : "" ?>"><a href="?page=product">Products</a></li>
+        <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Deals</a></li>
+        <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Stores</a></li>
+        <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
