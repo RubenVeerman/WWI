@@ -7,8 +7,8 @@ function startSite()
 {
     try 
     {
-        $page = getValueFromArray($_GET["page"]) ?? "Home";
-        $action = getValueFromArray($_GET["action"]) ?? "Show";
+        $page = getValueFromArray("page", $_GET) ?? "Home";
+        $action = getValueFromArray("action", $_GET) ?? "Show";
 
         return getView($page, $action);
     }
@@ -60,7 +60,7 @@ function getViewPage($page, $action)
     }
 }
 
-function getValueFromArray($value) 
+function getValueFromArray($key, $array) 
 {
-    return isset($value) ? $value : null;
+    return isset($array[$key]) ? $array[$key] : null;
 }
