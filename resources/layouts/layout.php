@@ -1,18 +1,10 @@
-<?php 
-$vb = $this->viewBag; 
-    
-// rootpath of the website. With this path leads to the Public folder.
-$path = $vb->rootPath;
-?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
 	<title><?= $vb->obj->title ?></title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- <link rel="icon" type="image/ico" href="<?= $path ?>img/{name}.png"> **{name} = naam van de afbeelding-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="<?= $path ?>css/<?= $vb->css; ?>.css">   
 
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>  
@@ -52,7 +44,7 @@ $path = $vb->rootPath;
   </div>
 </nav>
 <div class="container">
-	<?= $vb->content ?>
+	<?= $view ?>
 </div><br><br>
 
 <footer class="container-fluid text-center">
@@ -63,7 +55,5 @@ $path = $vb->rootPath;
   </form>
 </footer>
 
-        
-<script src="<?= $path . $vb->js ;?>"></script>
 </body>
 </html>

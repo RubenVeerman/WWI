@@ -1,6 +1,4 @@
-<?php 
-    $vb = $this->viewBag
-?>
+
 <!-- home page -->
 <div class="container">
 	<div class="row">
