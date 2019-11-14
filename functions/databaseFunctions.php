@@ -31,6 +31,8 @@ function closeConnection($connection)
     mysqli_close($connection);
 }
 
+// customers
+
 function selectCustomers()
 {
     $connection = createConnection();
@@ -49,19 +51,19 @@ function selectOneCustomer($conn, $id)
     return mysqli_stmt_get_result($stmt);
 }
 
-function VoegKlantToe($connection, $naam, $woonplaats) {
+function voegKlantToe($connection, $naam, $woonplaats) {
     $statement = mysqli_prepare($connection, "INSERT INTO klant (naam, woonplaats) VALUES(?,?)");
     mysqli_stmt_bind_param($statement, 'ss', $naam, $woonplaats);
     mysqli_stmt_execute($statement);
     return mysqli_stmt_affected_rows($statement) == 1;
 }
 
-function klantBestaat($naam)
+function customerExists($naam)
 {
     return mysqli_query(createConnection(), "SELECT * FROM `klant` WHERE naam=" .$naam);
 }
 
-function BewerkKlant($connection, $nummer, $naam, $woonplaats) 
+function bewerkKlant($connection, $nummer, $naam, $woonplaats) 
 {
     $sql = "UPDATE klant SET naam =?, woonplaats =? WHERE nummer =?";
     $statement = mysqli_prepare($connection, $sql);
@@ -71,4 +73,5 @@ function BewerkKlant($connection, $nummer, $naam, $woonplaats)
     return mysqli_stmt_affected_rows($statement) == 1;
 }
 
+// products
 
