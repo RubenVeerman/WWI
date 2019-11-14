@@ -1,6 +1,6 @@
 <?php
 
-function CreateConnection() 
+function createConnection() 
 {
     //
     // Create an connection with the given information from that ini file.
@@ -26,15 +26,27 @@ function CreateConnection()
     return $conn; 
 }
 
-function SelecteerKlanten($connection)
+function closeConnection($connection) 
 {
-    $sql = "SELECT nummer, naam, woonplaats FROM klant ORDER BY naam";
-    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
-    return $result;
+    mysqli_close($connection);
 }
 
-function SluitVerbinding($connection) {
-    mysqli_close($connection);
+function selectCustomers()
+{
+    $connection = createConnection();
+    $sql = "SELECT nummer, naam, woonplaats FROM klant WHERE nummer=?";
+    closeConnection($connection);
+    return mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+}
+
+
+function selectOneCustomer($conn, $id)
+{
+    $sql = "SELECT nummer, naam, woonplaats FROM klant WHERE nummer=?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_execute($stmt);
+    return mysqli_stmt_get_result($stmt);
 }
 
 function VoegKlantToe($connection, $naam, $woonplaats) {
@@ -44,26 +56,18 @@ function VoegKlantToe($connection, $naam, $woonplaats) {
     return mysqli_stmt_affected_rows($statement) == 1;
 }
 
-function ZitNaamInQueryString($string){
-    return isset($_GET[$string]);
-}
-
 function klantBestaat($naam)
 {
-    return mysqli_query(MaakVerbinding(), "select * from `klant` where naam=" .$naam);
+    return mysqli_query(createConnection(), "SELECT * FROM `klant` WHERE naam=" .$naam);
 }
 
-function SelecteerKlant($connection, $nummer)
+function BewerkKlant($connection, $nummer, $naam, $woonplaats) 
 {
-    $sql = "SELECT nummer, naam, woonplaats FROM klant WHERE nummer=" .$nummer;
-    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
-    return $result;
-}
-
-function BewerkKlant($connection, $nummer, $naam, $woonplaats) {
-    $statement = mysqli_prepare($connection, "UPDATE klant SET naam =?, woonplaats =? WHERE nummer =?");
+    $sql = "UPDATE klant SET naam =?, woonplaats =? WHERE nummer =?";
+    $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'sss', $naam, $woonplaats, $nummer);
     mysqli_stmt_execute($statement);
+    
     return mysqli_stmt_affected_rows($statement) == 1;
 }
 
