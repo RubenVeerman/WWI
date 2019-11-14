@@ -65,6 +65,7 @@ function customerExists($naam)
 
 function bewerkKlant($connection, $nummer, $naam, $woonplaats) 
 {
+    $connection = createConnection();
     $sql = "UPDATE klant SET naam =?, woonplaats =? WHERE nummer =?";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'sss', $naam, $woonplaats, $nummer);
@@ -79,8 +80,20 @@ function bewerkKlant($connection, $nummer, $naam, $woonplaats)
 function selectProducts()
 {
     $connection = createConnection();
-    $sql = "SELECT * FROM stockitems";
+    $sql = "SELECT * FROM stockitems ORDER BY StockItemName";
     $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
     closeConnection($connection);
     return $result;
+}
+
+function selectProduct($id)
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockitems WHERE StockItemID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    closeConnection($connection);
+    return mysqli_fetch_assoc($result);
 }

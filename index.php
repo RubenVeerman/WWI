@@ -35,7 +35,7 @@ require_once "./functions/core.php";
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="<?= setWhenActive("home") ? "active" : "" ?>"><a href="?page=home">Home</a></li>
-        <li class="<?= setWhenActive("product") ? "active" : "" ?>"><a href="?page=product">Products</a></li>
+        <li class="<?= setWhenActive("product") ? "active" : "" ?>"><a href="?page=product&action=overview">Products</a></li>
         <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Deals</a></li>
         <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Stores</a></li>
         <li class="<?= setWhenActive("*") ? "active" : "" ?>"><a href="#">Contact</a></li>
