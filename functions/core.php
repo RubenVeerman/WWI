@@ -7,8 +7,8 @@ function startSite()
 {
     try 
     {
-        $page = getValueFromArray($_GET["page"]);
-        $action = getValueFromArray($_GET["action"]);
+        $page = getValueFromArray($_GET["page"]) ?? "Home";
+        $action = getValueFromArray($_GET["action"]) ?? "Show";
 
         return getView($page, $action);
     }
@@ -47,10 +47,17 @@ function getView($page, $action)
 
 function getViewPage($page, $action)
 {
-    ob_start();
-    $file = file_get_contents("./resources/views/$page/$action.php");
-    eval("?>{$file}");
-    return ob_get_clean();
+    if(!file_exists($path = "./resources/views/$page/$action.php")) 
+    {
+        return null;
+    } 
+    else
+    {
+        ob_start();
+        $file = file_get_contents($path);
+        eval("?>{$file}");        
+        return ob_get_clean();
+    }
 }
 
 function getValueFromArray($value) 
