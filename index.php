@@ -5,7 +5,7 @@ require_once "./functions/core.php";
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-	<title><?= $vb->obj->title ?></title>
+	<title>Wide World Importers</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
