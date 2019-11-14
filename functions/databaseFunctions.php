@@ -31,6 +31,19 @@ function closeConnection($connection)
     mysqli_close($connection);
 }
 
+// people
+
+
+function checkCredentials($userName, $password) 
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM people WHERE LogonName=? && HashedPassword=?";
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, "ss", $userName, );
+    mysqli_execute($stmt);
+    return mysqli_stmt_get_result($stmt);
+}
+
 // customers
 
 function selectCustomers()
@@ -51,7 +64,8 @@ function selectOneCustomer($conn, $id)
     return mysqli_stmt_get_result($stmt);
 }
 
-function voegKlantToe($connection, $naam, $woonplaats) {
+function voegKlantToe($connection, $naam, $woonplaats) 
+{
     $statement = mysqli_prepare($connection, "INSERT INTO klant (naam, woonplaats) VALUES(?,?)");
     mysqli_stmt_bind_param($statement, 'ss', $naam, $woonplaats);
     mysqli_stmt_execute($statement);

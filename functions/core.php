@@ -1,5 +1,6 @@
 <?php
 require_once "./functions/loghandler.php";
+require_once "./functions/authfunctions.php";
 
 $view = "l";
 
