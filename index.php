@@ -34,13 +34,13 @@ require_once "./functions/core.php";
   </button>
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>"">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>"">
         <a class="nav-link" href="#">Link</a>
       </li>    
     </ul>
