@@ -39,7 +39,7 @@ function checkCredentials($userName, $password)
     $connection = createConnection();
     $sql = "SELECT * FROM people WHERE LogonName=? && HashedPassword=?";
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $userName, );
+    // mysqli_stmt_bind_param($stmt, "ss", $userName);
     mysqli_execute($stmt);
     return mysqli_stmt_get_result($stmt);
 }
@@ -97,4 +97,25 @@ function selectProducts()
     $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
     closeConnection($connection);
     return $result;
+}
+
+function selectProductsLike($searchInput) 
+{
+    $connection = createConnection();
+    $sql = "SELECT StockItemID, StockItemName FROM stockitems WHERE SearchDetails LIKE ?";
+    $statement = mysqli_prepare($connection, $sql);
+    $like = "%{$searchInput}%";
+    mysqli_stmt_bind_param($statement, 's', $like);
+    mysqli_stmt_execute($statement);
+
+    $result = mysqli_stmt_get_result($statement);
+    closeConnection($connection);
+    $arr = [];
+
+    while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) 
+    {
+        array_push($arr, $row);
+    }
+
+    return $arr;
 }
