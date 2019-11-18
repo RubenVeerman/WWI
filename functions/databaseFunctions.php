@@ -39,7 +39,7 @@ function checkCredentials($userName, $password)
     $connection = createConnection();
     $sql = "SELECT * FROM people WHERE LogonName=? && HashedPassword=?";
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $userName, );
+    //mysqli_stmt_bind_param($stmt, "ss", $userName, );
     mysqli_execute($stmt);
     return mysqli_stmt_get_result($stmt);
 }
