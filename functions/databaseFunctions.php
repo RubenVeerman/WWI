@@ -111,6 +111,17 @@ function selectProduct($id)
     closeConnection($connection);
     return mysqli_fetch_assoc($result);
 }
+function selectProductStock($id)
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockitemholdings WHERE StockItemID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    closeConnection($connection);
+    return mysqli_fetch_assoc($result);
+}
 function selectProductsLike($searchInput) 
 {
     $connection = createConnection();

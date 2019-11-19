@@ -19,16 +19,20 @@ for($i = 0; $i < count($products); $i++)
             <div class="row">
     <?php
     }
-    ?> <a href="?page=product&action=show&id=<?= $product["StockItemID"] ?>">
+    ?>
+
         <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><?= $product["StockItemName"] ?></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%"
-                     alt="Image"></div>
-                <div class="panel-footer">€ <?= $product["RecommendedRetailPrice"] ?></div>
-            </div>
+            <a style="color: black" href="?page=product&action=show&id=<?= $product["StockItemID"] ?>">
+                <div class="card" style="width: auto;">
+                    <img class="card-img-top" style="height: 150px" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mariescorner.com%2Fwp-content%2Fthemes%2Fmceighteen%2Fimg%2Fnopicture.png&f=1&nofb=1" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $product["StockItemName"]?></h5>
+                        <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
+                        <a href="#" class="btn btn-success">Voeg toe aan winkelwagen</a>
+                    </div>
+                </div>
+            </a>
         </div>
-    </a>
 <?php
 }
 ?>

@@ -4,6 +4,7 @@ session_start();
 
 require_once "./functions/core.php";
 
+require_once "./functions/databaseFunctions.php";
 ?>
 
 
