@@ -1,6 +1,7 @@
 <?php
 require_once "./functions/loghandler.php";
 require_once "./functions/authfunctions.php";
+require_once  "./functions/databaseFunctions.php";
 
 $view = "l";
 
@@ -71,4 +72,15 @@ function setWhenActive($tabname)
     $page = getValueFromArray("page", $_GET) ?? "";
 
     return strtolower($page) == strtolower($tabname);
+}
+
+function getSearchResult($query)
+{
+    if (is_numeric($query) && strlen($query) > 4) {
+        return selectProduct($query);
+    } else {
+        return selectProductsLike($query);
+    }
+
+    return "";
 }

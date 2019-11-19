@@ -85,6 +85,7 @@ require_once "./functions/databaseFunctions.php";
     </ul>
       <form method="get" action="index.php" class="col-sm-5">
           <input type="hidden" name="page" value="product">
+          <input type="hidden" name="action" value="overview">
           <div class="input-group">
                   <input id="searchBar" type="text" class="form-control" placeholder="Search this blog" name="searchInput">
                   <div class="input-group-append">

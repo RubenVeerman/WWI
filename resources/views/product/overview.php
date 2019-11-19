@@ -1,7 +1,15 @@
 <?php
 
+$products = [];
 
-$products = selectProducts();
+if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
+{
+    $products = getSearchResult($_GET["searchInput"]);
+}
+else
+{
+    $products = selectProducts();
+}
 
 ?>
 <div class="container">

@@ -6,14 +6,9 @@ if(isset($_GET["query"]))
 {
     //stockitems
     //categories
-    if(is_numeric($_GET["query"]))
-    {
-        $result = selectProductById($_GET["query"]);
-    }
-    else
-    {
-        $result = selectProductsLike($_GET["query"]);
-    }
+    $result = getSearchResult($_GET["query"]);
+
+
     $arr = [];
     foreach($result as $row)
     {

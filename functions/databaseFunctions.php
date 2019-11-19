@@ -102,14 +102,21 @@ function selectProducts()
 
 function selectProduct($id)
 {
+
     $connection = createConnection();
     $sql = "SELECT * FROM stockitems WHERE StockItemID=?";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
+
     $result = mysqli_stmt_get_result($statement);
+
+    $arr = setResultToArray($result);
+
     closeConnection($connection);
-    return mysqli_fetch_assoc($result);
+
+
+    return $arr;
 }
 
 function selectProductStock($id)
@@ -134,15 +141,22 @@ function selectProductsLike($searchInput, $column = "*")
     mysqli_stmt_execute($statement);
 
     $result = mysqli_stmt_get_result($statement);
-    $arr = [];
 
-    while($row = mysqli_fetch_assoc($result)) {
-        array_push($arr, $row);
-    }
+    $arr = setResultToArray($result);
 
     closeConnection($connection);
 
 
 
+    return $arr;
+}
+
+function setResultToArray($result)
+{
+    $arr = [];
+
+    while($row = mysqli_fetch_assoc($result)) {
+        array_push($arr, $row);
+    }
     return $arr;
 }
