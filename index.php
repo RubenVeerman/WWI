@@ -1,10 +1,18 @@
 <?php
+
 session_start();
+
 require_once "./functions/core.php";
+
+require_once "./functions/databaseFunctions.php";
 ?>
 
+
+
 <!DOCTYPE html>
+
 <html lang="nl">
+
 <head>
     <style>
         .ui-autocomplete {
@@ -21,13 +29,21 @@ require_once "./functions/core.php";
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font awesome library   -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+
     <!-- jQuery library -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+
+
     <!-- Popper JS -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
+
+
     <!-- Latest compiled JavaScript -->
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
@@ -37,11 +53,18 @@ require_once "./functions/core.php";
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
 </head>
+
 <body>
+
 <div class="jumbotron text-center" style="margin-bottom:0">
-<h1>Online Store</h1>      
+
+    <h1>Online Store</h1>
+
     <p>Mission, Vission & Values</p>
+
 </div>
+
+
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="#">WWI</a>
@@ -89,13 +112,24 @@ require_once "./functions/core.php";
   </div>
 </nav>
 
-<div class="container" style="margin-top:30px">
-<?= startSite(); ?>
-  </div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-  <p>Footer</p>
+
+<div class="container" style="margin-top:30px">
+
+    <?= startSite(); ?>
+
 </div>
 
+
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+
+    <p>Footer</p>
+
+</div>
+
+
+
 </body>
+
 </html>

@@ -1,42 +1,34 @@
 <?php
 require "./functions/databaseFunctions.php";
-$products = [];
 
-if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
-{
-    $products = selectProductsLike($_GET["searchInput"]);
-}
-else
-{
-    $products = selectProducts();
-}
+
+$id = getValueFromArray("id", $_GET);
+$product = selectProduct($id);
+$stock = selectProductStock($id);
+
 ?>
+
 <div class="container">
     <div class="row">
-<?php
-for($i = 0; $i < count($products); $i++)
-{
-    $product = $products[$i];
-    if($i % 3 == 0)
-    {
-        ?>
-            </div>
-        </div><br>
-        <div class="container">
-            <div class="row">
-    <?php
-    }
-    ?>
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><?= $product["StockItemName"] ?></div>
-                <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%"
-                     alt="Image"></div>
-                <div class="panel-footer">Buy 50 mobiles and get a gift card</div>
-            </div>
+        <div class="col-sm">
+            <h2><?= $product["StockItemName"]?></h2>
+            <?php if($product["Photo"] != NULL) {
+                echo $product["Photo"];
+            } else{
+                ?> <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mariescorner.com%2Fwp-content%2Fthemes%2Fmceighteen%2Fimg%2Fnopicture.png&f=1&nofb=1"> <?php
+            }
+            ?>
         </div>
-<?php
-}
-?>
+        <div class="col-sm">
+            <h4> <?= $product["MarketingComments"]?></h4>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel tempor lectus. Proin risus felis, pharetra sit amet egestas non, venenatis quis est. Suspendisse pharetra dictum tortor, ac auctor tellus egestas ut. Nulla scelerisque risus massa, in laoreet nisl egestas nec. Suspendisse a dictum ipsum. Sed auctor vehicula est, eu facilisis augue condimentum eget. Donec consectetur tristique volutpat. Nulla vestibulum tempus pellentesque. Donec elementum turpis dignissim consequat blandit.</p>
+            <br>
+            <h4>Nog <?= $stock["LastStocktakeQuantity"]?> stuks beschikbaar</h4>
+            <br>
+            <h1> €<?= $product["RecommendedRetailPrice"]?></h1>
+            <br>
+            <button type="button" class="btn btn-success">Voeg toe aan winkelwagen</button>
+        </div>
     </div>
 </div>
