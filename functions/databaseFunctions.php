@@ -98,3 +98,26 @@ function selectProducts()
     closeConnection($connection);
     return $result;
 }
+
+function selectProductsLike($searchInput, $column = "*")
+{
+    $connection = createConnection();
+    $sql = "SELECT $column FROM stockitems WHERE SearchDetails LIKE ? OR StockItemID LIKE ?";
+    $statement = mysqli_prepare($connection, $sql);
+    $like = "%{$searchInput}%";
+    mysqli_stmt_bind_param($statement, 'ss', $like, $like);
+    mysqli_stmt_execute($statement);
+
+    $result = mysqli_stmt_get_result($statement);
+    $arr = [];
+
+    while($row = mysqli_fetch_assoc($result)) {
+        array_push($arr, $row);
+    }
+
+    closeConnection($connection);
+
+
+
+    return $arr;
+}

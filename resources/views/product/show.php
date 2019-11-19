@@ -1,8 +1,15 @@
 <?php
 require "./functions/databaseFunctions.php";
+$products = [];
 
-$products = selectProducts();
-
+if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
+{
+    $products = selectProductsLike($_GET["searchInput"]);
+}
+else
+{
+    $products = selectProducts();
+}
 ?>
 <div class="container">
     <div class="row">
