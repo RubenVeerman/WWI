@@ -1,14 +1,8 @@
 <?php
-
 session_start();
-
 require_once "./functions/core.php";
-
 require_once "./functions/databaseFunctions.php";
 ?>
-
-
-
 <!DOCTYPE html>
 
 <html lang="nl">
