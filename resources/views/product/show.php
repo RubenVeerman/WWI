@@ -1,6 +1,4 @@
 <?php
-require "./functions/databaseFunctions.php";
-
 
 $id = getValueFromArray("id", $_GET);
 $product = selectProduct($id);
