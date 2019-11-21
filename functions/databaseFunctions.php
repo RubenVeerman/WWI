@@ -109,8 +109,12 @@ function selectProduct($id)
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
+
+    $arr = setResultToArray($result);
+
     closeConnection($connection);
-    return mysqli_fetch_assoc($result);
+
+    return $arr;//mysqli_fetch_assoc($result);
 }
 
 function selectProductStock($id)
@@ -121,8 +125,10 @@ function selectProductStock($id)
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result);
     closeConnection($connection);
-    return mysqli_fetch_assoc($result);
+    // return mysqli_fetch_assoc($result);
+    return $arr;
 }
 
 function selectProductsLike($searchInput, $column = "*")
@@ -152,6 +158,11 @@ function setResultToArray($result)
     while($row = mysqli_fetch_assoc($result)) {
         array_push($arr, $row);
     }
+
+    if(count($arr) == 1) {
+        $arr = $arr[0];
+    }
+
     return $arr;
 }
 
