@@ -1,6 +1,6 @@
 <?php
 
-function createConnection() 
+function createConnection()
 {
     //
     // Create an connection with the given information from that ini file.
@@ -10,23 +10,23 @@ function createConnection()
     //
     // If there seems to be an error,
     //
-    if (mysqli_connect_errno()) 
+    if (mysqli_connect_errno())
     {
         //
         // Show the error and stop loading the website.
         //
         throw new Exception("Connection failed: " . mysqli_connect_error());
-    } 
+    }
 
     if(!$conn)
     {
         throw new Exception("Something goes wrong mate!");
     }
 
-    return $conn; 
+    return $conn;
 }
 
-function closeConnection($connection) 
+function closeConnection($connection)
 {
     mysqli_close($connection);
 }
@@ -108,15 +108,13 @@ function selectProduct($id)
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
-
     $result = mysqli_stmt_get_result($statement);
 
     $arr = setResultToArray($result);
 
     closeConnection($connection);
 
-
-    return $arr;
+    return $arr;//mysqli_fetch_assoc($result);
 }
 
 function selectProductStock($id)
@@ -127,8 +125,10 @@ function selectProductStock($id)
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result);
     closeConnection($connection);
-    return mysqli_fetch_assoc($result);
+    // return mysqli_fetch_assoc($result);
+    return $arr;
 }
 
 function selectProductsLike($searchInput, $column = "*")
@@ -158,5 +158,12 @@ function setResultToArray($result)
     while($row = mysqli_fetch_assoc($result)) {
         array_push($arr, $row);
     }
+
+    if(count($arr) == 1) {
+        $arr = $arr[0];
+    }
+
     return $arr;
 }
+
+?>

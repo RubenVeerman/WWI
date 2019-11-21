@@ -1,27 +1,13 @@
 <?php
-
 session_start();
-
 require_once "./functions/core.php";
-
 require_once "./functions/databaseFunctions.php";
 ?>
-
-
-
 <!DOCTYPE html>
 
 <html lang="nl">
 
 <head>
-    <style>
-        .ui-autocomplete {
-            max-height: 30%;
-            overflow-y: auto;   /* prevent horizontal scrollbar */
-            overflow-x: hidden; /* add padding to account for vertical scrollbar */
-            z-index:1000 !important;
-        }
-    </style>
 	<title>Wide World Importers</title>
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,33 +15,12 @@ require_once "./functions/databaseFunctions.php";
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font awesome library   -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-
-    <!-- jQuery library -->
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
-
-    <!-- Popper JS -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-
-
-    <!-- Latest compiled JavaScript -->
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-            crossorigin="anonymous"></script>
-
-
+    <!-- Jquery ui -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <!-- Own CSS files -->
+    <link href="./public/css/main.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
-
 <div class="jumbotron text-center" style="margin-bottom:0">
 
     <h1>Online Store</h1>
@@ -94,19 +59,7 @@ require_once "./functions/databaseFunctions.php";
                       </button>
                   </div>
               <script>
-                  $("#searchBar").on("input", function ()
-                  {
-                      $("#searchBar").autocomplete({
-                          source: function (request, response){
-                                  $.get(`./api.php?query=${request.term}`, function(data) {
-                                      console.log(data);
-                                      data = JSON.parse(data);
-                                      console.log(data);
-                                      response(data);
-                                  });
-                        }
-                      });
-                  });
+                  
               </script>
           </div>
       </form>
@@ -130,7 +83,19 @@ require_once "./functions/databaseFunctions.php";
 </div>
 
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"></script>
+
+<!-- Own Javascript files -->
+<script src="./public/js/main.js"></script>
+  
 </body>
-
 </html>
