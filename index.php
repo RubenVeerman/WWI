@@ -68,7 +68,7 @@ require_once "./functions/databaseFunctions.php";
 
 
 
-<div class="container" style="margin-top:30px">
+<div class="container-fluid" style="margin-top:30px">
 
     <?= startSite(); ?>
 
