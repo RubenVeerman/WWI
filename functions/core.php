@@ -69,9 +69,18 @@ function getValueFromArray($key, $array)
 
 function setWhenActive($tabname)
 {
+    $condition = false;
     $page = getValueFromArray("page", $_GET) ?? "";
+    $action = getValueFromArray("action", $_GET) ?? "";
 
-    return strtolower($page) == strtolower($tabname);
+    if(strpos($tabname, ".") > 0) {
+        $tabnames = explode(".", $tabname);
+
+        return strtolower($page) == strtolower($tabnames[0]) && strtolower($action) == strtolower($tabnames[1]);
+
+    } else {
+        return strtolower($page) == strtolower($tabname);
+    }
 }
 
 function getSearchResult($query)
