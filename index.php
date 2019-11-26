@@ -32,7 +32,7 @@ require_once "./functions/databaseFunctions.php";
 
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">WWI</a>
+  <a class="navbar-brand <?= setWhenActive("home") ? "active" : "" ?>" href="?page=home">WWI</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -41,7 +41,7 @@ require_once "./functions/databaseFunctions.php";
       <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>"">
+      <li class="nav-item <?= setWhenActive("product") ? "active" : "" ?>"">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
       <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>"">
@@ -63,6 +63,14 @@ require_once "./functions/databaseFunctions.php";
               </script>
           </div>
       </form>
+      <ul class="navbar-nav col-sm-4 justify-content-end">
+          <li class="nav-item <?= setWhenActive("auth.registration") ? "active" : "" ?>"">
+          <a class="nav-link" href="?page=auth&action=registration">Registration</a>
+          </li>
+          <li class="nav-item <?= setWhenActive("auth.login") ? "active" : "" ?>"">
+          <a class="nav-link" href="?page=auth&action=login">Sign in</a>
+          </li>
+      </ul>
   </div>
 </nav>
 
