@@ -77,7 +77,7 @@ function setWhenActive($tabname)
 function getSearchResult($query)
 {
     if (is_numeric($query) && strlen($query) > 4) {
-        return selectProduct($query);
+        return selectProduct($query, false);
     } else {
         return selectProductsLike($query);
     }

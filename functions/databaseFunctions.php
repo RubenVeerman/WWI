@@ -100,7 +100,7 @@ function selectProducts()
     return $result;
 }
 
-function selectProduct($id)
+function selectProduct($id, $expectoneResult = true)
 {
 
     $connection = createConnection();
@@ -110,10 +110,9 @@ function selectProduct($id)
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
 
-    $arr = setResultToArray($result);
+    $arr = setResultToArray($result, $expectoneResult);
 
     closeConnection($connection);
-
     return $arr;//mysqli_fetch_assoc($result);
 }
 
@@ -125,7 +124,7 @@ function selectProductStock($id)
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
-    $arr = setResultToArray($result);
+    $arr = setResultToArray($result, true);
     closeConnection($connection);
     // return mysqli_fetch_assoc($result);
     return $arr;
@@ -151,7 +150,7 @@ function selectProductsLike($searchInput, $column = "*")
     return $arr;
 }
 
-function setResultToArray($result)
+function setResultToArray($result, $expectOneResult = false)
 {
     $arr = [];
 
@@ -159,11 +158,20 @@ function setResultToArray($result)
         array_push($arr, $row);
     }
 
-    if(count($arr) == 1) {
+    if($expectOneResult) {
         $arr = $arr[0];
     }
 
     return $arr;
 }
 
-?>
+function getSpecialDeals()
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM specialdeals SD
+            JOIN stockitems SI ON SI.StockItemID = SD.StockItemID
+            JOIN stockitemholdings SH ON SH.StockItemID = SI.StockItemID";//" WHERE EndDate < " . date("Y/m/d");
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}

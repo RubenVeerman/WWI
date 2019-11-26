@@ -52,7 +52,7 @@ require_once "./functions/databaseFunctions.php";
           <input type="hidden" name="page" value="product">
           <input type="hidden" name="action" value="overview">
           <div class="input-group">
-                  <input id="searchBar" type="text" class="form-control" placeholder="Search this blog" name="searchInput">
+                  <input id="searchBar" type="text" class="form-control" placeholder="Search product" name="searchInput">
                   <div class="input-group-append">
                       <button class="btn btn-secondary" type="submit">
                           <i class="fa fa-search"></i>
