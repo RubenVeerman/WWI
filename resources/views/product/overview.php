@@ -1,6 +1,7 @@
 <?php
 
 $products = [];
+$empty = false;
 
 if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
 {
@@ -16,6 +17,9 @@ if(isset($_GET["category"])){
     $product = selectProducts();
 }
 
+if($products == NULL){
+    $empty = true;
+}
 
 
 $categories = selectCategories();
@@ -29,9 +33,10 @@ $categories = selectCategories();
     <div class="col-md-2">
         <ul class="list-group sticky-top">
         <?php
+
         foreach($categories as $category){
         ?>
-            <a href="?page=product&action=overview&category=<?= $category["StockGroupID"] ?>"><li class="list-group-item small mt-1 <?= setWhenActiveCategory($category["StockGroupID"]) ? "active" : "" ?>"><?=$category["StockGroupName"];?></li></a>
+            <a href="?page=product&action=overview&category=<?= $category["StockGroupID"] ?>"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActiveCategory($category["StockGroupID"]) ? "active" : "" ?>"><?=$category["StockGroupName"];?></li></a>
         <?php
         }
         ?>
@@ -41,7 +46,9 @@ $categories = selectCategories();
     <div class="container">
     <div class="col-md-auto">
 <?php
-
+if($empty){
+    echo "<h1>This category is empty</h1>";
+}
 for($i = 0; $i < count($products); $i++)
 {
     $product = $products[$i];
