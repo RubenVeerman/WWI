@@ -23,7 +23,7 @@ require_once "./functions/databaseFunctions.php";
 <body>
 <div class="jumbotron text-center" style="margin-bottom:0">
 
-    <h1>Online Store</h1>
+    <h1>Wide World Importers</h1>
 
     <p>Mission, Vission & Values</p>
 
@@ -76,7 +76,7 @@ require_once "./functions/databaseFunctions.php";
 
 
 
-<div class="container" style="margin-top:30px">
+<div class="container-fluid" style="margin-top:30px">
 
     <?= startSite(); ?>
 

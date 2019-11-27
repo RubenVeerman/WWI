@@ -93,3 +93,10 @@ function getSearchResult($query)
 
     return "";
 }
+
+function setWhenActiveCategory($category)
+{
+    $categoryget = getValueFromArray("category", $_GET) ?? "";
+
+    return strtolower($categoryget) == strtolower($category);
+}

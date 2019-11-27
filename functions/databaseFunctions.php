@@ -175,3 +175,26 @@ function getSpecialDeals()
     closeConnection($connection);
     return $result;
 }
+
+function selectCategories()
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockgroups ORDER BY StockGroupName";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}
+
+function selectProductsCategory($id)
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockitems S JOIN stockitemstockgroups I ON S.StockItemID = I.StockItemID WHERE StockGroupID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result);
+    closeConnection($connection);
+    // return mysqli_fetch_assoc($result);
+    return $arr;
+}
