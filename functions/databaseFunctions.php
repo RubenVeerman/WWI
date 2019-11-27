@@ -133,10 +133,10 @@ function selectProductStock($id)
 function selectProductsLike($searchInput, $column = "*")
 {
     $connection = createConnection();
-    $sql = "SELECT $column FROM stockitems WHERE SearchDetails LIKE ? OR StockItemID LIKE ?";
+    $sql = "SELECT $column FROM stockitems WHERE SearchDetails LIKE ? OR StockItemID LIKE ? OR StockItemName LIKE ?";
     $statement = mysqli_prepare($connection, $sql);
     $like = "%{$searchInput}%";
-    mysqli_stmt_bind_param($statement, 'ss', $like, $like);
+    mysqli_stmt_bind_param($statement, 'sss', $like, $like, $like);
     mysqli_stmt_execute($statement);
 
     $result = mysqli_stmt_get_result($statement);

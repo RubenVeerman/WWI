@@ -41,10 +41,10 @@ require_once "./functions/databaseFunctions.php";
       <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item <?= setWhenActive("product") ? "active" : "" ?>"">
+      <li class="nav-item <?= setWhenActive("product") ? "active" : "" ?>">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
-      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>"">
+      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
         <a class="nav-link" href="#">Link</a>
       </li>    
     </ul>
