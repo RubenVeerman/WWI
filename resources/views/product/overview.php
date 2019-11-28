@@ -36,7 +36,7 @@ $categories = selectCategories();
 
         foreach($categories as $category){
         ?>
-            <a href="?page=product&action=overview&category=<?= $category["StockGroupID"] ?>"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActiveCategory($category["StockGroupID"]) ? "active" : "" ?>"><?=$category["StockGroupName"];?></li></a>
+            <a href="?page=product&action=overview&category=<?= $category["StockGroupID"] ?>"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive($category["StockGroupID"], LVL_CAT) ?>"><?=$category["StockGroupName"];?></li></a>
         <?php
         }
         ?>
