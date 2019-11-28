@@ -1,28 +1,11 @@
-.ui-autocomplete {
-    max-height: 30%;
-    overflow-y: auto;   /* prevent horizontal scrollbar */
-    overflow-x: hidden; /* add padding to account for vertical scrollbar */
-    z-index:1000 !important;
-}
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    height: 100px;
-    width: 100px;
-    background-size: 100%, 100%;
-    border-radius: 50%;
-    background-image: none;
-}
+@import url("./carousel.css");
+@import url("./ui.css");
 
-.carousel-control-next-icon:after
-{
-    content: '>';
-    font-size: 55px;
-    color: #009109;
-}
-
-.carousel-control-prev-icon:after {
-    content: '<';
-    font-size: 55px;
-    color: #009109;
+.wwi-header {
+    background-image: url("http://www.surroundtech.com/media/a8/ae2e/a8ae2eb1fefdbf650518e8a689f41956/wide-world-importers-logo-small.png"),
+                     url("http://www.surroundtech.com/media/a8/ae2e/a8ae2eb1fefdbf650518e8a689f41956/wide-world-importers-logo-small.png")
+                    ;
+    background-repeat: no-repeat, no-repeat;
+    background-position: left center, right center;
 }
 

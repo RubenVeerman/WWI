@@ -9,8 +9,8 @@ function startSite()
 {
     try 
     {
-        $page = getValueFromArray("page", $_GET) ?? "Home";
-        $action = getValueFromArray("action", $_GET) ?? "Show";
+        $page = getValueFromArray("page", $_GET, "Home");
+        $action = getValueFromArray("action", $_GET, "Show");
 
         return getView($page, $action);
     }
@@ -62,25 +62,39 @@ function getViewPage($page, $action)
     }
 }
 
-function getValueFromArray($key, $array) 
+function getValueFromArray($key, $array, $defaultValue) 
 {
-    return isset($array[$key]) ? $array[$key] : null;
+    return isset($array[$key]) ? $array[$key] : $defaultValue;
 }
 
-function setWhenActive($tabname)
+const LVL_NAV = 0;
+const LVL_CAT = 1;
+
+function setWhenActive($tabname, $lvl)
 {
     $condition = false;
-    $page = getValueFromArray("page", $_GET) ?? "";
-    $action = getValueFromArray("action", $_GET) ?? "";
 
-    if(strpos($tabname, ".") > 0) {
-        $tabnames = explode(".", $tabname);
+    if($lvl == LVL_CAT) 
+    {
+        $categoryget = getValueFromArray("category", $_GET, "");
 
-        return strtolower($page) == strtolower($tabnames[0]) && strtolower($action) == strtolower($tabnames[1]);
+        $condition = strtolower($categoryget) == strtolower($tabname);
+    } else if ($lvl == LVL_NAV) {
 
-    } else {
-        return strtolower($page) == strtolower($tabname);
+        $page = getValueFromArray("page", $_GET, "");
+        $action = getValueFromArray("action", $_GET, "");
+
+        if(strpos($tabname, ".") > 0) {
+            $tabnames = explode(".", $tabname);
+
+            $condition = strtolower($page) == strtolower($tabnames[0]) && strtolower($action) == strtolower($tabnames[1]);
+
+        } else {
+            $condition = strtolower($page) == strtolower($tabname);
+        }
     }
+
+    return $condition ? "active" : "";
 }
 
 function getSearchResult($query)
@@ -92,11 +106,4 @@ function getSearchResult($query)
     }
 
     return "";
-}
-
-function setWhenActiveCategory($category)
-{
-    $categoryget = getValueFromArray("category", $_GET) ?? "";
-
-    return strtolower($categoryget) == strtolower($category);
 }
