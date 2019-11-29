@@ -1,5 +1,5 @@
 <?php
-$id = getValueFromArray("id", $_GET);
+$id = getValueFromArray("id", $_GET, null);
 $product = selectProduct($id);
 $stock = selectProductStock($id);
 

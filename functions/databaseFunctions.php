@@ -198,3 +198,28 @@ function selectProductsCategory($id)
     // return mysqli_fetch_assoc($result);
     return $arr;
 }
+function getNextID(){
+    $connection = createConnection();
+    $id_check_query = "SELECT MAX(PersonID) FROM people";
+    $query_result = mysqli_query($connection, $id_check_query);
+    $fetch = mysqli_fetch_array($query_result);
+    $person_id = $fetch[0] + 1;
+    return $person_id;
+}
+function createCustomerAccount(){
+    $connection = createConnection();
+    $personID = getNextID();
+    $hashedPassword = password_hash($_POST["pass1"], PASSWORD_BCRYPT);
+    $validToDate = '9999-12-31 23:59:59';
+    $fullname = $_POST["fname"] . " " . $_POST["lname"];
+    $searchName = $_POST["fname"] . " " . $fullname;
+    $sql = "INSERT INTO people(PersonID, FullName, PreferredName, SearchName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, EmailAddress, LastEditedBy, ValidFrom, ValidTo) 
+            VALUES (?, ?, ?, ?, 1, ?, 0, ?, 0, 0, 0, ?, 1, NOW(), ?)";
+    $statement = mysqli_prepare($connection, $sql);
+    if ( !$statement ) {
+        die('mysqli error: '.mysqli_error($connection));
+    }
+    mysqli_stmt_bind_param($statement, 'ssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $hashedPassword, $_POST["email"], $validToDate);
+    mysqli_stmt_execute($statement);
+    header("location: index.php?page=auth&action=login");
+}

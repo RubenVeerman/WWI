@@ -7,11 +7,11 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <input type="email" class="form-control" name="userName" id="email" required>
+                    <input type="email" class="form-control" name="userName" id="email" placeholder="Email address" required>
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password:</label>
-                    <input type="password" name="password" class="form-control" id="pwd" required>
+                    <input type="password" name="password" class="form-control" id="pwd" placeholder="Password" required>
                 </div>
                 <!-- <div class="form-group form-check">
                     <label class="form-check-label">

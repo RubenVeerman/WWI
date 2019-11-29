@@ -21,7 +21,7 @@ require_once "./functions/databaseFunctions.php";
     <link href="./public/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="jumbotron text-center" style="margin-bottom:0">
+<div class="jumbotron text-center wwi-header" style="margin-bottom:0">
 
     <h1>Wide World Importers</h1>
 
@@ -29,22 +29,20 @@ require_once "./functions/databaseFunctions.php";
 
 </div>
 
-
-
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand <?= setWhenActive("home") ? "active" : "" ?>" href="?page=home">WWI</a>
+  <a class="navbar-brand <?= setWhenActive("home", LVL_NAV) ?>" href="?page=home">WWI</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse row" id="collapsibleNavbar">
     <ul class="navbar-nav col-sm-3">
-      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
+      <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item <?= setWhenActive("product") ? "active" : "" ?>">
+      <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>"">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
-      <li class="nav-item <?= setWhenActive("home") ? "active" : "" ?>">
+      <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>"">
         <a class="nav-link" href="#">Link</a>
       </li>    
     </ul>
@@ -64,10 +62,10 @@ require_once "./functions/databaseFunctions.php";
           </div>
       </form>
       <ul class="navbar-nav col-sm-4 justify-content-end">
-          <li class="nav-item <?= setWhenActive("auth.registration") ? "active" : "" ?>"">
+          <li class="nav-item <?= setWhenActive("auth.registration", LVL_NAV) ?>"">
           <a class="nav-link" href="?page=auth&action=registration">Registration</a>
           </li>
-          <li class="nav-item <?= setWhenActive("auth.login") ? "active" : "" ?>"">
+          <li class="nav-item <?= setWhenActive("auth.login", LVL_NAV) ?>"">
           <a class="nav-link" href="?page=auth&action=login">Sign in</a>
           </li>
       </ul>

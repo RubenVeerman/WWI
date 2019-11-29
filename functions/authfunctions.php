@@ -1,4 +1,6 @@
 <?php
+require_once "./functions/loghandler.php";
+require_once  "./functions/databaseFunctions.php";
 const IS_AUTHORIZED = "isAuthorized";
 
 function startAuth()
@@ -13,7 +15,7 @@ function startAuth()
     } 
 }
 
-function isAuthorized(): bool
+function isAuthorized()
 {
     return isset($_SESSION[IS_AUTHORIZED]) && $_SESSION[IS_AUTHORIZED];    
 }
@@ -38,4 +40,15 @@ function logOn()
 
 function logOff() {
     session_destroy();
+}
+if (isset($_POST['submit_registration'])) {
+    validateRegistration();
+}
+
+function validateRegistration() {
+    if (!empty($_POST['email']) && !empty($_POST['fname']) && !empty($_POST['lname']) && !empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+        if ($_POST['pass1'] == $_POST['pass2']) {
+            createCustomerAccount() ;
+        }
+    }
 }
