@@ -249,6 +249,26 @@ function createCustomerAccount(){
     }
     mysqli_stmt_bind_param($statement, 'ssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $hashedPassword, $_POST["email"], $validToDate);
     mysqli_stmt_execute($statement);
-    http_response_code(123);
     header("location: index.php?page=auth&action=login&registration=success");
+}
+
+function dbPhoto($id)
+{
+    $connection = createConnection();
+    $sql = "SELECT Path FROM PhotoID WHERE StockItemID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+//    $row = mysqli_fetch_row($result);
+    $arr = setResultToArray($result);
+    closeConnection($connection);
+    // return mysqli_fetch_assoc($result);
+
+    if(empty($arr))
+    {
+        $arr[0]["Path"] = "./public/images/noimage.png";
+    }
+
+    return $arr;
 }
