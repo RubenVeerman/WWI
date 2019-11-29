@@ -3,18 +3,31 @@
 $products = [];
 $empty = false;
 
+const DEFAULT_LIMIT = 30;
+const DEFAULT_PN = 1;
+
+
+$pn = getValueFromArray("pageno", $_GET, DEFAULT_PN);
+$limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
+
+$start_from = ($pn-1) * $limit;
+
 if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
 {
     $products = getSearchResult($_GET["searchInput"]);
 }
 else
 {
-    $products = selectProducts();
+    $products = pagination($start_from, $limit);
 }
 if(isset($_GET["category"])){
-    $products = selectProductsCategory($_GET["category"]);
+    $total_products = countProductsOfCategory($_GET["category"]);
+    $products = selectProductsCategory($_GET["category"], $start_from, $limit);
+    $currentcategory = "&category=". $_GET["category"];
 } else {
-    $product = selectProducts();
+    $products = pagination($start_from, $limit);
+    $currentcategory = "";
+    $total_products = countProducts();
 }
 
 if($products == NULL){
@@ -22,16 +35,18 @@ if($products == NULL){
 }
 
 
+
 $categories = selectCategories();
 
+$pagelimit = "&limit=" . $limit;
 
-
+echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
 ?>
-
-<div class="row">
+<div class="row mb-5">
 
     <div class="col-md-2">
         <ul class="list-group sticky-top">
+            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive($categories[""], LVL_CAT)?>">All products</li></a>
         <?php
 
         foreach($categories as $category){
@@ -81,3 +96,7 @@ for($i = 0; $i < count($products); $i++)
     </div>
 </div>
 </div>
+
+</div>
+
+    <?= getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit); ?>

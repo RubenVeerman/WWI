@@ -185,10 +185,10 @@ function selectCategories()
     return $result;
 }
 
-function selectProductsCategory($id)
+function selectProductsCategory($id, $start_from, $limit)
 {
     $connection = createConnection();
-    $sql = "SELECT * FROM stockitems S JOIN stockitemstockgroups I ON S.StockItemID = I.StockItemID WHERE StockGroupID=?";
+    $sql = "SELECT * FROM stockitems S JOIN stockitemstockgroups I ON S.StockItemID = I.StockItemID WHERE StockGroupID=? LIMIT $start_from, $limit";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
@@ -197,6 +197,34 @@ function selectProductsCategory($id)
     closeConnection($connection);
     // return mysqli_fetch_assoc($result);
     return $arr;
+}
+function pagination($start_from, $limit)
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockitems LIMIT $start_from, $limit";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}
+
+function countProducts(){
+    $connection = createConnection();
+    $sql = "SELECT COUNT(*) FROM stockitems";
+    $query = mysqli_query($connection, $sql);
+    $row = mysqli_fetch_row($query);
+    closeConnection($connection);
+    return $row[0];
+}
+function countProductsOfCategory($categoryid){
+    $connection = createConnection();
+    $sql = "SELECT COUNT(*) FROM stockitems S JOIN stockitemstockgroups I ON S.StockItemID = I.StockItemID WHERE StockGroupID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $categoryid);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $row = mysqli_fetch_row($result);
+    closeConnection($connection);
+    return $row[0];
 }
 function getNextID(){
     $connection = createConnection();
