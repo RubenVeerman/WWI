@@ -1,5 +1,13 @@
 <form method="post">
     <div class="container">
+        <?php
+        if(isset($_GET['registration']) && $_GET['registration'] == 'success') {
+                echo '<div class="alert alert-success text-center">
+                <strong>Success!</strong> Your account has been created successfully.
+              </div>';
+        }
+        ?>
+
         <div class="card">
             <div class="card-header">
                 Voer gegevens in

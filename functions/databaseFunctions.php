@@ -249,5 +249,6 @@ function createCustomerAccount(){
     }
     mysqli_stmt_bind_param($statement, 'ssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $hashedPassword, $_POST["email"], $validToDate);
     mysqli_stmt_execute($statement);
-    header("location: index.php?page=auth&action=login");
+    http_response_code(123);
+    header("location: index.php?page=auth&action=login&registration=success");
 }
