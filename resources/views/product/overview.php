@@ -3,15 +3,12 @@
 $products = [];
 $empty = false;
 
-$limit = 30;
+const DEFAULT_LIMIT = 30;
+const DEFAULT_PN = 1;
 
 
-if (isset($_GET["pageno"])) {
-    $pn = $_GET["pageno"];
-}
-else {
-    $pn=1;
-};
+$pn = getValueFromArray("pageno", $_GET, DEFAULT_PN);
+$limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
 
 $start_from = ($pn-1) * $limit;
 
@@ -41,50 +38,15 @@ if($products == NULL){
 
 $categories = selectCategories();
 
-$pagelimit = "&limit=" . $limit
+$pagelimit = "&limit=" . $limit;
 
-
+echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
 ?>
-<div class="row">
-<div class="mx-auto">
-    <div class="row">
-    <nav aria-label="...">
-        <ul class="pagination">
-
-            <?php
-            $total_pages = ceil($total_products / $limit);
-            $pagLink = "";
-            if($total_pages != 1) {
-                for ($i = 1; $i <= $total_pages; $i++) {
-                    if ($i == $pn)
-                        $pagLink .= "<li class='page-item active'><span class='page-link'>$i<span class='sr-only'>(current)</span></span></li>";
-                    else
-                        $pagLink .= "<li class='page-item'><a class='page-link' href='?page=product&action=overview&pageno=$i$currentcategory'>$i</a></li>";
-                };
-            }
-            echo $pagLink;
-            ?>
-        </ul>
-    </nav>
-    <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            30
-        </a>
-
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="?page=product&action=overview&pageno=<?=$i?><?=$currentcategory?>&limit=15">15</a>
-            <a class="dropdown-item" href="#">60</a>
-            <a class="dropdown-item" href="#">90</a>
-        </div>
-    </div>
-    </div>
-
-</div>
-</div>
-<div class="row">
+<div class="row mb-5">
 
     <div class="col-md-2">
         <ul class="list-group sticky-top">
+            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive($categories[""], LVL_CAT)?>">All products</li></a>
         <?php
 
         foreach($categories as $category){
@@ -135,24 +97,6 @@ for($i = 0; $i < count($products); $i++)
 </div>
 </div>
 
-    <div class="mx-auto mt-3">
-    <nav aria-label="...">
-        <ul class="pagination">
-
-<?php
-if($total_pages != 1) {
-    $total_pages = ceil($total_products / $limit);
-    $pagLink = "";
-    for ($i = 1; $i <= $total_pages; $i++) {
-        if ($i == $pn)
-            $pagLink .= "<li class='page-item active'><span class='page-link'>$i<span class='sr-only'>(current)</span></span></li>";
-        else
-            $pagLink .= "<li class='page-item'><a class='page-link' href='?page=product&action=overview&pageno=$i$currentcategory'>$i</a></li>";
-    };
-}
-echo $pagLink;
-?>
-        </ul>
-    </nav>
-
 </div>
+
+    <?= getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit); ?>

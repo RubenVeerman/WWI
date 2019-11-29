@@ -2,6 +2,7 @@
 require_once "./functions/loghandler.php";
 require_once "./functions/authfunctions.php";
 require_once  "./functions/databaseFunctions.php";
+require_once "./functions/templateFunctions.php";
 
 $view = "l";
 
