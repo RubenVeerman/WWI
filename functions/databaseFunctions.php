@@ -288,3 +288,13 @@ function checkEmailIfExists($logonName){
 
     return empty($arr[0]) ? false : true;
 }
+
+function updateProduct($stockitemname, $recprice, $marketingcomments, $id){
+    $connection = createConnection();
+
+    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
+    $stmt->bind_param('sdsi', $stockitemname, $recprice, $marketingcomments, $id);
+    $stmt->execute();
+    $stmt->close();
+
+}
