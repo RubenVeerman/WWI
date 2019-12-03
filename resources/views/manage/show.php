@@ -30,9 +30,9 @@ if($message == true){
         <input type="text" class="form-control" value="<?= $product["RecommendedRetailPrice"]?>" name="retailprice">
         Marketing Comments:
         <input type="text" class="form-control" value="<?= $product["MarketingComments"]?>"name="marketingcomments">
-        Custom fields:
+
             <label for="exampleFormControlFile1">Photo</label>
-            <input type="file" class="form-control-file" id="photo">
+            <input type="file" class="form-control-file" accept="image/*" id="photo">
 
 
     <input type="submit" class="btn btn-primary" name="submit">

@@ -91,6 +91,9 @@ for($i = 0; $i < count($products); $i++)
 
                     </div>
                     <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+
+                    <a href="?page=cart&action=show" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>
+
                 </div>
             </a>
         </div>
