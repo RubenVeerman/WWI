@@ -48,25 +48,31 @@ if(isset($_SESSION[IS_AUTHORIZED])){
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Email</label>
                             <div class="col-lg-9">
-                                <input class="form-control" type="email" value="' . $_SESSION["userName"] . '">
+                                <input class="form-control" name="email" type="email" value="' . $_SESSION["userName"] . '">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Full name</label>
                             <div class="col-lg-9">
-                                <input class="form-control" type="text" value="name">
+                                <input class="form-control" name="fName" type="text" value="name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label form-control-label">Preferred name</label>
+                            <div class="col-lg-9">
+                                <input class="form-control" name="pName" type="text" value="">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Password</label>
                             <div class="col-lg-9">
-                                <input class="form-control" type="password" value="" placeholder="New password">
+                                <input class="form-control" name="pass1" type="password" value="" placeholder="New password">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
                             <div class="col-lg-9">
-                                <input class="form-control" type="password" value="" placeholder="New password">
+                                <input class="form-control" name="pass2" type="password" value="" placeholder="New password">
                             </div>
                         </div>
                         <div class="form-group row">
