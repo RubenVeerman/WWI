@@ -3,7 +3,7 @@
 $products = [];
 $empty = false;
 
-const DEFAULT_LIMIT = 30;
+const DEFAULT_LIMIT = 20;
 const DEFAULT_PN = 1;
 
 
@@ -46,7 +46,7 @@ echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit
 
     <div class="col-md-2">
         <ul class="list-group sticky-top">
-            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive($categories[""], LVL_CAT);?>">All products</li></a>
+            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive("", LVL_CAT);?>">All products</li></a>
         <?php
 
         foreach($categories as $category){

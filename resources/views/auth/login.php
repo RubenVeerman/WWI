@@ -2,11 +2,17 @@
     <div class="container">
         <?php
         if(isset($_GET['registration']) && $_GET['registration'] == 'success') {
-                echo '<div class="alert alert-success text-center">
+            echo '<div class="alert alert-success text-center">
                 <strong>Success!</strong> Your account has been created successfully.
               </div>';
         }
+        if(isset($_GET['login']) && $_GET['login'] == 'failed') {
+            echo '<div class="alert alert-warning text-center">
+                <strong>Failed!</strong> Wrong email or password.
+              </div>';
+        }
         ?>
+
 
         <div class="card">
             <div class="card-header">

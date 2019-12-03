@@ -37,11 +37,16 @@ function closeConnection($connection)
 function checkCredentials($userName, $password) 
 {
     $connection = createConnection();
-    $sql = "SELECT * FROM people WHERE LogonName=? && HashedPassword=?";
+    $sql = "SELECT HashedPassword FROM people WHERE LogonName=?";
     $stmt = mysqli_prepare($connection, $sql);
-    //mysqli_stmt_bind_param($stmt, "ss", $userName, );
+    mysqli_stmt_bind_param($stmt, "s", $userName);
     mysqli_execute($stmt);
-    return mysqli_stmt_get_result($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $arr = setResultToArray($result, true);
+    if(!empty($arr)) {
+       return password_verify($password, $arr['HashedPassword']);
+    }
+    return false;
 }
 
 // customers
@@ -158,7 +163,7 @@ function setResultToArray($result, $expectOneResult = false)
         array_push($arr, $row);
     }
 
-    if($expectOneResult) {
+    if(count($arr) > 0 && $expectOneResult) {
         $arr = $arr[0];
     }
 
@@ -271,4 +276,15 @@ function dbPhoto($id)
     }
 
     return $arr;
+}
+function checkEmailIfExists($logonName){
+    $connection = createConnection();
+    $sql = "SELECT LogonName FROM people WHERE LogonName=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 's', $logonName);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result);
+
+    return empty($arr[0]) ? false : true;
 }
