@@ -36,12 +36,14 @@ function getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagel
                     '. $limit . '
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="'. $dropdownLink . '&limit=15">15</a>
-                    <a class="dropdown-item" href="'. $dropdownLink . '&limit=30">30</a>
-                    <a class="dropdown-item" href="'. $dropdownLink . '&limit=60">60</a>
-                    <a class="dropdown-item" href="'. $dropdownLink . '&limit=90">90</a>
-                    
-                        <form method="get">
+                ';
+    for($i = 1; $i < 5; $i++){
+        $items = 20;
+        $itemsPerPage = $items * $i;
+        $print .= '
+        <a class="dropdown-item" href="'. $dropdownLink . '&limit='. $itemsPerPage .'">'. $itemsPerPage .'</a>';
+    }
+           $print .= '   <form method="get">
                         <input type="hidden" name="page" value="product">
                         <input type="hidden" name="action" value="overview">
                         <input type="hidden" name="pageno" value="1">

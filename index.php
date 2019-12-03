@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once "./functions/core.php";
+require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
+startAuth();
 ?>
 <!DOCTYPE html>
 
@@ -62,11 +64,30 @@ require_once "./functions/databaseFunctions.php";
           </div>
       </form>
       <ul class="navbar-nav col-sm-4 justify-content-end">
-          <li class="nav-item <?= setWhenActive("auth.registration", LVL_NAV) ?>"">
-          <a class="nav-link" href="?page=auth&action=registration">Registration</a>
+          <li class="nav-item <?= setWhenActive("auth.registration", LVL_NAV) ?>">
+              <?php
+              if(isset($_SESSION[IS_AUTHORIZED])){
+                  if($_SESSION[IS_AUTHORIZED]){
+                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $_SESSION["userName"] . '</a>';
+                  }
+              }
+              else{
+                  echo '<a class="nav-link" href="?page=auth&action=registration">Registration</a>';
+              }
+              ?>
+
           </li>
-          <li class="nav-item <?= setWhenActive("auth.login", LVL_NAV) ?>"">
-          <a class="nav-link" href="?page=auth&action=login">Sign in</a>
+          <li class="nav-item <?= setWhenActive("auth.login", LVL_NAV) ?>">
+          <?php
+          if(isset($_SESSION[IS_AUTHORIZED])){
+              if($_SESSION[IS_AUTHORIZED]){
+                  echo '<form method="post"><button class="btn btn-default nav-link" type="submit" name="submit_logoff">Log off</button></form>';
+              }
+          }
+          else{
+              echo '<a class="nav-link" href="?page=auth&action=login">Sign in</a>';
+          }
+          ?>
           </li>
       </ul>
   </div>
