@@ -11,7 +11,7 @@ function startAuth()
     } 
     else if(isset($_POST["submit_logoff"]))
     {
-        return logOff();
+        logOff();
     } 
 }
 

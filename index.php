@@ -4,6 +4,7 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
+
 ?>
 <!DOCTYPE html>
 
@@ -68,7 +69,8 @@ startAuth();
               <?php
               if(isset($_SESSION[IS_AUTHORIZED])){
                   if($_SESSION[IS_AUTHORIZED]){
-                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $_SESSION["userName"] . '</a>';
+                      $peopleInfo  = selectOnePeople($_SESSION['userName']);
+                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
                   }
               }
               else{
