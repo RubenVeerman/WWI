@@ -281,7 +281,8 @@ function updatePeople(){
     $stmt->bind_param('ssssss', $_POST['fName'], $_POST['pName'], $fullname, $_POST['email'], $_POST['email'], $_POST['email']);
     $stmt->execute();
     $stmt->close();
-    header("location: index.php?page=auth&action=profile&update=success");
+
+    $_GET['update'] = 'success';
 }
 
 function updatePass(){
@@ -291,5 +292,6 @@ function updatePass(){
     $stmt->bind_param('ss',$hashedPassword, $_SESSION['userName']);
     $stmt->execute();
     $stmt->close();
-    header("location: index.php?page=auth&action=profile&update=success");
+    
+    $_GET['update'] = 'success';
 }

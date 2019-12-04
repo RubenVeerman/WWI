@@ -5,7 +5,10 @@ require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
 
+
+
 ?>
+<pre><?= var_dump($_POST); ?></pre>
 <!DOCTYPE html>
 
 <html lang="nl">
