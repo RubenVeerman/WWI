@@ -3,7 +3,7 @@
 $products = [];
 $empty = false;
 
-const DEFAULT_LIMIT = 30;
+const DEFAULT_LIMIT = 20;
 const DEFAULT_PN = 1;
 
 
@@ -44,7 +44,7 @@ echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit
 
     <div class="col-md-2">
         <ul class="list-group sticky-top">
-            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive($categories[""], LVL_CAT)?>">All products</li></a>
+            <a href="?page=product&action=overview"><li class="list-group-item list-group-item-action small mt-1 <?= setWhenActive("", LVL_CAT);?>">All products</li></a>
         <?php
 
         foreach($categories as $category){
@@ -85,10 +85,11 @@ for($i = 0; $i < count($products); $i++)
                 <div class="card border-primary bg-light shadow" style="width: auto;">
                     <img class="card-img-top img-fluid" style="height: 190px" src="<?=$arr[0]["Path"]?>" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $product["StockItemName"]?></h5>
+                        <h5 class="card-title card-title-cap"><?= $product["StockItemName"]?></h5>
                         <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
-                        <a href="#" class="btn btn-success" style="width: 100%;">Add to cart</a>
+
                     </div>
+                    <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
                 </div>
             </a>
         </div>

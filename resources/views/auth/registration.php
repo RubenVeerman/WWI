@@ -28,6 +28,13 @@
 ?>
 <form method="post">
     <div class="container">
+        <?php
+        if(isset($_GET['registration']) && $_GET['registration'] == 'failed') {
+            echo '<div class="alert alert-warning text-center">
+                <strong>Failed!</strong> There is already an account with this e-mail.
+              </div>';
+        }
+        ?>
         <div class="card">
             <div class="card-header">
                 Registration form
