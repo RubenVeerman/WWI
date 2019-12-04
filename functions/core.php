@@ -108,3 +108,15 @@ function getSearchResult($query)
 
     return "";
 }
+
+function getDiscount($price, $specialDeal) 
+{
+    $newPrice = $price;
+    if($specialDeal["DiscountAmount"] != 0) {
+        $newPrice -= $specialDeal["DiscountAmount"];
+    } else if ($specialDeal["DiscountPercentage"]) {
+        $newPrice *=  1 - ($specialDeal["DiscountPercentage"]/100);
+    }
+
+    return round($newPrice, 2);
+}

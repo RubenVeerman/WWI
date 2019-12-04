@@ -2,11 +2,11 @@
 @import url("./ui.css");
 
 .wwi-header {
-    background-image: url("http://www.surroundtech.com/media/a8/ae2e/a8ae2eb1fefdbf650518e8a689f41956/wide-world-importers-logo-small.png"),
-                     url("http://www.surroundtech.com/media/a8/ae2e/a8ae2eb1fefdbf650518e8a689f41956/wide-world-importers-logo-small.png")
+    background-image: url("../images/logo/wide-world-importers-logo-without-small.png"),
+                     url("../images/logo/wide-world-importers-logo-without-flipped-small.png")
                     ;
     background-repeat: no-repeat, no-repeat;
-    background-position: left center, right center;
+    background-position: 25% center, 75% center;
 }
 
 input::-webkit-outer-spin-button,
@@ -26,3 +26,29 @@ input::-webkit-inner-spin-button {
     height: 300px;
     margin: -75px 0 0 -100px;
 }
+
+h1 > .logo-text {
+    color: #00bcf3;
+}
+
+h1 > .logo-imp {
+    color: rgb(73, 69, 69);
+}
+
+#productImageCarousel ol li {
+    /* background-color: black; */
+    height: 100px;
+    width: 100px;
+}
+
+#productImageCarousel ol li img {
+    /* background-color: black; */
+    height: 100%;
+    width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+    .jumbotron {
+        display: none;
+    }
+  }

@@ -19,3 +19,8 @@
     font-size: 55px;
     color: #009109;
 }
+
+#productImageCarousel .carousel-inner{
+    max-width: 500px !important;
+    /* max-height: 200px !important; */
+  }

@@ -23,9 +23,9 @@ require_once "./functions/databaseFunctions.php";
 <body>
 <div class="jumbotron text-center wwi-header" style="margin-bottom:0">
 
-    <h1>Wide World Importers</h1>
+    <h1><span class="logo-text">Wide World</span> <span class="logo-imp">Importers</span></h1>
 
-    <p>Mission, Vission & Values</p>
+    <p class="logo-imp">Mission, Vission & Values</p>
 
 </div>
 
@@ -39,12 +39,9 @@ require_once "./functions/databaseFunctions.php";
       <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>"">
+      <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
-      <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>"">
-        <a class="nav-link" href="#">Link</a>
-      </li>    
     </ul>
       <form method="get" action="index.php" class="col-sm-5">
           <input type="hidden" name="page" value="product">

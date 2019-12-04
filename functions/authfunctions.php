@@ -25,7 +25,7 @@ function logOn()
     if(!(isset($_POST["userName"]) && isset($_POST["password"]))// als de credentials niet bestaan
         && empty($_POST["userName"]) || empty($_POST["password"]))// of leeg zijn
     { 
-        return "Vul alstublieft de velden in!";
+        return false;
     }
     else
     {
@@ -33,7 +33,7 @@ function logOn()
             $_SESSION[IS_AUTHORIZED] = true;
             $_SESSION["userName"] = $_POST["userName"];
 
-            return "ingelogd!";
+            return true;
         }
     }
 }

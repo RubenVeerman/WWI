@@ -272,3 +272,18 @@ function dbPhoto($id)
 
     return $arr;
 }
+
+function selectSpecialDealByStockItemID($id) 
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM specialdeals WHERE StockItemID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+
+    $arr = setResultToArray($result, true);
+    closeConnection($connection);
+
+    return $arr;
+}
