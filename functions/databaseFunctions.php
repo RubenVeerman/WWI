@@ -51,51 +51,8 @@ function checkCredentials($userName, $password)
 
 // customers
 
-function selectCustomers()
-{
-    $connection = createConnection();
-    $sql = "SELECT nummer, naam, woonplaats FROM klant WHERE nummer=?";
-    closeConnection($connection);
-    return mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
-}
-
-
-function selectOneCustomer($conn, $id)
-{
-    $sql = "SELECT nummer, naam, woonplaats FROM klant WHERE nummer=?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id);
-    mysqli_execute($stmt);
-    return mysqli_stmt_get_result($stmt);
-}
-
-function voegKlantToe($connection, $naam, $woonplaats) 
-{
-    $statement = mysqli_prepare($connection, "INSERT INTO klant (naam, woonplaats) VALUES(?,?)");
-    mysqli_stmt_bind_param($statement, 'ss', $naam, $woonplaats);
-    mysqli_stmt_execute($statement);
-    return mysqli_stmt_affected_rows($statement) == 1;
-}
-
-function customerExists($naam)
-{
-    return mysqli_query(createConnection(), "SELECT * FROM `klant` WHERE naam=" .$naam);
-}
-
-function bewerkKlant($connection, $nummer, $naam, $woonplaats) 
-{
-    $connection = createConnection();
-    $sql = "UPDATE klant SET naam =?, woonplaats =? WHERE nummer =?";
-    $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, 'sss', $naam, $woonplaats, $nummer);
-    mysqli_stmt_execute($statement);
-    
-    return mysqli_stmt_affected_rows($statement) == 1;
-}
 
 // products
-
-
 
 function selectProduct($id, $expectoneResult = true)
 {
@@ -269,7 +226,24 @@ function dbPhoto($id)
 
     return $arr;
 }
-function checkEmailIfExists($logonName){
+
+function selectSpecialDealByStockItemID($id)
+{
+    $connection = createConnection();
+    $sql = "SELECT * FROM specialdeals WHERE StockItemID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+
+    $arr = setResultToArray($result, true);
+    closeConnection($connection);
+
+    return $arr;
+}
+
+function checkEmailIfExists($logonName)
+{
     $connection = createConnection();
     $sql = "SELECT LogonName FROM people WHERE LogonName=?";
     $statement = mysqli_prepare($connection, $sql);
@@ -278,7 +252,7 @@ function checkEmailIfExists($logonName){
     $result = mysqli_stmt_get_result($statement);
     $arr = setResultToArray($result);
 
-    return empty($arr[0]) ? false : true;
+    return !empty($arr[0]);
 }
 
 function updateProduct($stockitemname, $recprice, $marketingcomments, $id){
@@ -298,4 +272,34 @@ function uploadPhoto($filename, $id){
     $stmt->bind_param('si', $filename, $id);
     $stmt->execute();
     $stmt->close();
+}
+
+function selectOnePeople($email){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people WHERE LogonName='$email'";
+    $result = mysqli_fetch_array(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}
+
+function updatePeople(){
+    $connection = createConnection();
+    $fullname = $_POST['pName'] . " " . $_POST['fName'];
+    $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, LogonName=?, EmailAddress=? WHERE LogonName=?");
+    $stmt->bind_param('ssssss', $_POST['fName'], $_POST['pName'], $fullname, $_POST['email'], $_POST['email'], $_POST['email']);
+    $stmt->execute();
+    $stmt->close();
+
+    $_GET['update'] = 'success';
+}
+
+function updatePass(){
+    $connection = createConnection();
+    $hashedPassword = password_hash($_POST["pass1"], PASSWORD_BCRYPT);
+    $stmt = $connection->prepare("UPDATE people SET HashedPassword=? WHERE LogonName=?");
+    $stmt->bind_param('ss',$hashedPassword, $_SESSION['userName']);
+    $stmt->execute();
+    $stmt->close();
+
+    $_GET['update'] = 'success';
 }

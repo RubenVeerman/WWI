@@ -4,7 +4,11 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
+
+
+
 ?>
+<!--<pre>--><?//= var_dump($_POST); ?><!--</pre>-->
 <!DOCTYPE html>
 
 <html lang="nl">
@@ -25,9 +29,9 @@ startAuth();
 <body>
 <div class="jumbotron text-center wwi-header" style="margin-bottom:0">
 
-    <h1>Wide World Importers</h1>
+    <h1><span class="logo-text">Wide World</span> <span class="logo-imp">Importers</span></h1>
 
-    <p>Mission, Vission & Values</p>
+    <p class="logo-imp">Mission, Vission & Values</p>
 
 </div>
 
@@ -41,12 +45,9 @@ startAuth();
       <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>">
         <a class="nav-link" href="?page=home">Home</a>
       </li>
-      <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>"">
+      <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>">
         <a class="nav-link" href="?page=product&action=overview">Producten</a>
       </li>
-      <li class="nav-item <?= setWhenActive("home", LVL_NAV) ?>"">
-        <a class="nav-link" href="#">Link</a>
-      </li>    
     </ul>
       <form method="get" action="index.php" class="col-sm-5">
           <input type="hidden" name="page" value="product">
@@ -68,7 +69,8 @@ startAuth();
               <?php
               if(isset($_SESSION[IS_AUTHORIZED])){
                   if($_SESSION[IS_AUTHORIZED]){
-                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $_SESSION["userName"] . '</a>';
+                      $peopleInfo  = selectOnePeople($_SESSION['userName']);
+                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
                   }
               }
               else{

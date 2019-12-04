@@ -29,7 +29,6 @@ $id .= $_POST["id"];
 $filename = $filename=$_FILES['fileToUpload']['name'];
 function uploadPhoto($filename, $id){
     $connection = createConnection();
-
     $stmt = $connection->prepare("UPDATE photoid SET Path=? WHERE StockItemID=?");
     $stmt->bind_param('si', $filename, $id);
     $stmt->execute();

@@ -12,14 +12,7 @@ $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
 
 $start_from = ($pn-1) * $limit;
 
-if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
-{
-    $products = getSearchResult($_GET["searchInput"]);
-}
-else
-{
-    $products = pagination($start_from, $limit);
-}
+
 if(isset($_GET["category"])){
     $total_products = countProductsOfCategory($_GET["category"]);
     $products = selectProductsCategory($_GET["category"], $start_from, $limit);
@@ -28,6 +21,11 @@ if(isset($_GET["category"])){
     $products = pagination($start_from, $limit);
     $currentcategory = "";
     $total_products = countProducts();
+}
+
+if(isset($_GET["searchInput"]) && !empty($_GET["searchInput"]))
+{
+    $products = getSearchResult($_GET["searchInput"]);
 }
 
 if($products == NULL){

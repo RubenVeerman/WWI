@@ -15,7 +15,9 @@ if(isset($_GET["query"]))
         array_push($arr, $row["StockItemName"]);
     }
 
-    echo json_encode($arr);
+    $json = json_encode($arr);
+
+    print $json;
 }
 else {
     echo json_encode([]);

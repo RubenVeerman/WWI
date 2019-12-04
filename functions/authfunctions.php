@@ -11,7 +11,7 @@ function startAuth()
     } 
     else if(isset($_POST["submit_logoff"]))
     {
-        return logOff();
+        logOff();
     } 
 }
 
@@ -25,7 +25,7 @@ function logOn()
     if(!(isset($_POST["userName"]) && isset($_POST["password"]))// als de credentials niet bestaan
         && empty($_POST["userName"]) || empty($_POST["password"]))// of leeg zijn
     { 
-        return "Vul alstublieft de velden in!";
+        return false;
     }
     else
     {
@@ -50,15 +50,18 @@ if (isset($_POST['submit_registration'])) {
 }
 
 function validateRegistration() {
-    if (!empty($_POST['email']) && !empty($_POST['fname']) && !empty($_POST['lname']) && !empty($_POST['pass1']) && !empty($_POST['pass2'])) {
+    if (!empty($_POST['email']) 
+        && !empty($_POST['fname']) 
+        && !empty($_POST['lname']) 
+        && !empty($_POST['pass1']) 
+        && !empty($_POST['pass2'])) {
         if ($_POST['pass1'] == $_POST['pass2']) {
-            if(checkEmailIfExists($_POST['email'])){
+            if(checkEmailIfExists($_POST['email'])) {
                 header("location: index.php?page=auth&action=registration&registration=failed");
             } else{
                 createCustomerAccount() ;
             }
         }
-
     }
 }
 
