@@ -96,14 +96,6 @@ function bewerkKlant($connection, $nummer, $naam, $woonplaats)
 // products
 
 
-function selectProducts()
-{
-    $connection = createConnection();
-    $sql = "SELECT * FROM stockitems ORDER BY StockItemName";
-    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
-    closeConnection($connection);
-    return $result;
-}
 
 function selectProduct($id, $expectoneResult = true)
 {
@@ -297,4 +289,13 @@ function updateProduct($stockitemname, $recprice, $marketingcomments, $id){
     $stmt->execute();
     $stmt->close();
 
+}
+
+function uploadPhoto($filename, $id){
+    $connection = createConnection();
+
+    $stmt = $connection->prepare("UPDATE photoid SET Path='./public/images/?' WHERE StockItemID=?");
+    $stmt->bind_param('si', $filename, $id);
+    $stmt->execute();
+    $stmt->close();
 }

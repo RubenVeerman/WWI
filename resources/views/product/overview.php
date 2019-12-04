@@ -91,9 +91,19 @@ for($i = 0; $i < count($products); $i++)
                         <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
 
                     </div>
-                    <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+                    <?php
+                    if(isset($_SESSION[IS_AUTHORIZED])){
+                        if($_SESSION[IS_AUTHORIZED]){
+                            echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+                                    <a href="?page=manage&id=' . $product["StockItemID"] .'" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>';
+                        }
+                    }
+                    else{
+                        echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>';
+                    }
+                    ?>
 
-                    <a href="?page=cart&action=show" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>
+
 
                 </div>
             </a>
