@@ -6,6 +6,7 @@
     foreach ($products as $product) { 
         $id = $product["StockItemID"];
         $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
+        $stock = selectProductStock($product["StockItemID"]);
         $discount = 0;
         if(!empty($specialdeal)) {
             $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
