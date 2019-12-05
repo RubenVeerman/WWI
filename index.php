@@ -27,13 +27,13 @@ startAuth();
     <link href="./public/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="jumbotron text-center wwi-header" style="margin-bottom:0">
+<header class="jumbotron text-center wwi-header" style="margin-bottom:0">
 
     <h1><span class="logo-text">Wide World</span> <span class="logo-imp">Importers</span></h1>
 
     <p class="logo-imp">Mission, Vission & Values</p>
 
-</div>
+</header>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand <?= setWhenActive("home", LVL_NAV) ?>" href="?page=home">WWI</a>
@@ -103,14 +103,7 @@ startAuth();
 
 </div>
 
-
-
-<div class="jumbotron text-center" style="margin-bottom:0">
-
-    <p>Footer</p>
-
-</div>
-
+<?=getFooter();?>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
