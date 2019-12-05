@@ -50,7 +50,12 @@ function getView($page, $action)
 
 function getViewPage($page, $action)
 {
-    if(!file_exists($path = "./resources/views/$page/$action.php")) 
+    if(!strpos($action, '.php'))
+    {
+        $action .= ".php";
+    }
+
+    if(!file_exists($path = "./resources/views/$page/$action")) 
     {
         return null;
     } 
@@ -61,6 +66,11 @@ function getViewPage($page, $action)
         eval("?>{$file}");        
         return ob_get_clean();
     }
+}
+
+function getFooter()
+{
+    return getViewPage("../layouts", "footer.php");
 }
 
 function getValueFromArray($key, $array, $defaultValue) 

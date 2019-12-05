@@ -11,7 +11,7 @@ $peopleInfo  = selectOnePeople($_SESSION['userName']);
 if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1) {
     $pn = getValueFromArray("pageno", $_GET, DEFAULT_PN);
     $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
-    $total_people = countPeople();
+    $total_people = countPeople() - 1;
     $pagelimit = "&limit=" . $limit;
     $start_from = ($pn-1) * $limit;
     echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
@@ -31,18 +31,19 @@ if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peo
         <tbody>
         <?php
         foreach ($peoples as $people) {
-            echo '<tr>
+            if ($people['PersonID'] != $peopleInfo['PersonID']) {
+                echo '<tr>
             <th scope="row">' . $people['PersonID'] . '</th>
             <td>' . $people['FullName'] . '</td>
             <td>' . $people['PreferredName'] . '</td>
             <td>' . $people['EmailAddress'] . '</td>
             <td>';
-            if ($people['IsPermittedToLogon']) {
-                echo "True";
-            } else {
-                echo "False";
-            }
-            echo '</td>
+                if ($people['IsPermittedToLogon']) {
+                    echo "True";
+                } else {
+                    echo "False";
+                }
+                echo '</td>
             <td>
                 <a href="index.php?page=user&action=show&id=' . $people['PersonID'] . '" class="btn btn-info">Show</a> 
                 <a href="index.php?page=user&action=edit&id=' . $people['PersonID'] . '" class="btn btn-success">Edit</a> 
@@ -59,13 +60,14 @@ if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peo
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <a href="index.php?page=user&action=delete&id='. $people['PersonID'].'" class="btn btn-danger">Delete</a>
+                            <a href="index.php?page=user&action=delete&id=' . $people['PersonID'] . '" class="btn btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
             </div>
         </tr>
 ';
+            }
         }
         ?>
         </tbody>
