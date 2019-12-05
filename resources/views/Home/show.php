@@ -1,12 +1,13 @@
 
 <div class="container">
 <?php
-    $products = getSpecialDeals();
+    $products = getSpecialDeals();    
     $first = true;
     foreach ($products as $product) { 
         $id = $product["StockItemID"];
         $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
-        $stock = selectProductStock($product["StockItemID"]);
+        $images = dbPhoto($product["StockItemID"]);
+
         $discount = 0;
         if(!empty($specialdeal)) {
             $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
@@ -14,11 +15,11 @@
 
         $customFields = json_decode($product["CustomFields"]);
         $tags = json_decode($product["Tags"]);
+        $countTags = count($tags);
+        $description = $countTags == 0 ? "none" : "";
 
-        $description = count($tags) == 0 ? "none" : "";
-
-        for ($i = 0; $i < count($tags); $i++) {
-            $comma = $i < (count($tags) - 1) ? "," : "";
+        for ($i = 0; $i < $countTags; $i++) {
+            $comma = $i < ($countTags - 1) ? "," : "";
             $description .= $tags[$i] . $comma;
         }
 
@@ -26,15 +27,11 @@
         $stockClass = "";
         if ($stock["LastStocktakeQuantity"] == 0) {
             $stockClass = 'danger';
-            $outputStock = 'Out of stock';
+            $outputStock = 'Sold out!';
         } else if ($stock["LastStocktakeQuantity"] < 100) {
             $stockClass = 'warning';
-            $outputStock = 'Almost out of stock!';
-        }
-
-        $images = dbPhoto($product["StockItemID"]);
-
-        ?>
+            $outputStock = 'Be quick! Just a few left';
+        } ?>
             <div class="card my-2">
             <div class="card-header">
             <h2><?= $product["StockItemName"] ?></h2>
@@ -87,7 +84,7 @@
                             <h1> €<?=$product["RecommendedRetailPrice"];?></h1>
                         <?php } else { ?>
                             <h2 class="text-danger">
-                                <strike>€<?=$product["RecommendedRetailPrice"];?></strike>
+                                <s>€<?=$product["RecommendedRetailPrice"];?></s>
                             </h2>
                             <h1 class="text-success">€<?=$discount;?></h1>
                         <?php } ?>

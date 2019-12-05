@@ -58,12 +58,12 @@ img {
 	margin: -75px 0 0 -100px;
 }
 
-h1>.logo-text {
-	color: #00bcf3;
+.logo-text {
+	color: #00bcf3 !important;
 }
 
-h1>.logo-imp {
-	color: rgb(73, 69, 69);
+.logo-imp {
+	color: rgb(73, 69, 69) !important;
 }
 
 #productImageCarousel ol li {
@@ -79,7 +79,7 @@ h1>.logo-imp {
 }
 
 @media only screen and (max-width: 600px) {
-	.jumbotron {
+	header.jumbotron {
 		display: none;
 	}
 }
