@@ -24,13 +24,13 @@ function createConnection()
 
     return $conn;
 }
-$id = "/public/images/";
-$id .= $_POST["id"];
-$filename = $filename=$_FILES['fileToUpload']['name'];
+$filename = "./public/images/";
+$id = $_POST["id"];
+$filename .=$_FILES['fileToUpload']['name'];
 function uploadPhoto($filename, $id){
     $connection = createConnection();
-    $stmt = $connection->prepare("UPDATE photoid SET Path=? WHERE StockItemID=?");
-    $stmt->bind_param('si', $filename, $id);
+    $stmt = $connection->prepare("INSERT INTO photoid (StockItemID, Path) VALUES (?,?) ");
+    $stmt->bind_param('is', $id, $filename);
     $stmt->execute();
     $stmt->close();
 }

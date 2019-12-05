@@ -12,7 +12,9 @@ $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
 
 $start_from = ($pn-1) * $limit;
 
-
+if(isset($_GET["deleteproduct"])){
+    echo '<div class="alert alert-success text-center"><strong>Succes!</strong> The product has been deleted.</div>';
+}
 if(isset($_GET["category"])){
     $total_products = countProductsOfCategory($_GET["category"]);
     $products = selectProductsCategory($_GET["category"], $start_from, $limit);
@@ -38,7 +40,21 @@ $categories = selectCategories();
 
 $pagelimit = "&limit=" . $limit;
 
+if(isset($_SESSION[IS_AUTHORIZED])){
+    if($_SESSION[IS_AUTHORIZED]){
+        echo '<div class="container row">';
+        echo ' <a href="?page=manage&action=add" ><button type="button" class="btn btn-success" style="height: 40px">Add product</button></a>';
+        echo '<div class="mx-auto">';
+    }
+}
+?>
+<?php
 echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
+if(isset($_SESSION[IS_AUTHORIZED])) {
+    if ($_SESSION[IS_AUTHORIZED]) {
+        echo '</div></div>';
+    }
+}
 ?>
 <div class="row mb-5">
 
