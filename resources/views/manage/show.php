@@ -1,6 +1,7 @@
 <?php
-if(isset($_SESSION[IS_AUTHORIZED])) {
-    if ($_SESSION[IS_AUTHORIZED]) {
+if(isset($_SESSION['userName'])){
+    $peopleInfo  = selectOnePeople($_SESSION['userName']);
+    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
         $id = $_GET["id"];
         $product = selectProduct($id);
         $message = false;

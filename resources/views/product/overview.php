@@ -41,9 +41,7 @@ $categories = selectCategories();
 $pagelimit = "&limit=" . $limit;
 if(isset($_SESSION['userName'])){
     $peopleInfo  = selectOnePeople($_SESSION['userName']);
-}
-if(isset($_SESSION[IS_AUTHORIZED])){
-    if($_SESSION[IS_AUTHORIZED]){
+    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
         echo '<div class="container row">';
         echo ' <a href="?page=manage&action=add" ><button type="button" class="btn btn-success" style="height: 40px">Add product</button></a>';
         echo '<div class="mx-auto">';
@@ -52,10 +50,8 @@ if(isset($_SESSION[IS_AUTHORIZED])){
 ?>
 <?php
 echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
-if(isset($_SESSION[IS_AUTHORIZED])) {
-    if ($_SESSION[IS_AUTHORIZED]) {
+if(isset($_SESSION['userName'])){
         echo '</div></div>';
-    }
 }
 ?>
 <div class="row mb-5">
