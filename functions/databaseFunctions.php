@@ -54,7 +54,6 @@ function checkCredentials($userName, $password)
 
 // products
 
-
 function selectProduct($id, $expectoneResult = true)
 {
 
@@ -218,10 +217,10 @@ function createCustomerAccount(){
     header("location: index.php?page=auth&action=login&registration=success");
 }
 
-function dbPhoto($id)
+function dbPhoto($id, $defaultPicture = true)
 {
     $connection = createConnection();
-    $sql = "SELECT Path FROM PhotoID WHERE StockItemID=?";
+    $sql = "SELECT * FROM PhotoID WHERE StockItemID=?";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
@@ -231,15 +230,23 @@ function dbPhoto($id)
     closeConnection($connection);
     // return mysqli_fetch_assoc($result);
 
-    if(empty($arr))
+    if(empty($arr) && $defaultPicture)
     {
         $arr[0]["Path"] = "./public/images/noimage.png";
+        $arr[0]["PhotoID"] ="";
+        $arr[0]["delete"] = false;
+    } else{
+        $arr[0]["delete"] = true;
     }
 
+    if(!$defaultPicture) {
+
+        return null;
+    }
     return $arr;
 }
 
-function selectSpecialDealByStockItemID($id) 
+function selectSpecialDealByStockItemID($id)
 {
     $connection = createConnection();
     $sql = "SELECT * FROM specialdeals WHERE StockItemID=?";
@@ -267,14 +274,23 @@ function checkEmailIfExists($logonName)
     return !empty($arr[0]);
 }
 
-function updateProduct($stockitemname, $recprice, $marketingcomments, $id){
+function updateProduct($stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments,$id){
     $connection = createConnection();
 
-    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
-    $stmt->bind_param('sdsi', $stockitemname, $recprice, $marketingcomments, $id);
+    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, SupplierID=?,UnitPackageID=?, OuterPackageID=?,LastEditedBy=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
+    $stmt->bind_param('siiiiisi', $stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments, $id);
     $stmt->execute();
     $stmt->close();
 
+}
+
+function uploadPhoto($filename, $id){
+    $connection = createConnection();
+
+    $stmt = $connection->prepare("UPDATE photoid SET Path='./public/images/?' WHERE StockItemID=?");
+    $stmt->bind_param('si', $filename, $id);
+    $stmt->execute();
+    $stmt->close();
 }
 
 function selectOnePeople($email){
@@ -343,7 +359,7 @@ function updatePass(){
     $stmt->bind_param('ss',$hashedPassword, $_SESSION['userName']);
     $stmt->execute();
     $stmt->close();
-    
+
     $_GET['update'] = 'success';
 }
 
@@ -367,3 +383,71 @@ function deletePeople($people)
     closeConnection($connection);
     return true;
 }
+
+function deletePhoto($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM photoid WHERE PhotoID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function getNextStockID(){
+    $connection = createConnection();
+    $id_check_query = "SELECT MAX(StockItemID) FROM stockitems";
+    $query_result = mysqli_query($connection, $id_check_query);
+    $fetch = mysqli_fetch_array($query_result);
+    $person_id = $fetch[0] + 1;
+    return $person_id;
+}
+function createProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments){
+    $connection = createConnection();
+    $id = getNextStockID();
+    $stmt = $connection->prepare("INSERT INTO stockitems (StockItemID, StockItemName, SupplierID, UnitPackageID, OuterPackageID, LastEditedBy, RecommendedRetailPrice, MarketingComments) VALUES (?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('isiiiiis', $id,$stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments);
+    $stmt->execute();
+    $stmt->close();
+
+}
+
+
+function setStock($stock, $id, $lasteditedby){
+    $connection = createConnection();
+    $stmt = $connection->prepare("UPDATE stockitemholdings SET LastStocktakeQuantity=?, LastEditedBy=? WHERE StockItemID=?");
+    $stmt->bind_param('iii', $stock, $lasteditedby, $id);
+    $stmt->execute();
+    $stmt->close();
+
+}
+
+
+function insertStock($stock, $lastEditedBy){
+    $connection = createConnection();
+    $id = getNextStockID()-1;
+    $stmt = $connection->prepare("INSERT INTO stockitemholdings (StockItemID, LastStocktakeQuantity, LastEditedBy) VALUES (?,?,?)");
+    $stmt->bind_param('iii', $id, $stock, $lastEditedBy);
+    $stmt->execute();
+    $stmt->close();
+
+}
+
+function deleteProduct($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM StockItems WHERE StockItemID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function deleteProductStock($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM stockitemholdings WHERE StockItemID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+
+
+
+

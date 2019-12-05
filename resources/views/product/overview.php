@@ -12,7 +12,9 @@ $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
 
 $start_from = ($pn-1) * $limit;
 
-
+if(isset($_GET["deleteproduct"])){
+    echo '<div class="alert alert-success text-center"><strong>Succes!</strong> The product has been deleted.</div>';
+}
 if(isset($_GET["category"])){
     $total_products = countProductsOfCategory($_GET["category"]);
     $products = selectProductsCategory($_GET["category"], $start_from, $limit);
@@ -37,8 +39,24 @@ if($products == NULL){
 $categories = selectCategories();
 
 $pagelimit = "&limit=" . $limit;
-$peopleInfo  = selectOnePeople($_SESSION['userName']);
+if(isset($_SESSION['userName'])){
+    $peopleInfo  = selectOnePeople($_SESSION['userName']);
+}
+if(isset($_SESSION[IS_AUTHORIZED])){
+    if($_SESSION[IS_AUTHORIZED]){
+        echo '<div class="container row">';
+        echo ' <a href="?page=manage&action=add" ><button type="button" class="btn btn-success" style="height: 40px">Add product</button></a>';
+        echo '<div class="mx-auto">';
+    }
+}
+?>
+<?php
 echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
+if(isset($_SESSION[IS_AUTHORIZED])) {
+    if ($_SESSION[IS_AUTHORIZED]) {
+        echo '</div></div>';
+    }
+}
 ?>
 <div class="row mb-5">
 
@@ -95,6 +113,20 @@ for($i = 0; $i < count($products); $i++)
                         echo '<a href="?page=cart&action=show" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
                     }
                     ?>
+                    <?php
+                    if(isset($_SESSION[IS_AUTHORIZED])){
+                        if($_SESSION[IS_AUTHORIZED]){
+                            echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+                                    <a href="?page=manage&id=' . $product["StockItemID"] .'" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>';
+                        }
+                    }
+                    else{
+                        echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>';
+                    }
+                    ?>
+
+
+
                 </div>
             </a>
         </div>

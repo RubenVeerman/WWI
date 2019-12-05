@@ -11,11 +11,16 @@ if(!empty($specialdeal)) {
 $customFields = json_decode($product["CustomFields"]);
 $tags = json_decode($product["Tags"]);
 
-$description = count($tags) == 0 ? "none" : "";
+$description = "";
+if(is_array($tags)) {
+    if(count($tags) == 0) {
+        $description = "none";
+    }
 
-for ($i = 0; $i < count($tags); $i++) {
-    $comma = $i < (count($tags) - 1) ? "," : "";
-    $description .= $tags[$i] . $comma;
+    for ($i = 0; $i < count($tags); $i++) {
+        $comma = $i < (count($tags) - 1) ? "," : "";
+        $description .= $tags[$i] . $comma;
+    }
 }
 
 $outputStock = "";
