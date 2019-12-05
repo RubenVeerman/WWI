@@ -181,6 +181,17 @@ function countProductsOfCategory($categoryid){
     closeConnection($connection);
     return $row[0];
 }
+function countPeople()
+{
+    $connection = createConnection();
+    $sql = "SELECT COUNT(*) FROM people";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $row = mysqli_fetch_row($result);
+    closeConnection($connection);
+    return $row[0];
+}
 function getNextID(){
     $connection = createConnection();
     $id_check_query = "SELECT MAX(PersonID) FROM people";
@@ -273,6 +284,46 @@ function selectOnePeople($email){
     closeConnection($connection);
     return $result;
 }
+function getPeople($id){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people WHERE PersonID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result, true);
+    closeConnection($connection);
+    return $arr;
+}
+
+function archivePeople($people){
+    $connection = createConnection();
+    foreach($people as $team)
+        if(is_int($team)) {
+            $data[] = '' . $team . '';
+        }
+        elseif(empty($team)){
+            $data[] = 'NULL';
+        }
+        else{
+            $data[] = '"' . $team . '"';
+        }
+    $data = implode("," , $data);
+    $sql = "INSERT INTO people_archive VALUES (". $data.")";
+    mysqli_query($connection, $sql);
+    if(mysqli_error($connection)){
+        print_r($sql);
+        print(mysqli_error($connection));
+
+        return false;
+    }
+    closeConnection($connection);
+    return true;
+}
+
+function peopleToDeleteByID($people){
+
+}
 
 function updatePeople(){
     $connection = createConnection();
@@ -294,4 +345,25 @@ function updatePass(){
     $stmt->close();
     
     $_GET['update'] = 'success';
+}
+
+function selectPeople($start_from, $limit){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people ORDER BY PersonID DESC LIMIT $start_from, $limit";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+
+}
+function deletePeople($people)
+{
+    $PersonID = $people["PersonID"];
+    $connection = createConnection();
+    $sql = "DELETE FROM people WHERE PersonID = '$PersonID'";
+    mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    if(mysqli_error($connection)){
+        return false;
+    }
+    closeConnection($connection);
+    return true;
 }

@@ -5,10 +5,10 @@ require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
 
-
-
+if(isset($_SESSION['userName'])) {
+    $peopleInfo = selectOnePeople($_SESSION['userName']);
+}
 ?>
-<pre><?= var_dump($_POST); ?></pre>
 <!DOCTYPE html>
 
 <html lang="nl">
@@ -46,8 +46,20 @@ startAuth();
         <a class="nav-link" href="?page=home">Home</a>
       </li>
       <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>">
-        <a class="nav-link" href="?page=product&action=overview">Producten</a>
+        <a class="nav-link" href="?page=product&action=overview">Products</a>
       </li>
+
+        <?php
+        if(isset( $_SESSION['userName'])){
+            if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
+        ?>
+            <li class="nav-item <?= setWhenActive("user", LVL_NAV) ?>">
+                <a class="nav-link" href="?page=user&action=overview">Users</a>
+            </li>
+        <?php
+            }
+        }
+        ?>
     </ul>
       <form method="get" action="index.php" class="col-sm-5">
           <input type="hidden" name="page" value="product">
@@ -69,7 +81,6 @@ startAuth();
               <?php
               if(isset($_SESSION[IS_AUTHORIZED])){
                   if($_SESSION[IS_AUTHORIZED]){
-                      $peopleInfo  = selectOnePeople($_SESSION['userName']);
                       echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
                   }
               }

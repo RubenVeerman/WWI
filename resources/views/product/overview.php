@@ -37,7 +37,7 @@ if($products == NULL){
 $categories = selectCategories();
 
 $pagelimit = "&limit=" . $limit;
-
+$peopleInfo  = selectOnePeople($_SESSION['userName']);
 echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
 ?>
 <div class="row mb-5">
@@ -90,6 +90,11 @@ for($i = 0; $i < count($products); $i++)
 
                     </div>
                     <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+                    <?php
+                    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
+                        echo '<a href="?page=cart&action=show" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
+                    }
+                    ?>
                 </div>
             </a>
         </div>
