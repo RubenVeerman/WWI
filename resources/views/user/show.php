@@ -15,7 +15,15 @@ if(isset( $_SESSION['userName'])) {
         <table class="table">';
         foreach ($peopleToShow as $key => $data){
             if($key != 'HashedPassword') {
-                echo '<tr><th>' . $key . '</th><td> ' . $data . '</td></tr>';
+                if ($key == 'IsPermittedToLogon' || $key == 'IsExternalLogonProvider' || $key == 'IsSystemUser' || $key == 'IsEmployee' || $key == 'IsSalesperson') {
+                    if ($data == 1) {
+                        $data = 'yes';
+                    } else {
+                        $data = 'no';
+                    }
+                }
+                    echo '<tr><th>' . $key . '</th><td> ' . $data . '</td></tr>';
+
             }
         }
         echo '</table>
