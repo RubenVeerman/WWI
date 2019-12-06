@@ -406,6 +406,9 @@ function createProduct($stockitemname, $supplierID, $unitPackageID, $outerPackag
     $stmt = $connection->prepare("INSERT INTO stockitems (StockItemID, StockItemName, SupplierID, UnitPackageID, OuterPackageID, LastEditedBy, RecommendedRetailPrice, MarketingComments) VALUES (?,?,?,?,?,?,?,?)");
     $stmt->bind_param('isiiiiis', $id,$stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments);
     $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
     $stmt->close();
 
 }

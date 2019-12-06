@@ -1,7 +1,7 @@
 
 <div class="container">
 <?php
-    $products = getSpecialDeals();    
+    $products = getSpecialDeals();
     $first = true;
     foreach ($products as $product) { 
         $id = $product["StockItemID"];
@@ -22,6 +22,7 @@
             $comma = $i < ($countTags - 1) ? "," : "";
             $description .= $tags[$i] . $comma;
         }
+        $stock = selectProductStock(12);
 
         $outputStock = "";
         $stockClass = "";

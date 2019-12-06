@@ -16,7 +16,13 @@ if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peo
     $start_from = ($pn-1) * $limit;
     echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
     $peoples = selectPeople($start_from, $limit);
+    if(isset($_GET['delete']) && $_GET['delete'] == 'success') {
+        echo '<div class="alert alert-success text-center">
+                <strong>Success!</strong> Account has been deleted.
+              </div>';
+    }
     ?>
+
     <table class="table">
         <thead>
         <tr>

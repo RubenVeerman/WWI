@@ -106,18 +106,7 @@ for($i = 0; $i < count($products); $i++)
                     <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
                     <?php
                     if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
-                        echo '<a href="?page=cart&action=show" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
-                    }
-                    ?>
-                    <?php
-                    if(isset($_SESSION[IS_AUTHORIZED])){
-                        if($_SESSION[IS_AUTHORIZED]){
-                            echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
-                                    <a href="?page=manage&id=' . $product["StockItemID"] .'" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>';
-                        }
-                    }
-                    else{
-                        echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>';
+                        echo '<a href="?page=manage&action=show&id=' . $product['StockItemID'] . '" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
                     }
                     ?>
 
