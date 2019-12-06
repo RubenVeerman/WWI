@@ -1,4 +1,9 @@
+<div class="container row">
+    <a href="?page=user&action=add" ><button type="button" class="btn btn-success" style="height: 40px">Add user</button></a>
+    <div class="mx-auto">
+
 <?php
+
 /**
  * Created by PhpStorm.
  * User: rubje
@@ -7,49 +12,65 @@
  */
 const DEFAULT_LIMIT = 100;
 const DEFAULT_PN = 1;
-$peopleInfo  = selectOnePeople($_SESSION['userName']);
-if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1) {
-    $pn = getValueFromArray("pageno", $_GET, DEFAULT_PN);
-    $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
-    $total_people = countPeople() - 1;
-    $pagelimit = "&limit=" . $limit;
-    $start_from = ($pn-1) * $limit;
-    echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
-    $peoples = selectPeople($start_from, $limit);
-    if(isset($_GET['delete']) && $_GET['delete'] == 'success') {
-        echo '<div class="alert alert-success text-center">
+if(isset($_SESSION['userName'])) {
+    $peopleInfo = selectOnePeople($_SESSION['userName']);
+    if ($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1) {
+        $pn = getValueFromArray("pageno", $_GET, DEFAULT_PN);
+        $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
+        $total_people = countPeople() - 1;
+        $pagelimit = "&limit=" . $limit;
+        $start_from = ($pn - 1) * $limit;
+        echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
+        $peoples = selectPeople($start_from, $limit);
+        if (isset($_GET['delete']) && $_GET['delete'] == 'success') {
+            echo '<div class="alert alert-success text-center">
                 <strong>Success!</strong> Account has been deleted.
               </div>';
-    }
-    ?>
+        }
+        if(isset($_GET['edit']) && $_GET['edit'] == 'success') {
+            echo '<div class="alert alert-success text-center">
+                <strong>Success!</strong> account has been updated successfully.
+              </div>';
+        }
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Full name</th>
-            <th scope="col">Preferred name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Is permitted to logon</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($peoples as $people) {
-            if ($people['PersonID'] != $peopleInfo['PersonID']) {
-                echo '<tr>
+        ?>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full name</th>
+                <th scope="col">Preferred name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Is permitted to logon</th>
+                <th scope="col">Is admin</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($peoples as $people) {
+                if ($people['PersonID'] != $peopleInfo['PersonID']) {
+                    echo '<tr>
             <th scope="row">' . $people['PersonID'] . '</th>
             <td>' . $people['FullName'] . '</td>
             <td>' . $people['PreferredName'] . '</td>
             <td>' . $people['EmailAddress'] . '</td>
             <td>';
-                if ($people['IsPermittedToLogon']) {
-                    echo "True";
-                } else {
-                    echo "False";
-                }
-                echo '</td>
+                    if ($people['IsPermittedToLogon']) {
+                        echo "True";
+                    } else {
+                        echo "False";
+                    }
+                    echo '</td>
+                        <td>';
+                    if ($people['IsSalesperson'] == 1 || $people['IsSystemUser'] == 1 || $people['IsEmployee'] == 1) {
+                        echo "True";
+                    } else {
+                        echo "False";
+                    }
+                    echo ' </td>
+
             <td>
                 <a href="index.php?page=user&action=show&id=' . $people['PersonID'] . '" class="btn btn-info">Show</a> 
                 <a href="index.php?page=user&action=edit&id=' . $people['PersonID'] . '" class="btn btn-success">Edit</a> 
@@ -73,16 +94,18 @@ if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peo
             </div>
         </tr>
 ';
+                }
             }
-        }
-        ?>
-        </tbody>
-    </table>
+            ?>
+            </tbody>
+        </table>
 
-    <?php
-    echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
+        <?php
+        echo getPaginationBar($total_people, $limit, $pn, 'users', $pagelimit);
 
+    }
 }
 else{
     echo 'You are not authorized to view this page';
-}
+}?>
+

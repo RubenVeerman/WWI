@@ -261,12 +261,12 @@ function selectSpecialDealByStockItemID($id)
     return $arr;
 }
 
-function checkEmailIfExists($logonName)
+function checkEmailIfExists($logonName, $id)
 {
     $connection = createConnection();
-    $sql = "SELECT LogonName FROM people WHERE LogonName=?";
+    $sql = "SELECT PersonID FROM people WHERE LogonName=? AND PersonID!=?";
     $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, 's', $logonName);
+    mysqli_stmt_bind_param($statement, 'si', $logonName, $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     $arr = setResultToArray($result);
@@ -335,10 +335,6 @@ function archivePeople($people){
     }
     closeConnection($connection);
     return true;
-}
-
-function peopleToDeleteByID($people){
-
 }
 
 function updatePeople(){
@@ -450,6 +446,17 @@ function deleteProductStock($id){
     $stmt->close();
 }
 
+function editPeopleAccount($id, $admin){
+    $connection = createConnection();
+    $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, IsPermittedToLogon=?, LogonName=?, EmailAddress=?, IsExternalLogonProvider=?, IsSystemUser=?, IsEmployee=?, IsSalesperson=?, PhoneNumber=?, FaxNumber=?, LastEditedBy=? WHERE PersonID = ?");
+    $stmt->bind_param('sssissiiiiiiii',$_POST['FullName'],$_POST['PreferredName'],$_POST['SearchName'],$_POST['IsPermittedToLogon'],$_POST['LogonName'],$_POST['LogonName'],$_POST['IsExternalLogonProvider'],$_POST['IsSystemUser'],$_POST['IsEmployee'],$_POST['IsSalesperson'],$_POST['PhoneNumber'],$_POST['FaxNumber'],$admin,$id);
+    $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
+    $stmt->close();
+    header("location: index.php?page=user&action=overview&edit=success");
+}
 
 
 

@@ -56,7 +56,7 @@ function validateRegistration() {
         && !empty($_POST['pass1']) 
         && !empty($_POST['pass2'])) {
         if ($_POST['pass1'] == $_POST['pass2']) {
-            if(checkEmailIfExists($_POST['email'])) {
+            if(checkEmailIfExists($_POST['email'], 999999999999999)) {
                 header("location: index.php?page=auth&action=registration&registration=failed");
             } else{
                 createCustomerAccount() ;
