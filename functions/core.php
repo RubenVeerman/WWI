@@ -131,6 +131,20 @@ function getDiscount($price, $specialDeal)
     return round($newPrice, 2);
 }
 
+function prepareCart() {
+    if(!is_array($_SESSION["Cart"])) {
+        $_SESSION["Cart"] = [];
+    }
+
+    if(isset($_POST["AddToCart"]) && isset($_POST["amount"]) && isset($_POST["productID"])) {
+        if($_POST["amount"] > 0) {
+            addToCart($_POST["productID"], $_POST["amount"]);
+        } else {
+            removeFromCart($_POST["productID"], "amount");
+        }
+    }
+}
+
 function addToCart($productID, $amount) {
     $index = in_array_r($productID, $_SESSION["Cart"]);
     if($index === -1) {

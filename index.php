@@ -4,11 +4,15 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
-$_SESSION["Cart"] = [];
+if(!is_array($_SESSION["Cart"])) {
+    $_SESSION["Cart"] = [];
+}
+
 
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
 }
+
 ?>
 <!DOCTYPE html>
 
