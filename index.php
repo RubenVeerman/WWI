@@ -4,6 +4,7 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
+$_SESSION["Cart"] = [];
 
 
 
@@ -91,6 +92,7 @@ startAuth();
           }
           ?>
           </li>
+          <li><a class="nav-link" href="?page=cart">Cart <?= count($_SESSION["Cart"]) > 0 ? "(".count($_SESSION["Cart"]).")" : "" ?></a></li>
       </ul>
   </div>
 </nav>

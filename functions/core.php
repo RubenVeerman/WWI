@@ -130,3 +130,36 @@ function getDiscount($price, $specialDeal)
 
     return round($newPrice, 2);
 }
+
+function addToCart($productID, $amount) {
+    $index = in_array_r($productID, $_SESSION["Cart"]);
+    if($index === -1) {
+        array_push($_SESSION["Cart"], ["id" => $productID, "amount" => $amount]);
+    } else {
+        $_SESSION["Cart"][$index]["amount"] += $amount;
+    }
+}
+
+function removeFromCart($productID, $amount) {
+    $index = in_array_r($productID, $_SESSION["Cart"]);
+
+    if($index > -1) {
+        $storedAmount = $_SESSION["Cart"][$index]["amount"];
+        if($storedAmount <= $amount) {
+            unset($_SESSION["Cart"][$index]);
+        } else {
+            $_SESSION["Cart"][$index]["amount"] -= $amount;
+        } 
+    } 
+}
+
+function in_array_r($needle, $haystack, $strict = false) {
+    for ($i = 0; $i < count($haystack); $i++) {
+        $item = $haystack;
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return $i;
+        }
+    }
+
+    return -1;
+}

@@ -5,7 +5,8 @@
     $first = true;
     foreach ($products as $product) { 
         $id = $product["StockItemID"];
-        $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
+        $specialdeal = selectSpecialDealByStockItemID($id);
+        $stock = selectProductStock($id);
         $images = dbPhoto($product["StockItemID"]);
 
         $discount = 0;
@@ -90,7 +91,7 @@
                         <?php } ?>
                         </h1>
                         <br>
-                        <button type="button" class="btn btn-success">Voeg toe aan winkelwagen</button>
+                        <button type="button" class="btn btn-success">Add to cart</button>
                     </div>
                 </div>
             </div>
