@@ -1,7 +1,7 @@
 
 <div class="container">
 <?php
-    $products = getSpecialDeals();    
+    $products = getSpecialDeals();
     $first = true;
     foreach ($products as $product) { 
         $id = $product["StockItemID"];
@@ -23,13 +23,13 @@
             $comma = $i < ($countTags - 1) ? "," : "";
             $description .= $tags[$i] . $comma;
         }
-
+        $stock = $product['QuantityOnHand'];
         $outputStock = "";
         $stockClass = "";
-        if ($stock["LastStocktakeQuantity"] == 0) {
+        if ($stock == 0) {
             $stockClass = 'danger';
             $outputStock = 'Sold out!';
-        } else if ($stock["LastStocktakeQuantity"] < 100) {
+        } else if ($stock < 100) {
             $stockClass = 'warning';
             $outputStock = 'Be quick! Just a few left';
         } ?>

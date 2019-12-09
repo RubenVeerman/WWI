@@ -54,7 +54,6 @@ function checkCredentials($userName, $password)
 
 // products
 
-
 function selectProduct($id, $expectoneResult = true)
 {
 
@@ -181,6 +180,17 @@ function countProductsOfCategory($categoryid){
     closeConnection($connection);
     return $row[0];
 }
+function countPeople()
+{
+    $connection = createConnection();
+    $sql = "SELECT COUNT(*) FROM people";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $row = mysqli_fetch_row($result);
+    closeConnection($connection);
+    return $row[0];
+}
 function getNextID(){
     $connection = createConnection();
     $id_check_query = "SELECT MAX(PersonID) FROM people";
@@ -207,10 +217,10 @@ function createCustomerAccount(){
     header("location: index.php?page=auth&action=login&registration=success");
 }
 
-function dbPhoto($id)
+function dbPhoto($id, $defaultPicture = true)
 {
     $connection = createConnection();
-    $sql = "SELECT Path FROM PhotoID WHERE StockItemID=?";
+    $sql = "SELECT * FROM PhotoID WHERE StockItemID=?";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, 'i', $id);
     mysqli_stmt_execute($statement);
@@ -220,15 +230,23 @@ function dbPhoto($id)
     closeConnection($connection);
     // return mysqli_fetch_assoc($result);
 
-    if(empty($arr))
+    if(empty($arr) && $defaultPicture)
     {
         $arr[0]["Path"] = "./public/images/noimage.png";
+        $arr[0]["PhotoID"] ="";
+        $arr[0]["delete"] = false;
+    } else{
+        $arr[0]["delete"] = true;
     }
 
+    if(!$defaultPicture) {
+
+        return null;
+    }
     return $arr;
 }
 
-function selectSpecialDealByStockItemID($id) 
+function selectSpecialDealByStockItemID($id)
 {
     $connection = createConnection();
     $sql = "SELECT * FROM specialdeals WHERE StockItemID=?";
@@ -243,12 +261,12 @@ function selectSpecialDealByStockItemID($id)
     return $arr;
 }
 
-function checkEmailIfExists($logonName)
+function checkEmailIfExists($logonName, $id)
 {
     $connection = createConnection();
-    $sql = "SELECT LogonName FROM people WHERE LogonName=?";
+    $sql = "SELECT PersonID FROM people WHERE LogonName=? AND PersonID!=?";
     $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, 's', $logonName);
+    mysqli_stmt_bind_param($statement, 'si', $logonName, $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     $arr = setResultToArray($result);
@@ -256,14 +274,23 @@ function checkEmailIfExists($logonName)
     return !empty($arr[0]);
 }
 
-function updateProduct($stockitemname, $recprice, $marketingcomments, $id){
+function updateProduct($stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments,$id){
     $connection = createConnection();
 
-    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
-    $stmt->bind_param('sdsi', $stockitemname, $recprice, $marketingcomments, $id);
+    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, SupplierID=?,UnitPackageID=?, OuterPackageID=?,LastEditedBy=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
+    $stmt->bind_param('siiiiisi', $stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments, $id);
     $stmt->execute();
     $stmt->close();
 
+}
+
+function uploadPhoto($filename, $id){
+    $connection = createConnection();
+
+    $stmt = $connection->prepare("UPDATE photoid SET Path='./public/images/?' WHERE StockItemID=?");
+    $stmt->bind_param('si', $filename, $id);
+    $stmt->execute();
+    $stmt->close();
 }
 
 function selectOnePeople($email){
@@ -272,6 +299,42 @@ function selectOnePeople($email){
     $result = mysqli_fetch_array(mysqli_query($connection, $sql), MYSQLI_ASSOC);
     closeConnection($connection);
     return $result;
+}
+function getPeople($id){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people WHERE PersonID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result, true);
+    closeConnection($connection);
+    return $arr;
+}
+
+function archivePeople($people){
+    $connection = createConnection();
+    foreach($people as $team)
+        if(is_int($team)) {
+            $data[] = '' . $team . '';
+        }
+        elseif(empty($team)){
+            $data[] = 'NULL';
+        }
+        else{
+            $data[] = '"' . $team . '"';
+        }
+    $data = implode("," , $data);
+    $sql = "INSERT INTO people_archive VALUES (". $data.")";
+    mysqli_query($connection, $sql);
+    if(mysqli_error($connection)){
+        print_r($sql);
+        print(mysqli_error($connection));
+
+        return false;
+    }
+    closeConnection($connection);
+    return true;
 }
 
 function updatePeople(){
@@ -292,6 +355,109 @@ function updatePass(){
     $stmt->bind_param('ss',$hashedPassword, $_SESSION['userName']);
     $stmt->execute();
     $stmt->close();
-    
+
     $_GET['update'] = 'success';
 }
+
+function selectPeople($start_from, $limit){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people ORDER BY PersonID DESC LIMIT $start_from, $limit";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+
+}
+function deletePeople($people)
+{
+    $PersonID = $people["PersonID"];
+    $connection = createConnection();
+    $sql = "DELETE FROM people WHERE PersonID = '$PersonID'";
+    mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    if(mysqli_error($connection)){
+        return false;
+    }
+    closeConnection($connection);
+    return true;
+}
+
+function deletePhoto($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM photoid WHERE PhotoID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function getNextStockID(){
+    $connection = createConnection();
+    $id_check_query = "SELECT MAX(StockItemID) FROM stockitems";
+    $query_result = mysqli_query($connection, $id_check_query);
+    $fetch = mysqli_fetch_array($query_result);
+    $person_id = $fetch[0] + 1;
+    return $person_id;
+}
+function createProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments){
+    $connection = createConnection();
+    $id = getNextStockID();
+    $stmt = $connection->prepare("INSERT INTO stockitems (StockItemID, StockItemName, SupplierID, UnitPackageID, OuterPackageID, LastEditedBy, RecommendedRetailPrice, MarketingComments) VALUES (?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('isiiiiis', $id,$stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments);
+    $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
+    $stmt->close();
+
+}
+
+
+function setStock($stock, $id, $lasteditedby){
+    $connection = createConnection();
+    $stmt = $connection->prepare("UPDATE stockitemholdings SET LastStocktakeQuantity=?, LastEditedBy=? WHERE StockItemID=?");
+    $stmt->bind_param('iii', $stock, $lasteditedby, $id);
+    $stmt->execute();
+    $stmt->close();
+
+}
+
+
+function insertStock($stock, $lastEditedBy){
+    $connection = createConnection();
+    $id = getNextStockID()-1;
+    $stmt = $connection->prepare("INSERT INTO stockitemholdings (StockItemID, LastStocktakeQuantity, LastEditedBy) VALUES (?,?,?)");
+    $stmt->bind_param('iii', $id, $stock, $lastEditedBy);
+    $stmt->execute();
+    $stmt->close();
+
+}
+
+function deleteProduct($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM StockItems WHERE StockItemID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function deleteProductStock($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM stockitemholdings WHERE StockItemID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function editPeopleAccount($id, $admin){
+    $connection = createConnection();
+    $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, IsPermittedToLogon=?, LogonName=?, EmailAddress=?, IsExternalLogonProvider=?, IsSystemUser=?, IsEmployee=?, IsSalesperson=?, PhoneNumber=?, FaxNumber=?, LastEditedBy=? WHERE PersonID = ?");
+    $stmt->bind_param('sssissiiiiiiii',$_POST['FullName'],$_POST['PreferredName'],$_POST['SearchName'],$_POST['IsPermittedToLogon'],$_POST['LogonName'],$_POST['LogonName'],$_POST['IsExternalLogonProvider'],$_POST['IsSystemUser'],$_POST['IsEmployee'],$_POST['IsSalesperson'],$_POST['PhoneNumber'],$_POST['FaxNumber'],$admin,$id);
+    $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
+    $stmt->close();
+    header("location: index.php?page=user&action=overview&edit=success");
+}
+
+
+
+
