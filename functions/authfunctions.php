@@ -1,7 +1,6 @@
 <?php
 require_once "./functions/loghandler.php";
 require_once  "./functions/databaseFunctions.php";
-const IS_AUTHORIZED = "isAuthorized";
 
 function startAuth()
 {
@@ -17,7 +16,7 @@ function startAuth()
 
 function isAuthorized()
 {
-    return isset($_SESSION[IS_AUTHORIZED]) && $_SESSION[IS_AUTHORIZED];    
+    return isset($_SESSION["UserName"]) && !empty($_SESSION["UserName"]);    
 }
 
 function logOn()
@@ -30,7 +29,6 @@ function logOn()
     else
     {
         if(checkCredentials($_POST["userName"], $_POST["password"])) {
-            $_SESSION[IS_AUTHORIZED] = true;
             $_SESSION["userName"] = $_POST["userName"];
 
             header("location: index.php");
@@ -42,7 +40,7 @@ function logOn()
 }
 
 function logOff() {
-    session_destroy();
+    unset($_SESSION["UserName"]);
     header("location: index.php");
 }
 if (isset($_POST['submit_registration'])) {
