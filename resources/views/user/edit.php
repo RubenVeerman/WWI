@@ -1,11 +1,5 @@
-<div class="container">
-
-    <?php
-    if(isset($_GET['edit']) && $_GET['edit'] == 'failed') {
-        echo '<div class="alert alert-danger text-center">
-                <strong>Failed!</strong> There is already an account with this email.
-              </div>';
-    }
+<?php
+    
     /**
      * Created by PhpStorm.
      * User: rubje
@@ -22,11 +16,19 @@
                 editPeopleAccount($_GET['id'], $peopleInfo['PersonID']);
             }
         }
+        
+        $return = "<div class=\"container\">";
+        if(isset($_GET['edit']) && $_GET['edit'] == 'failed') {
+            $return .= '
+            <div class="alert alert-danger text-center">
+                    <strong>Failed!</strong> There is already an account with this email.
+                  </div>';
+        }
 
         if ($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1) {
             $peopleToShow = getPeople($_GET['id']);
 
-            echo '<h5 class="card-title">Edit user</h5>
+            $return .= '<h5 class="card-title">Edit user</h5>
         <form method="post">
             <table class="table">';
                 foreach ($peopleToShow as $key => $data){
@@ -44,7 +46,7 @@
                                 $opposite = '1';
 
                             }
-                            echo '<tr><th>' . $key . '</th><td>
+                            $return .= '<tr><th>' . $key . '</th><td>
                               <select name="'.$key.'" class="custom-select" id="inputGroupSelect01">
                                 <option value="'.$data.'" selected> '.$dataT.'</option>
                                 <option value="'.$opposite.'"> '.$oppositeT.'</option>
@@ -53,16 +55,20 @@
                             ';
                         } else {
                             if($key == 'PersonID'){
-                                echo '<tr><th>' . $key . '</th><td> <h6> <span class="badge badge-secondary">'. $data . '</span></h6></td></tr>';
+                                $return .= '<tr><th>' . $key . '</th><td> <h6> <span class="badge badge-secondary">'. $data . '</span></h6></td></tr>';
                             }
                             else {
-                                echo '<tr><th>' . $key . '</th><td> <input class="form-control" type="text" name="' . $key . '" value="' . $data . '"></td></tr>';
+                                $return .= '<tr><th>' . $key . '</th><td> <input class="form-control" type="text" name="' . $key . '" value="' . $data . '"></td></tr>';
                             }
                         }
                     }
                 }
-                echo '<tr ><td colspan="2"><input class="float-right btn btn-success" type="submit" name="editPeople" value="Edit user"></td></tr></table></form>';
+                $return .= '<tr ><td colspan="2"><input class="float-right btn btn-success" type="submit" name="editPeople" value="Edit user"></td></tr></table></form>';
         }
     }
-    ?>
-</div>
+
+    echo $return . '</div>';
+
+?>
+
+

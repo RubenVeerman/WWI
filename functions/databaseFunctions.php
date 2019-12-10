@@ -455,6 +455,7 @@ function editPeopleAccount($id, $admin){
         echo mysqli_error($connection);
     }
     $stmt->close();
+    
     header("location: index.php?page=user&action=overview&edit=success");
 }
 

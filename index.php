@@ -4,14 +4,17 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
-if(!is_array($_SESSION["Cart"])) {
-    $_SESSION["Cart"] = [];
-}
+prepareCart();
+
+
 
 
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
 }
+
+$content = startSite();
+$footer = getFooter();
 
 ?>
 <!DOCTYPE html>
@@ -116,11 +119,11 @@ if(isset($_SESSION['userName'])) {
 
 <div class="container-fluid" style="margin-top:30px">
 
-    <?= startSite(); ?>
+    <?= $content ?>
 
 </div>
 
-<?=getFooter();?>
+<?=$footer;?>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
