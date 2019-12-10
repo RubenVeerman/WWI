@@ -87,10 +87,9 @@ $footer = getFooter();
       <ul class="navbar-nav col-sm-4 justify-content-end">
           <li class="nav-item <?= setWhenActive("auth.registration", LVL_NAV) ?>">
               <?php
-              if(isset($_SESSION[IS_AUTHORIZED])){
-                  if($_SESSION[IS_AUTHORIZED]){
+          if(isset( $_SESSION['userName'])){
                       echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
-                  }
+
               }
               else{
                   echo '<a class="nav-link" href="?page=auth&action=registration">Registration</a>';
@@ -100,10 +99,8 @@ $footer = getFooter();
           </li>
           <li class="nav-item <?= setWhenActive("auth.login", LVL_NAV) ?>">
           <?php
-          if(isset($_SESSION[IS_AUTHORIZED])){
-              if($_SESSION[IS_AUTHORIZED]){
+          if(isset( $_SESSION['userName'])){
                   echo '<form method="post"><button class="btn btn-default nav-link" type="submit" name="submit_logoff">Log off</button></form>';
-              }
           }
           else{
               echo '<a class="nav-link" href="?page=auth&action=login">Sign in</a>';

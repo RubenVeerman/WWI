@@ -20,8 +20,7 @@ if(isset($_POST['updatePass'])){
 }
 
 $peopleInfo  = selectOnePeople($_SESSION['userName']);
-if(isset($_SESSION[IS_AUTHORIZED])){
-    if($_SESSION[IS_AUTHORIZED]){ ?>
+if(isset( $_SESSION['userName'])){?>
         <div class="">
     
         <div class="col-lg">
@@ -88,7 +87,7 @@ if(isset($_SESSION[IS_AUTHORIZED])){
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Preferred name</label>
                             <div class="col-lg-9">
-                                <input class="form-control" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>">
+                                <input class="form-control" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -131,7 +130,7 @@ if(isset($_SESSION[IS_AUTHORIZED])){
         </div>
 <?php
     }
-}
+
 else{
     ?> You are not authorized to visit this page <?php
 }
