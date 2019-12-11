@@ -328,13 +328,19 @@ function getNextStockID(){
     $person_id = $fetch[0] + 1;
     return $person_id;
 }
-function createProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments){
+function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $outerPackageID,$leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom, $validTo, $stock){
     $connection = createConnection();
     $id = getNextStockID();
-    $stmt = $connection->prepare("INSERT INTO stockitems (StockItemID, StockItemName, SupplierID, UnitPackageID, OuterPackageID, LastEditedBy, RecommendedRetailPrice, MarketingComments) VALUES (?,?,?,?,?,?,?,?)");
-    $stmt->bind_param('isiiiiis', $id,$stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy, $recprice, $marketingcomments);
+    $sql = "INSERT INTO stockitems (StockItemID, StockItemName, SupplierID,ColorID, UnitPackageID, OuterPackageID, LeadTimeDays, QuantityPerOuter,IsChillerStock,TaxRate,UnitPrice,TypicalWeightPerUnit,MarketingComments,SearchDetails, LastEditedBy, ValidFrom, ValidTo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('isiiiiiiidddssiss', $id,$stockItemName, $supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom,$validTo);
     $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
     $stmt->close();
+    insertStock($id, $stock, $lastEditedBy);
+
 
 }
 
@@ -349,12 +355,14 @@ function setStock($stock, $id, $lasteditedby){
 }
 
 
-function insertStock($stock, $lastEditedBy){
+function insertStock($id, $stock, $lastEditedBy){
     $connection = createConnection();
-    $id = getNextStockID()-1;
     $stmt = $connection->prepare("INSERT INTO stockitemholdings (StockItemID, LastStocktakeQuantity, LastEditedBy) VALUES (?,?,?)");
     $stmt->bind_param('iii', $id, $stock, $lastEditedBy);
     $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
     $stmt->close();
 
 }
@@ -375,7 +383,13 @@ function deleteProductStock($id){
     $stmt->close();
 }
 
-
+function suppliers(){
+        $connection = createConnection();
+        $sql = "SELECT * FROM suppliers ORDER BY SupplierName";
+        $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+        closeConnection($connection);
+        return $result;
+}
 
 
 

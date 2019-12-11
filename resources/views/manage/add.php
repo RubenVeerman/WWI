@@ -1,17 +1,26 @@
+<div class="container">
 <?php
-
+$suppliers = suppliers();
 if(isset($_POST["submit"])){
-$stockitemname = $_POST["productname"];
+$stockItemName = $_POST["productname"];
 $supplierID = $_POST["supplierID"];
-$unitPackageID = $_POST["unitPackageID"];
-$outerPackageID = $_POST["outerPackageID"];
-$lastEditedBy = selectOnePeople($_SESSION['userName']);;
-$recprice = $_POST["retailprice"];
-$marketingcomments = $_POST["marketingcomments"];
+$colorID = 1;
+$unitPackageID = 7;
+$outerPackageID = 7;
+$leadTimeDays = $_POST["leadTimeDays"];
+$quantityPerOuter = $_POST["quantityPerOuter"];
+$isChillerStock = 0;
+$taxRate = 15.0;
+$unitPrice = $_POST["unitPrice"];
+$typicalWeightPerUnit = $_POST["typicalWeightPerUnit"];
+$marketingComments = $_POST["marketingcomments"];
+$searchDetails = $_POST["searchDetails"];
+$lastEditedBy = selectOnePeople($_SESSION['userName']);
 $message = true;
 $stock = $_POST["stock"];
-createProduct($stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy['PersonID'],$recprice,$marketingcomments);
-insertStock($stock, $lastEditedBy);
+$validFrom = "2016-05-31 23:00:00";
+$validTo = "9999-12-31 23:59:59";
+createProduct($stockItemName,$supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays, $quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails,$lastEditedBy['PersonID'],$validFrom, $validTo, $stock);
 } else {
 $stockitemname = "";
 $supplierID = "";
@@ -34,18 +43,33 @@ $message = false;
     Product Name:
     <input type="text" class="form-control" placeholder="Product Name" name="productname">
     Supplier ID:
-    <input type="number" class="form-control" placeholder="Supplier ID" name="supplierID">
-    UnitPackage ID:
-    <input type="number" class="form-control" placeholder="UnitPackage ID" name="unitPackageID">
-    OuterPackage ID:
-    <input type="number" class="form-control" placeholder="OuterPackage ID" name="outerPackageID">
-    Retail Price:
-    <input type="text" class="form-control" placeholder="Retail Price" name="retailprice">
+    <select class="form-control" name="supplierID">
+
+        <?php
+        foreach ($suppliers as $supp){
+            print("<option value='" . $supp["SupplierID"] . "'>");
+            print($supp["SupplierName"]);
+            print("</option>");
+        }
+        ?>
+    </select>
+    Lead Time Days:
+    <input type="number" class="form-control" placeholder="Lead Time Days" name="leadTimeDays">
+    Quantity Per Outer:
+    <input type="number" class="form-control" placeholder="Quantity Per Outer" name="quantityPerOuter">
+    Unit Price:
+    <input type="text" class="form-control" placeholder="Unit Price" name="unitPrice">
+    Typical Weight Per Unit:
+    <input type="text" class="form-control" placeholder="Typical Weight Per Unit" name="typicalWeightPerUnit">
     Marketing Comments:
     <input type="text" class="form-control" placeholder="Marketing Comments" name="marketingcomments">
+    Search Detail:
+    <input type="text" class="form-control" placeholder="Search Detail" name="searchDetails">
     In Stock:
     <input type="number" class="form-control" placeholder="In Stock" name="stock">
     <br>
     <input type="submit" class="btn btn-primary" name="submit" value="Submit">
 
 </form>
+
+</div>
