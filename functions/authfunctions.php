@@ -6,7 +6,7 @@ function startAuth()
 {
     if(isset($_POST["submit_logon"])) 
     {
-        return logOn();
+        logOn();
     } 
     else if(isset($_POST["submit_logoff"]))
     {
