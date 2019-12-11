@@ -40,7 +40,8 @@ function logOn()
 }
 
 function logOff() {
-    unset($_SESSION["UserName"]);
+    session_destroy();
+    //    unset($_SESSION["UserName"]);
     header("location: index.php");
 }
 if (isset($_POST['submit_registration'])) {

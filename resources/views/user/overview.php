@@ -32,6 +32,9 @@ if(isset($_SESSION['userName'])) {
                 <strong>Success!</strong> account has been updated successfully.
               </div>';
         }
+        if (isset($_GET['add']) && $_GET['add'] == 'success') {
+            echo '<div class="alert alert-success text-center"><strong>Succes!</strong> User has been added.</div>';
+        }
 
         ?>
 
