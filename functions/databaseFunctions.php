@@ -327,12 +327,6 @@ function archivePeople($people){
     $data = implode("," , $data);
     $sql = "INSERT INTO people_archive VALUES (". $data.")";
     mysqli_query($connection, $sql);
-    if(mysqli_error($connection)){
-        print_r($sql);
-        print(mysqli_error($connection));
-
-        return false;
-    }
     closeConnection($connection);
     return true;
 }

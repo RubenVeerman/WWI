@@ -6,9 +6,6 @@ require_once "./functions/databaseFunctions.php";
 startAuth();
 prepareCart();
 
-
-
-
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
 }

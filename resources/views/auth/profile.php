@@ -5,6 +5,32 @@
  * Date: 02-Dec-19
  * Time: 15:10
  */
+function classCheck($inputName)
+{
+    $condition = true;
+    if (isset($_POST[$inputName]))
+    {
+        if(!empty($_POST[$inputName])) {
+
+            switch ($inputName):
+                case "email":
+                    $condition = strpos($_POST["email"], '@');
+                    break;
+                case "preffName":
+                    $condition = strlen($_POST['pname']) > 0;
+                    break;
+                default:
+                    break;
+            endswitch;
+
+            return $condition ? 'is-valid' : 'is-invalid';
+        } else {
+            return 'is-invalid';
+        }
+    }
+}
+
+
 if(isset($_POST['updatePeople'])){
     updatePeople();
 }

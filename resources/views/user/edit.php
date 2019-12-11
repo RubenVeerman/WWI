@@ -58,7 +58,7 @@
                                 $return .= '<tr><th>' . $key . '</th><td> <h6> <span class="badge badge-secondary">'. $data . '</span></h6></td></tr>';
                             }
                             else {
-                                $return .= '<tr><th>' . $key . '</th><td> <input class="form-control" type="text" name="' . $key . '" value="' . $data . '"></td></tr>';
+                                $return .= '<tr><th>' . $key . '</th><td> <input class="form-control" type="text" name="' . $key . '" value="' . $data . '" required></td></tr>';
                             }
                         }
                     }
