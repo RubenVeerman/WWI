@@ -8,17 +8,22 @@
             Cart
         </div>
         <div class="card-body">
-            <?php foreach($_SESSION["Cart"] as $cartProduct) { 
+            
+            <?php 
+            $total = 0;
+            foreach($_SESSION["Cart"] as $cartProduct) { 
                 $product = selectProduct($cartProduct["id"]);                
                 $specialdeal = selectSpecialDealByStockItemID($cartProduct["id"]);
                 $images = dbPhoto($cartProduct["id"]);
-                $discount = 0;
+                $discount = $product["RecommendedRetailPrice"];
                 if(!empty($specialdeal)) {
                     $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
                 }
+
+                $total += $discount;
             ?>
-            <div class="row">
-                <div class="col-md-3"><img src="<?= $images[0] ?>"/></div>
+            <div class="row border-bottom my-2">
+                <div class="col-md-3"><img class="w-20" src="<?= $images[0]["Path"] ?>"/></div>
                 <div class="col-md-3"><b><?= $product["MarketingComments"] ?></b></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3">
@@ -32,7 +37,7 @@
             <?php } ?>
         </div>
         <div class="card-footer">
-            Footer
+            Footer Total: <?= $total ?>
         </div>
     </div>
 </div>
