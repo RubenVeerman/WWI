@@ -419,8 +419,8 @@ function setStock($stock, $id, $lasteditedby){
 
 function insertStock($id, $stock, $lastEditedBy){
     $connection = createConnection();
-    $stmt = $connection->prepare("INSERT INTO stockitemholdings (StockItemID, LastStocktakeQuantity, LastEditedBy) VALUES (?,?,?)");
-    $stmt->bind_param('iii', $id, $stock, $lastEditedBy);
+    $stmt = $connection->prepare("INSERT INTO stockitemholdings VALUES (?,?,'K-1',?,0.0,0,0,?,'2016-05-31 12:00:00')");
+    $stmt->bind_param('iiii', $id,$stock, $stock, $lastEditedBy);
     $stmt->execute();
     if(mysqli_error($connection)){
         echo mysqli_error($connection);
