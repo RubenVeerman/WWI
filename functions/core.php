@@ -146,33 +146,31 @@ function prepareCart() {
 }
 
 function addToCart($productID, $amount) {
-    $index = in_array_r($productID, $_SESSION["Cart"]);
-    if($index === false) {
-        array_push($_SESSION["Cart"], ["id" => $productID, "amount" => $amount]);
+    $cart = array_values($_SESSION["Cart"]);
+    $index = in_array_r($productID, $cart);
+    if($index === -1) {
+        array_push($cart, ["id" => $productID, "amount" => $amount]);
     } else {
-        $_SESSION["Cart"][$index]["amount"] += $amount;
+        $cart[$index]["amount"] = $amount;
     }
+    
+    $_SESSION["Cart"] = array_values($cart);
 }
 
 function removeFromCart($productID, $amount) {
+    $cart = array_values($_SESSION["Cart"]);
     $index = in_array_r($productID, $_SESSION["Cart"]);
+    unset($cart[$index]);
 
-    if($index === true) {
-        $storedAmount = $_SESSION["Cart"][$index]["amount"];
-        if($storedAmount <= $amount) {
-            unset($_SESSION["Cart"][$index]);
-        } else {
-            $_SESSION["Cart"][$index]["amount"] -= $amount;
-        } 
-    } 
+    $_SESSION["Cart"] = array_values($cart);    
 }
 
-function in_array_r($needle, $haystack, $strict = false) {
+function in_array_r($needle, array $haystack, $strict = false) {
     for ($i = 0; $i < count($haystack); $i++) {
-        if($haystack[$i]["id"] == $needle) {
-            return true;
+        if(isset($haystack[$i]) && $haystack[$i]["id"] == $needle) {
+            return $i;
         }
     }
 
-    return false;
+    return -1;
 }

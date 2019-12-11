@@ -7,10 +7,6 @@ startAuth();
 // $_SESSION["Cart"] = [];
 prepareCart();
 
-print("<pre>");
-var_dump($_SESSION["Cart"]);
-print "</pre>";
-
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
 }
