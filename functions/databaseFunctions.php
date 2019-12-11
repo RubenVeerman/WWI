@@ -376,7 +376,7 @@ function deletePeople($people)
 
 function deletePhoto($id){
     $connection = createConnection();
-    $stmt = $connection->prepare("DELETE FROM photoid WHERE PhotoID=? ");
+    $stmt = $connection->prepare("DELETE FROM photoid WHERE StockItemID=? ");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->close();
@@ -430,11 +430,25 @@ function insertStock($id, $stock, $lastEditedBy){
 }
 
 function deleteProduct($id){
+    $filename = getFilename($id);
+    deletePhoto($id);
+    unlink($filename[0]["Path"]);
+    unlink($filename[1]["Path"]);
+    unlink($filename[2]["Path"]);
     $connection = createConnection();
     $stmt = $connection->prepare("DELETE FROM StockItems WHERE StockItemID=? ");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->close();
+
+}
+
+function getFilename($id){
+    $connection = createConnection();
+    $sql = "SELECT Path FROM photoid WHERE StockItemID=" . $id;
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
 }
 
 function deleteProductStock($id){

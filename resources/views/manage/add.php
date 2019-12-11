@@ -37,6 +37,7 @@ $stock = "";
 $message = false;
 }
 
+
         if ($message == true) {
             echo '<div class="alert alert-success text-center"><strong>Succes!</strong> This product has been added.</div>';
             $message = false;
