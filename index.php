@@ -4,11 +4,16 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
+prepareCart();
 
+if(isset($_SESSION['userName'])) {
+    $peopleInfo = selectOnePeople($_SESSION['userName']);
+}
 
+$content = startSite();
+$footer = getFooter();
 
 ?>
-<!--<pre>--><?//= var_dump($_POST); ?><!--</pre>-->
 <!DOCTYPE html>
 
 <html lang="nl">
@@ -46,8 +51,20 @@ startAuth();
         <a class="nav-link" href="?page=home">Home</a>
       </li>
       <li class="nav-item <?= setWhenActive("product", LVL_NAV) ?>">
-        <a class="nav-link" href="?page=product&action=overview">Producten</a>
+        <a class="nav-link" href="?page=product&action=overview">Products</a>
       </li>
+
+        <?php
+        if(isset( $_SESSION['userName'])){
+            if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
+        ?>
+            <li class="nav-item <?= setWhenActive("user", LVL_NAV) ?>">
+                <a class="nav-link" href="?page=user&action=overview">Users</a>
+            </li>
+        <?php
+            }
+        }
+        ?>
     </ul>
       <form method="get" action="index.php" class="col-sm-5">
           <input type="hidden" name="page" value="product">
@@ -67,30 +84,24 @@ startAuth();
       <ul class="navbar-nav col-sm-4 justify-content-end">
           <li class="nav-item <?= setWhenActive("auth.registration", LVL_NAV) ?>">
               <?php
-              if(isset($_SESSION[IS_AUTHORIZED])){
-                  if($_SESSION[IS_AUTHORIZED]){
-                      $peopleInfo  = selectOnePeople($_SESSION['userName']);
-                      echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
-                  }
-              }
-              else{
-                  echo '<a class="nav-link" href="?page=auth&action=registration">Registration</a>';
+              if(isAuthorized()) {
+                echo '<a class="nav-link" href="?page=auth&action=profile">' . $peopleInfo["PreferredName"] . '</a>';
+              } else {
+                echo '<a class="nav-link" href="?page=auth&action=registration">Registration</a>';
               }
               ?>
 
           </li>
           <li class="nav-item <?= setWhenActive("auth.login", LVL_NAV) ?>">
           <?php
-          if(isset($_SESSION[IS_AUTHORIZED])){
-              if($_SESSION[IS_AUTHORIZED]){
-                  echo '<form method="post"><button class="btn btn-default nav-link" type="submit" name="submit_logoff">Log off</button></form>';
-              }
-          }
-          else{
+          if(isAuthorized()) {
+            echo '<form method="post"><button class="btn btn-default nav-link" type="submit" name="submit_logoff">Log off</button></form>';
+          } else{
               echo '<a class="nav-link" href="?page=auth&action=login">Sign in</a>';
           }
           ?>
           </li>
+          <li><a class="nav-link" href="?page=cart">Cart <?= count($_SESSION["Cart"]) > 0 ? "(".count($_SESSION["Cart"]).")" : "" ?></a></li>
       </ul>
   </div>
 </nav>
@@ -99,11 +110,11 @@ startAuth();
 
 <div class="container-fluid" style="margin-top:30px">
 
-    <?= startSite(); ?>
+    <?= $content ?>
 
 </div>
 
-<?=getFooter();?>
+<?=$footer;?>
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

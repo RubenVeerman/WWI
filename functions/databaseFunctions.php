@@ -180,6 +180,17 @@ function countProductsOfCategory($categoryid){
     closeConnection($connection);
     return $row[0];
 }
+function countPeople()
+{
+    $connection = createConnection();
+    $sql = "SELECT COUNT(*) FROM people";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $row = mysqli_fetch_row($result);
+    closeConnection($connection);
+    return $row[0];
+}
 function getNextID(){
     $connection = createConnection();
     $id_check_query = "SELECT MAX(PersonID) FROM people";
@@ -250,12 +261,12 @@ function selectSpecialDealByStockItemID($id)
     return $arr;
 }
 
-function checkEmailIfExists($logonName)
+function checkEmailIfExists($logonName, $id)
 {
     $connection = createConnection();
-    $sql = "SELECT LogonName FROM people WHERE LogonName=?";
+    $sql = "SELECT PersonID FROM people WHERE LogonName=? AND PersonID!=?";
     $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, 's', $logonName);
+    mysqli_stmt_bind_param($statement, 'si', $logonName, $id);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     $arr = setResultToArray($result);
@@ -289,6 +300,42 @@ function selectOnePeople($email){
     closeConnection($connection);
     return $result;
 }
+function getPeople($id){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people WHERE PersonID=?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'i', $id);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    $arr = setResultToArray($result, true);
+    closeConnection($connection);
+    return $arr;
+}
+
+function archivePeople($people){
+    $connection = createConnection();
+    foreach($people as $team)
+        if(is_int($team)) {
+            $data[] = '' . $team . '';
+        }
+        elseif(empty($team)){
+            $data[] = 'NULL';
+        }
+        else{
+            $data[] = '"' . $team . '"';
+        }
+    $data = implode("," , $data);
+    $sql = "INSERT INTO people_archive VALUES (". $data.")";
+    mysqli_query($connection, $sql);
+    if(mysqli_error($connection)){
+        print_r($sql);
+        print(mysqli_error($connection));
+
+        return false;
+    }
+    closeConnection($connection);
+    return true;
+}
 
 function updatePeople(){
     $connection = createConnection();
@@ -310,6 +357,27 @@ function updatePass(){
     $stmt->close();
 
     $_GET['update'] = 'success';
+}
+
+function selectPeople($start_from, $limit){
+    $connection = createConnection();
+    $sql = "SELECT * FROM people ORDER BY PersonID DESC LIMIT $start_from, $limit";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+
+}
+function deletePeople($people)
+{
+    $PersonID = $people["PersonID"];
+    $connection = createConnection();
+    $sql = "DELETE FROM people WHERE PersonID = '$PersonID'";
+    mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    if(mysqli_error($connection)){
+        return false;
+    }
+    closeConnection($connection);
+    return true;
 }
 
 function deletePhoto($id){
@@ -390,6 +458,19 @@ function suppliers(){
         closeConnection($connection);
         return $result;
 }
+function editPeopleAccount($id, $admin){
+    $connection = createConnection();
+    $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, IsPermittedToLogon=?, LogonName=?, EmailAddress=?, IsExternalLogonProvider=?, IsSystemUser=?, IsEmployee=?, IsSalesperson=?, PhoneNumber=?, FaxNumber=?, LastEditedBy=? WHERE PersonID = ?");
+    $stmt->bind_param('sssissiiiiiiii',$_POST['FullName'],$_POST['PreferredName'],$_POST['SearchName'],$_POST['IsPermittedToLogon'],$_POST['LogonName'],$_POST['LogonName'],$_POST['IsExternalLogonProvider'],$_POST['IsSystemUser'],$_POST['IsEmployee'],$_POST['IsSalesperson'],$_POST['PhoneNumber'],$_POST['FaxNumber'],$admin,$id);
+    $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
+    $stmt->close();
+
+    header("location: index.php?page=user&action=overview&edit=success");
+}
+
 
 
 

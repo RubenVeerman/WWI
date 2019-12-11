@@ -9,7 +9,7 @@ if(isset($_POST['updatePeople'])){
     updatePeople();
 }
 
-if(isset($_POST['updatePass']) && !empty($_POST['pass1'])){
+if(isset($_POST['updatePass'])){
     $passCorrect = checkCredentials($_SESSION['userName'], $_POST['oldPass']);
     if($passCorrect && strlen($_POST['pass1']) > 7 && $_POST['pass1'] == $_POST['pass2']){
         updatePass();
@@ -20,8 +20,7 @@ if(isset($_POST['updatePass']) && !empty($_POST['pass1'])){
 }
 
 $peopleInfo  = selectOnePeople($_SESSION['userName']);
-if(isset($_SESSION[IS_AUTHORIZED])){
-    if($_SESSION[IS_AUTHORIZED]){ ?>
+if(isAuthorized()) { ?>
         <div class="">
     
         <div class="col-lg">
@@ -72,7 +71,7 @@ if(isset($_SESSION[IS_AUTHORIZED])){
                 </div>
                 <div class="tab-pane" id="edit">
                 <div class="row">
-                    <form class="col" method="post">
+                    <form class="col border-right mb-2" method="post">
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Email</label>
                             <div class="col-lg-9">
@@ -130,7 +129,6 @@ if(isset($_SESSION[IS_AUTHORIZED])){
         </div>
         </div>
 <?php
-    }
 }
 else{
     ?> You are not authorized to visit this page <?php

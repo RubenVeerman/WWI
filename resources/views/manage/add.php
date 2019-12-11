@@ -1,5 +1,8 @@
 <div class="container">
 <?php
+if(isset($_SESSION['userName'])){
+$peopleInfo  = selectOnePeople($_SESSION['userName']);
+if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
 $suppliers = suppliers();
 if(isset($_POST["submit"])){
 $stockItemName = $_POST["productname"];
@@ -33,11 +36,11 @@ $stock = "";
 $message = false;
 }
 
-if($message == true){
-echo '<div class="alert alert-success text-center"><strong>Succes!</strong> This product has been added.</div>';
-$message = false;
-}
-?>
+        if ($message == true) {
+            echo '<div class="alert alert-success text-center"><strong>Succes!</strong> This product has been added.</div>';
+            $message = false;
+        }
+        ?>
 
 <form class="form-group" method="post" action="?page=manage&action=add">
     Product Name:
@@ -70,6 +73,10 @@ $message = false;
     <br>
     <input type="submit" class="btn btn-primary" name="submit" value="Submit">
 
-</form>
+        </form>
+        <?php
+    }
+}
+        ?>
 
 </div>

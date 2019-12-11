@@ -39,9 +39,9 @@ if($products == NULL){
 $categories = selectCategories();
 
 $pagelimit = "&limit=" . $limit;
-
-if(isset($_SESSION[IS_AUTHORIZED])){
-    if($_SESSION[IS_AUTHORIZED]){
+if(isset($_SESSION['userName'])){
+    $peopleInfo  = selectOnePeople($_SESSION['userName']);
+    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
         echo '<div class="container row">';
         echo ' <a href="?page=manage&action=add" ><button type="button" class="btn btn-success" style="height: 40px">Add product</button></a>';
         echo '<div class="mx-auto">';
@@ -50,10 +50,8 @@ if(isset($_SESSION[IS_AUTHORIZED])){
 ?>
 <?php
 echo getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagelimit);
-if(isset($_SESSION[IS_AUTHORIZED])) {
-    if ($_SESSION[IS_AUTHORIZED]) {
+if(isset($_SESSION['userName'])){
         echo '</div></div>';
-    }
 }
 ?>
 <div class="row mb-5">
@@ -105,15 +103,10 @@ for($i = 0; $i < count($products); $i++)
                         <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
 
                     </div>
+                    <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
                     <?php
-                    if(isset($_SESSION[IS_AUTHORIZED])){
-                        if($_SESSION[IS_AUTHORIZED]){
-                            echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
-                                    <a href="?page=manage&id=' . $product["StockItemID"] .'" class="btn btn-info btn-square" style="width: 100%; ">Edit</a>';
-                        }
-                    }
-                    else{
-                        echo '<a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>';
+                    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
+                        echo '<a href="?page=manage&action=show&id=' . $product['StockItemID'] . '" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
                     }
                     ?>
 

@@ -12,7 +12,7 @@ $customFields = json_decode($product["CustomFields"]);
 $tags = json_decode($product["Tags"]);
 
 $description = "";
-if(is_array($tags)) {
+if(is_array($tags)) {   
     if(count($tags) == 0) {
         $description = "none";
     }
@@ -89,9 +89,19 @@ $images = dbPhoto($product["StockItemID"]);
                     </h2>
                     <h1 class="text-success">€<?=$discount;?></h1>
                 <?php } ?>
-                </h1>
                 <br>
-                <button type="button" class="btn btn-success">Voeg toe aan winkelwagen</button>
+                <form method="POST">
+                    <input type="hidden" name="productID" value="<?= $product["StockItemID"] ?>" >
+                    <div class="row">
+                        <div class="col-md-2">  
+                            <label for="tbxAmount">Aantal:</label>                          
+                            <input type="number" id="tbxAmount" name="amount"  class="form-control" value="0">   
+                        </div>
+                        <div class="col-md-3 my-3">
+                            <button type="submit" name="AddToCart" class="btn btn-success">Add tot Cart</button>
+                        </div>
+                    </div>
+                     </form>
             </div>
         </div>
     </div>
