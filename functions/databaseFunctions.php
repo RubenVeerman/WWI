@@ -390,12 +390,12 @@ function getNextStockID(){
     $person_id = $fetch[0] + 1;
     return $person_id;
 }
-function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $outerPackageID,$leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom, $validTo, $stock){
+function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $outerPackageID,$leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom, $validTo, $stock, $recommendedRetailPrice){
     $connection = createConnection();
     $id = getNextStockID();
-    $sql = "INSERT INTO stockitems (StockItemID, StockItemName, SupplierID,ColorID, UnitPackageID, OuterPackageID, LeadTimeDays, QuantityPerOuter,IsChillerStock,TaxRate,UnitPrice,TypicalWeightPerUnit,MarketingComments,SearchDetails, LastEditedBy, ValidFrom, ValidTo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO stockitems (StockItemID, StockItemName, SupplierID,ColorID, UnitPackageID, OuterPackageID, LeadTimeDays, QuantityPerOuter,IsChillerStock,TaxRate,UnitPrice,TypicalWeightPerUnit,MarketingComments,SearchDetails, LastEditedBy, ValidFrom, ValidTo, RecommendedRetailPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param('isiiiiiiidddssiss', $id,$stockItemName, $supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom,$validTo);
+    $stmt->bind_param('isiiiiiiidddssissd', $id,$stockItemName, $supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom,$validTo, $recommendedRetailPrice);
     $stmt->execute();
     if(mysqli_error($connection)){
         echo mysqli_error($connection);

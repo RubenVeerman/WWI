@@ -13,8 +13,9 @@ $outerPackageID = 7;
 $leadTimeDays = $_POST["leadTimeDays"];
 $quantityPerOuter = $_POST["quantityPerOuter"];
 $isChillerStock = 0;
-$taxRate = 15.0;
+$taxRate = $_POST["taxRate"];
 $unitPrice = $_POST["unitPrice"];
+$recommendedRetailPrice = $unitPrice * ($taxRate/100+1);
 $typicalWeightPerUnit = $_POST["typicalWeightPerUnit"];
 $marketingComments = $_POST["marketingcomments"];
 $searchDetails = $_POST["searchDetails"];
@@ -23,7 +24,7 @@ $message = true;
 $stock = $_POST["stock"];
 $validFrom = "2016-05-31 23:00:00";
 $validTo = "9999-12-31 23:59:59";
-createProduct($stockItemName,$supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays, $quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails,$lastEditedBy['PersonID'],$validFrom, $validTo, $stock);
+createProduct($stockItemName,$supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays, $quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails,$lastEditedBy['PersonID'],$validFrom, $validTo, $stock, $recommendedRetailPrice);
 } else {
 $stockitemname = "";
 $supplierID = "";
@@ -62,6 +63,8 @@ $message = false;
     <input type="number" class="form-control" placeholder="Quantity Per Outer" name="quantityPerOuter">
     Unit Price:
     <input type="text" class="form-control" placeholder="Unit Price" name="unitPrice">
+    Tax Rate (in %):
+    <input type="number" class="form-control" placeholder="Tax Rate" name="taxRate">
     Typical Weight Per Unit:
     <input type="text" class="form-control" placeholder="Typical Weight Per Unit" name="typicalWeightPerUnit">
     Marketing Comments:
