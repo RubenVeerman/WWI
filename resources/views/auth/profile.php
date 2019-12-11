@@ -5,6 +5,32 @@
  * Date: 02-Dec-19
  * Time: 15:10
  */
+function classCheck($inputName)
+{
+    $condition = true;
+    if (isset($_POST[$inputName]))
+    {
+        if(!empty($_POST[$inputName])) {
+
+            switch ($inputName):
+                case "email":
+                    $condition = strpos($_POST["email"], '@');
+                    break;
+                case "preffName":
+                    $condition = strlen($_POST['pname']) > 0;
+                    break;
+                default:
+                    break;
+            endswitch;
+
+            return $condition ? 'is-valid' : 'is-invalid';
+        } else {
+            return 'is-invalid';
+        }
+    }
+}
+
+
 if(isset($_POST['updatePeople'])){
     updatePeople();
 }
@@ -20,7 +46,7 @@ if(isset($_POST['updatePass'])){
 }
 
 $peopleInfo  = selectOnePeople($_SESSION['userName']);
-if(isAuthorized()) { ?>
+if(isset( $_SESSION['userName'])){?>
         <div class="">
     
         <div class="col-lg">
@@ -87,7 +113,7 @@ if(isAuthorized()) { ?>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Preferred name</label>
                             <div class="col-lg-9">
-                                <input class="form-control" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>">
+                                <input class="form-control" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -129,7 +155,8 @@ if(isAuthorized()) { ?>
         </div>
         </div>
 <?php
-}
+    }
+
 else{
     ?> You are not authorized to visit this page <?php
 }
