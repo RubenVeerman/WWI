@@ -4,7 +4,12 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
+// $_SESSION["Cart"] = [];
 prepareCart();
+
+print("<pre>");
+var_dump($_SESSION["Cart"]);
+print "</pre>";
 
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
@@ -26,6 +31,7 @@ $footer = getFooter();
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Font awesome library   -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <!-- Jquery ui -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <!-- Own CSS files -->
@@ -104,7 +110,7 @@ $footer = getFooter();
           }
           ?>
           </li>
-          <li><a class="nav-link" href="?page=cart">Cart <?= count($_SESSION["Cart"]) > 0 ? "(".count($_SESSION["Cart"]).")" : "" ?></a></li>
+          <li><a class="nav-link" href="?page=cart"><i class="fas fa-shopping-cart"></i> <?= count($_SESSION["Cart"]) > 0 ? "(".count($_SESSION["Cart"]).")" : "" ?></a></li>
       </ul>
   </div>
 </nav>

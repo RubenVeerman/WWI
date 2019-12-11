@@ -103,15 +103,15 @@ for($i = 0; $i < count($products); $i++)
                         <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
 
                     </div>
-                    <a href="?page=cart&action=show" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</a>
+                    <form method="POST" class=" mb-0">
+                        <input type="hidden" name="amount" value="1">
+                        <input type="hidden" name="productID" value="<?=$product["StockItemID"];?>">
+                        <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
+                    </form>
                     <?php
-                    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
-                        echo '<a href="?page=manage&action=show&id=' . $product['StockItemID'] . '" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>';
-                    }
-                    ?>
-
-
-
+                    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){ ?>
+                        <a href="?page=manage&action=show&id=<?=$product['StockItemID'] ?>" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>
+                    <?php } ?>
                 </div>
             </a>
         </div>
