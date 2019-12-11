@@ -74,15 +74,18 @@ $images = dbPhoto($product["StockItemID"]);
         <div class="col-sm d-flex flex-column align-content-*-end">
             <div>
                 <h4><?= $product["MarketingComments"] ?></h4>
-                <p><b>Country of manufacture</b>: <?= $customFields->CountryOfManufacture ?? "" ?></p>
-                <p><b>Specifications</b>: <?= $description; ?>
-                </p>
+                <p><b>Country of manufacture:</b> <?= $customFields->CountryOfManufacture ?? "" ?></p>
+                <p><b>Specifications:</b> <?= $description; ?></p>
+                <p><b>Lead time days:</b> <?= $product["LeadTimeDays"] ?></p>
+                <p><b>Quantity per outer:</b> <?= $product["QuantityPerOuter"] ?></p>
+                <p><b>Weight</b> <?= $product["TypicalWeightPerUnit"] ?> kg</p>
                 </br>
                 <div class="text-<?= $stockClass; ?>"><?= $outputStock ?></div>
             </div>
             <div>
                 <?php if(empty($specialdeal)) { ?>
                     <h1> €<?=$product["RecommendedRetailPrice"];?></h1>
+                    <h6><?=substr($product["TaxRate"], 0, -1)?>% tax rate included</h6>
                 <?php } else { ?>
                     <h2 class="text-danger">
                         <strike>€<?=$product["RecommendedRetailPrice"];?></strike>
