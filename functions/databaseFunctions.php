@@ -274,11 +274,11 @@ function checkEmailIfExists($logonName, $id)
     return !empty($arr[0]);
 }
 
-function updateProduct($stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments,$id){
+function updateProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails, $lastEditedBy, $id, $recommendedRetailPrice){
     $connection = createConnection();
 
-    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, SupplierID=?,UnitPackageID=?, OuterPackageID=?,LastEditedBy=?, RecommendedRetailPrice=?, MarketingComments=? WHERE StockItemID=?");
-    $stmt->bind_param('siiiiisi', $stockitemname,$supplierID,$unitPackageID,$outerPackageID,$lastEditedBy,$recprice,$marketingcomments, $id);
+    $stmt = $connection->prepare("UPDATE stockitems SET StockItemName=?, SupplierID=?,UnitPackageID=?, OuterPackageID=?, LeadTimeDays=?, QuantityPerOuter=?,TaxRate=?,UnitPrice=?,TypicalWeightPerUnit=?,MarketingComments=?,SearchDetails=?,LastEditedBy=?, RecommendedRetailPrice=? WHERE StockItemID=?");
+    $stmt->bind_param('siiiiidddssidi', $stockitemname, $supplierID, $unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails, $lastEditedBy, $recommendedRetailPrice, $id);
     $stmt->execute();
     $stmt->close();
 

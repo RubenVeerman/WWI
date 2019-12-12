@@ -1,4 +1,9 @@
+<div class="container">
 <?php
+$suppliers = suppliers();
+
+
+
 if(isset($_SESSION['userName'])){
     $peopleInfo  = selectOnePeople($_SESSION['userName']);
     if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
@@ -19,15 +24,38 @@ if(isset($_SESSION['userName'])){
         if (isset($_POST["submit"])) {
             $stockitemname = $_POST["productname"];
             $supplierID = $_POST["supplierID"];
-            $unitPackageID = $_POST["unitPackageID"];
-            $outerPackageID = $_POST["outerPackageID"];
+            $unitPackageID = 7;
+            $outerPackageID = 7;
+            $leadTimeDays = $_POST["leadTimeDays"];
+            $quantityPerOuter = $_POST["quantityPerOuter"];
+            $taxRate = $_POST["taxRate"];
+            $unitPrice = $_POST["unitPrice"];
+            $recommendedRetailPrice = $unitPrice * ($taxRate/100+1);
+            $typicalWeightPerUnit = $_POST["typicalWeightPerUnit"];
+            $marketingComments = $_POST["marketingcomments"];
+            $searchDetails = $_POST["searchDetails"];
             $lastEditedBy = selectOnePeople($_SESSION['userName']);;
-            $recprice = $_POST["retailprice"];
-            $marketingcomments = $_POST["marketingcomments"];
             $stock = $_POST["stock"];
-            $message = true;
-            updateProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $lastEditedBy['PersonID'], $recprice, $marketingcomments, $id);
-            setStock($stock, $id, $lastEditedBy);
+            $product = selectProduct($id);
+
+            $required = array('productname', 'supplierID', 'leadTimeDays', 'quantityPerOuter', 'taxRate', 'unitPrice','typicalWeightPerUnit','marketingcomments','searchDetails', 'stock');
+
+// Loop over field names, make sure each one exists and is not empty
+            $error = false;
+            foreach($required as $field) {
+                if (empty($_POST[$field])) {
+                    $error = true;
+                }
+            }
+
+            if ($error) {
+                echo '<div class="alert alert-danger text-center"><strong>Failed!</strong> All fields are required.</div>';
+            } else {
+                updateProduct($stockitemname, $supplierID, $unitPackageID, $outerPackageID, $leadTimeDays,$quantityPerOuter,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails, $lastEditedBy['PersonID'], $id, $recommendedRetailPrice);
+                setStock($stock, $id, $lastEditedBy);
+                $message = true;
+
+            }
         } else {
             $stockitemname = "";
             $recprice = "";
@@ -63,16 +91,12 @@ if(isset($_SESSION['userName'])){
 
         ?>
 
-        <button class="btn btn-success" onclick="goBack()">Go Back</button>
+        <a href="?page=product&action=overview""><button class="btn btn-success">Go Back</button></a>
         <a href="?page=manage&deleteproduct=<?= $id ?>">
             <button class="btn btn-danger">Delete</button>
         </a>
 
-        <script>
-            function goBack() {
-                window.history.back();
-            }
-        </script>
+
 
         <form class="form-group" method="post" action="?page=manage&id=<?= $id ?>">
             Product ID:
@@ -80,22 +104,33 @@ if(isset($_SESSION['userName'])){
             Product Name:
             <input type="text" class="form-control" value="<?= $product["StockItemName"] ?>" name="productname">
             Supplier ID:
-            <input type="text" class="form-control" value="<?= $product["SupplierID"] ?>" name="supplierID">
-            UnitPackage ID:
-            <input type="text" class="form-control" value="<?= $product["UnitPackageID"] ?>" name="unitPackageID">
-            OuterPackage ID:
-            <input type="text" class="form-control" value="<?= $product["OuterPackageID"] ?>" name="outerPackageID">
-            Retail Price:
-            <input type="text" class="form-control" value="<?= $product["RecommendedRetailPrice"] ?>"
-                   name="retailprice">
+            <select class="form-control" name="supplierID">
+            <?php
+            foreach ($suppliers as $supp){
+                print("<option value='" . $supp["SupplierID"] . "'>");
+                print($supp["SupplierName"]);
+                print("</option>");
+            }
+            ?>
+            </select>
+            Lead Time Days:
+            <input type="number" class="form-control" value="<?= $product["LeadTimeDays"] ?>" name="leadTimeDays">
+            Quantity Per Outer:
+            <input type="number" class="form-control" value="<?= $product["QuantityPerOuter"] ?>" name="quantityPerOuter">
+            Unit Price:
+            <input type="text" class="form-control" value="<?= $product["UnitPrice"] ?>" name="unitPrice">
+            Tax Rate (in %):
+            <input type="number" class="form-control" value="<?= $product["TaxRate"] ?>" name="taxRate">
+            Typical Weight Per Unit:
+            <input type="text" class="form-control" value="<?= $product["TypicalWeightPerUnit"] ?>" name="typicalWeightPerUnit">
             Marketing Comments:
-            <input type="text" class="form-control" value="<?= $product["MarketingComments"] ?>"
-                   name="marketingcomments">
-            In stock:
-            <input type="text" class="form-control" value="<?= $stock["LastStocktakeQuantity"] ?>" name="stock">
-
+            <input type="text" class="form-control" value="<?= $product["MarketingComments"] ?>" name="marketingcomments">
+            Search Detail:
+            <input type="text" class="form-control" value="<?= $product["SearchDetails"] ?>" name="searchDetails">
+            In Stock:
+            <input type="number" class="form-control" value="<?= $stock["LastStocktakeQuantity"]?>" name="stock">
             <br>
-            <input type="submit" class="btn btn-primary" name="submit" value="Submit">
+            <input type="submit" class="btn btn-primary" name="submit" value="Update">
 
         </form>
 
@@ -118,7 +153,7 @@ if(isset($_SESSION['userName'])){
             $i = 0;
 
             while ($i < $images) {
-                echo "<a href='index.php?page=manage&id=" . $product["StockItemID"] . "&delete=" . $arr[$i]['PhotoID'] . "&filename=" . str_replace("./public/images/", "", $arr[$i]['Path']) . "'>Delete</img>";
+                echo "<a href='index.php?page=manage&id=" . $product["StockItemID"] . "&delete=" . $arr[$i]['PhotoID'] . "&filename=" . str_replace("./public/images/", "", $arr[$i]['Path']) . "'>Delete=></img>";
                 echo "<img style='height: 150px; width: 150px;' src='" . $arr[$i]['Path'] . "'>";
                 $i++;
 
@@ -131,4 +166,4 @@ if(isset($_SESSION['userName'])){
 
 ?>
 
-
+</div>
