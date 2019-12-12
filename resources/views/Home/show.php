@@ -36,7 +36,7 @@
                         $stockClass = 'warning';
                         $outputStock = 'Be quick! Just a few left';
                     } ?>
-                    <div class="carousel-item <?= $first ? 'active' : '' ?>" data-slide-number="<?= $i; ?>">
+                    <div class="carousel-item <?= $first ? 'active' : '' ?>">
                         <div class="card my-2">
                             <div class="card-header">
                                 <h2><?= $product["StockItemName"] ?></h2>

@@ -12,7 +12,7 @@ $limit = getValueFromArray("limit", $_GET, DEFAULT_LIMIT);
 
 $start_from = ($pn-1) * $limit;
 
-if(isset($_GET["deleteproduct"])){
+if(isset($_GET["deleteproduct"]) && $_GET["deleteproduct"]){
     echo '<div class="alert alert-success text-center"><strong>Succes!</strong> The product has been deleted.</div>';
 }
 if(isset($_GET["category"])){
@@ -126,9 +126,10 @@ for($i = 0; $i < count($products); $i++)
                         <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
                     </form>
                     <?php
-                    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){ ?>
+if(isset($_SESSION['userName'])){
+    if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){ ?>
                         <a href="?page=manage&action=show&id=<?=$product['StockItemID'] ?>" class="btn btn-info btn-square" style="width: 100%; ">Edit item</a>
-                    <?php } ?>
+                    <?php }} ?>
                 </div>
             </a>
         </div>
