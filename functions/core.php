@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\override;
+
 require_once "./functions/loghandler.php";
 require_once "./functions/authfunctions.php";
 require_once  "./functions/databaseFunctions.php";
@@ -138,20 +141,24 @@ function prepareCart() {
 
     if(isset($_POST["AddToCart"]) && isset($_POST["amount"]) && isset($_POST["productID"])) {
         if($_POST["amount"] > 0) {
-            addToCart($_POST["productID"], $_POST["amount"]);
+            addToCart($_POST["productID"], $_POST["amount"], isset($_POST["override"]));
         } else {
             removeFromCart($_POST["productID"], $_POST["amount"]);
         }
     }
 }
 
-function addToCart($productID, $amount) {
+function addToCart($productID, $amount, $override = false) {
     $cart = array_values($_SESSION["Cart"]);
     $index = in_array_r($productID, $cart);
     if($index === -1) {
         array_push($cart, ["id" => $productID, "amount" => $amount]);
     } else {
-        $cart[$index]["amount"] = $amount;
+        if($override) {
+            $cart[$index]["amount"] = $amount;
+        } else {            
+            $cart[$index]["amount"] += $amount;
+        }
     }
     
     $_SESSION["Cart"] = array_values($cart);

@@ -7,6 +7,10 @@ startAuth();
 $_SESSION["Cart"] = [];
 prepareCart();
 
+// echo "<pre>";
+// var_dump($_SESSION["Cart"]);
+// echo "</pre>";
+
 if(isset($_SESSION['userName'])) {
     $peopleInfo = selectOnePeople($_SESSION['userName']);
 }
@@ -57,7 +61,7 @@ $footer = getFooter();
       </li>
 
         <?php
-        if(isset( $_SESSION['userName'])){
+        if(isset($_SESSION['userName'])) {
             if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
         ?>
             <li class="nav-item <?= setWhenActive("user", LVL_NAV) ?>">
