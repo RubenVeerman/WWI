@@ -78,7 +78,14 @@ if($empty){
 }
 for($i = 0; $i < count($products); $i++)
 {
-    $product = $products[$i];
+    $product = $products[$i];    
+    $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
+
+    $discount = 0;
+    if (!empty($specialdeal)) {
+        $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
+    }
+
     if($i % 4 == 0)
     {
         ?>
@@ -100,7 +107,17 @@ for($i = 0; $i < count($products); $i++)
                     <img class="card-img-top img-fluid" style="height: 190px" src="<?=$arr[0]["Path"]?>" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title card-title-cap"><?= $product["StockItemName"]?></h5>
-                        <h2 class="card-title">€ <?= $product["RecommendedRetailPrice"]?></h2>
+                        
+                        <?php if (empty($specialdeal)) { ?>
+                            <h2 class="card-title">€<?= $product["RecommendedRetailPrice"]; ?></h2>
+                        <?php } else { ?>
+                            <div class="d-flex justify-content-between">
+                                <h2 class="text-danger m-0">
+                                    <s>€<?= $product["RecommendedRetailPrice"]; ?></s>
+                                </h2>
+                                <h2 class="text-success">€<?= $discount; ?></h2>
+                            </div>                            
+                        <?php } ?>
 
                     </div>
                     <form method="POST" class=" mb-0">

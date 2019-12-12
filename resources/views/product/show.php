@@ -88,7 +88,7 @@ $images = dbPhoto($product["StockItemID"]);
                     <h6><?=substr($product["TaxRate"], 0, -1)?>% tax rate included</h6>
                 <?php } else { ?>
                     <h2 class="text-danger">
-                        <strike>€<?=$product["RecommendedRetailPrice"];?></strike>
+                        <s>€<?=$product["RecommendedRetailPrice"];?></s>
                     </h2>
                     <h1 class="text-success">€<?=$discount;?></h1>
                 <?php } ?>
@@ -98,7 +98,7 @@ $images = dbPhoto($product["StockItemID"]);
                     <div class="row">
                         <div class="col-md-2">  
                             <label for="tbxAmount">Aantal:</label>                          
-                            <input type="number" id="tbxAmount" name="amount"  class="form-control" value="0">   
+                            <input type="number" id="tbxAmount" name="amount"  class="form-control" value="1">   
                         </div>
                         <div class="col-md-3 my-3">
                             <button type="submit" name="AddToCart" class="btn btn-success">Add tot Cart</button>

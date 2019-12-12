@@ -63,9 +63,12 @@
                                             </h2>
                                             <h1 class="text-success">€<?= $discount; ?></h1>
                                         <?php } ?>
-                                        </h1>
                                         <br>
-                                        <button type="button" class="btn btn-success">Add to cart</button>
+                                        <form method="POST" class=" mb-0">
+                                            <input type="hidden" name="amount" value="1">
+                                            <input type="hidden" name="productID" value="<?=$product["StockItemID"];?>">
+                                            <button type="submit" name="AddToCart" class="btn btn-success">Add to cart</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
