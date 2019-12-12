@@ -4,7 +4,11 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
-// $_SESSION["Cart"] = [];
+
+if(!isset($_SESSION["Cart"])) {
+    $_SESSION["Cart"] = [];
+}
+
 prepareCart();
 
 // echo "<pre>";
@@ -38,15 +42,15 @@ $footer = getFooter();
     <link href="./public/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<header class="jumbotron text-center wwi-header" style="margin-bottom:0">
+<header class="text-center wwi-header mb-0">
 
     <h1><span class="logo-text">Wide World</span> <span class="logo-imp">Importers</span></h1>
 
-    <p class="logo-imp">Mission, Vission & Values</p>
+    <p class="logo-imp m-0">Mission, Vission & Values</p>
 
 </header>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark mt-0">
   <a class="navbar-brand <?= setWhenActive("home", LVL_NAV) ?>" href="?page=home">WWI</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>

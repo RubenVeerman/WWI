@@ -24,6 +24,10 @@ function startSite()
     }
 }
 
+function round_r($number) {
+    return number_format((float)$number, 2, '.', '');
+}
+
 function getLayout($file) 
 {
     ob_start();

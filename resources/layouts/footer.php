@@ -1,3 +1,7 @@
+<?php
+$year = date("Y");
+?>
+
 <footer class="jumbotron font-small pt-4 mb-0 mt-5">
 
   <!-- Footer Links -->
@@ -75,7 +79,7 @@
   <!-- Footer Links -->
 
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">© 2019-2020 Copyright:
+  <div class="footer-copyright text-center py-3">© <?=$year?> - <?=$year+1?> Copyright:
     <b class="logo-text">ICTM1K5</b>  All rights reserved. 
   </div>
   <!-- Copyright -->

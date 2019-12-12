@@ -1,6 +1,7 @@
 @import url("./carousel.css");
 @import url("./ui.css");
 .wwi-header {
+	background-color: #e9ecef;
 	background-image: url("../images/logo/wide-world-importers-logo-without-small.png"), url("../images/logo/wide-world-importers-logo-without-flipped-small.png");
 	background-repeat: no-repeat, no-repeat;
 	background-position: 25% center, 75% center;
@@ -79,7 +80,7 @@ img {
 }
 
 @media only screen and (max-width: 600px) {
-	header.jumbotron {
+	header.wwi-header {
 		display: none;
 	}
 }
