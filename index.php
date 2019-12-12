@@ -4,7 +4,7 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
-// $_SESSION["Cart"] = [];
+$_SESSION["Cart"] = [];
 prepareCart();
 
 if(isset($_SESSION['userName'])) {

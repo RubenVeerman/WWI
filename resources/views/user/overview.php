@@ -32,6 +32,11 @@ if(isset($_SESSION['userName'])) {
                 <strong>Success!</strong> account has been updated successfully.
               </div>';
         }
+        if(isset($_GET['edit']) && $_GET['edit'] == 'failed') {
+            echo '<div class="alert alert-warning text-center">
+                <strong>Failed!</strong> account hasnt been updated, some fields were left empty.
+              </div>';
+        }
         if (isset($_GET['add']) && $_GET['add'] == 'success') {
             echo '<div class="alert alert-success text-center"><strong>Succes!</strong> User has been added.</div>';
         }
