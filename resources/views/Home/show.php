@@ -38,6 +38,7 @@
                     } ?>
                     <div class="carousel-item <?= $first ? 'active' : '' ?>">
                         <div class="card my-2">
+                            <a class="black-text" href="index.php?page=product&action=show&id=<?=$product['StockItemID']?>">
                             <div class="card-header">
                                 <h2><?= $product["StockItemName"] ?></h2>
                             </div>
@@ -73,7 +74,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        </a>
                     </div>
                 <?php 
                 $first = false;} ?>
