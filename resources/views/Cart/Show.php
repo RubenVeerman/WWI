@@ -1,8 +1,20 @@
-<?php
-
-?>
 
 <div class="container">
+<?php if(count($_SESSION["Cart"]) == 0) {?>
+    <div class="card">
+        <div class="card-header">
+            Cart
+        </div>
+        <div class="card-body">
+            <h6>No items in cart yet. Please start shopping <a href="index.php?page=product&action=overview">here</a>.<h6>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+<?php } else {
+?>
+
     <div class="card">
         <div class="card-header">
             Cart
@@ -116,5 +128,6 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div> 
+<?php }?> 
 </div>
