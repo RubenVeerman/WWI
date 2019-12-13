@@ -111,7 +111,7 @@
             <h1>Total to pay:</h1>
             <div class="form-group mb-1">
                 <h1>€<?= $total ?></h1>
-                <button class="btn btn-success form-control">pay</button>
+                <button class="btn btn-success form-control">Checkout</button>
                 <div>
                 </div>
             </div>
