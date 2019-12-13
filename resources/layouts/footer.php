@@ -2,7 +2,7 @@
 $year = date("Y");
 ?>
 
-<footer class="jumbotron font-small pt-4 mb-0 mt-5">
+<footer class="jumbotron font-small pt-4 mb-0 mt-5 pb-0 footer">
 
   <!-- Footer Links -->
   <div class="container-fluid text-center text-md-left">
