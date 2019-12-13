@@ -4,11 +4,6 @@ require_once "./functions/core.php";
 require_once "./functions/authfunctions.php";
 require_once "./functions/databaseFunctions.php";
 startAuth();
-
-if(!isset($_SESSION["Cart"])) {
-    $_SESSION["Cart"] = [];
-}
-
 prepareCart();
 
 // echo "<pre>";
@@ -121,7 +116,7 @@ $footer = getFooter();
 
 
 
-<div class="container-fluid" style="margin-top:30px">
+<div class="container-fluid content" style="margin-top:30px">
 
     <?= $content ?>
 

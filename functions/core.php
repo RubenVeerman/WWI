@@ -139,7 +139,7 @@ function getDiscount($price, $specialDeal)
 }
 
 function prepareCart() {
-    if(!is_array($_SESSION["Cart"])) {
+    if(!isset($_SESSION["Cart"]) || (isset($_SESSION["Cart"]) && !is_array($_SESSION["Cart"]))) {
         $_SESSION["Cart"] = [];
     }
 
