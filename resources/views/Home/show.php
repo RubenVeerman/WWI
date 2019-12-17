@@ -7,77 +7,10 @@
                 $products = getSpecialDeals();
                 $first = true;
                 foreach ($products as $product) {
-                    $id = $product["StockItemID"];
-                    $specialdeal = selectSpecialDealByStockItemID($id);
-                    $stock = selectProductStock($id);
-                    $images = dbPhoto($product["StockItemID"]);
-
-                    $discount = 0;
-                    if (!empty($specialdeal)) {
-                        $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
-                    }
-
-                    $customFields = json_decode($product["CustomFields"]);
-                    $tags = json_decode($product["Tags"]);
-                    $countTags = count($tags);
-                    $description = $countTags == 0 ? "none" : "";
-
-                    for ($i = 0; $i < $countTags; $i++) {
-                        $comma = $i < ($countTags - 1) ? "," : "";
-                        $description .= $tags[$i] . $comma;
-                    }
-                    $stock = $product['QuantityOnHand'];
-                    $outputStock = "";
-                    $stockClass = "";
-                    if ($stock == 0) {
-                        $stockClass = 'danger';
-                        $outputStock = 'Sold out!';
-                    } else if ($stock < 100) {
-                        $stockClass = 'warning';
-                        $outputStock = 'Be quick! Just a few left';
-                    } ?>
-                    <div class="carousel-item <?= $first ? 'active' : '' ?>">
-                        <div class="card my-2">
-                            <a class="black-text" href="index.php?page=product&action=show&id=<?=$product['StockItemID']?>">
-                            <div class="card-header">
-                                <h2><?= $product["StockItemName"] ?></h2>
-                            </div>
-                            <div class="card-body row">
-                                <div class="col-sm p-2">
-                                    <img class="d-block w-100" src="<?= $images[0]["Path"] ?>">
-                                </div>
-                                <div class="col-sm d-flex flex-column align-content-*-end">
-                                    <div>
-                                        <h4><?= $product["MarketingComments"] ?></h4>
-                                        <p><b>Country of manufacture</b>: <?= $customFields->CountryOfManufacture ?? "" ?></p>
-                                        <p><b>Specifications</b>: <?= $description; ?>
-                                        </p>
-                                        </br>
-                                        <div class="text-<?= $stockClass; ?>"><?= $outputStock ?></div>
-                                    </div>
-                                    <div>
-                                        <?php if (empty($specialdeal)) { ?>
-                                            <h1> €<?= $product["RecommendedRetailPrice"]; ?></h1>
-                                        <?php } else { ?>
-                                            <h2 class="text-danger">
-                                                <s>€<?= $product["RecommendedRetailPrice"]; ?></s>
-                                            </h2>
-                                            <h1 class="text-success">€<?= $discount; ?></h1>
-                                        <?php } ?>
-                                        <br>
-                                        <form method="POST" class=" mb-0">
-                                            <input type="hidden" name="amount" value="1">
-                                            <input type="hidden" name="productID" value="<?=$product["StockItemID"];?>">
-                                            <button type="submit" name="AddToCart" class="btn btn-success">Add to cart</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                <?php 
-                $first = false;} ?>
+                    echo showProduct($product, false, $first, true);
+                    $first = false;
+                } 
+                ?>
 
             </div>
         </div>
@@ -92,47 +25,4 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-
-        <?php
-        $randProduct = selectRandomStockItems();
-            for($i=0; $i<4; $i++){
-                $arr = dbPhoto($randProduct[$i]["StockItemID"]);
-                $specialdeal = selectSpecialDealByStockItemID($randProduct[$i]["StockItemID"]);
-                if (!empty($specialdeal)) {
-                    $discount = getDiscount($randProduct[$i]["RecommendedRetailPrice"], $specialdeal);
-                }
-                echo
-                '<div class="col-sm-3">
-            <a style="color: black" href="?page=product&action=show&id='.$randProduct[$i]["StockItemID"].'">
-                <div class="card border-primary bg-light shadow" style="width: auto;">
-                    <img class="card-img-top img-fluid" style="height: 190px" src="'.$arr[0]["Path"].'" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title card-title-cap">'.$randProduct[$i]["StockItemName"].'</h5>';
-                if (empty($specialdeal)) {
-                    echo '<h2 class="card-title">€'.$randProduct[$i]["RecommendedRetailPrice"].'</h2>';
-                }
-                else {
-                    echo '<div class="d-flex justify-content-between" >
-                                <h2 class="text-danger m-0" >
-                                    <s > €'.$randProduct[$i]["RecommendedRetailPrice"].'</s >
-                                </h2 >
-                                <h2 class="text-success" > €'.$discount.'</h2 >
-                            </div >   ';
-                }
-                echo '
-                    </div>
-                    <form method="POST" class=" mb-0">
-                        <input type="hidden" name="amount" value="1">
-                        <input type="hidden" name="productID" value="'.$randProduct[$i]["StockItemID"].'">
-                        <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
-                    </form>
-                </div>
-            </a>
-        </div>';
-         }
-        ?>
-    </div>
-</div>
-
+<?= getRelatedProducts(selectRandomStockItems()); ?>

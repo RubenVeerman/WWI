@@ -84,3 +84,235 @@ function getPaginationBar($total_products, $limit, $pn, $currentcategory, $pagel
 
     return $print;
 }
+
+
+function getRelatedProducts($products) 
+{
+    
+$output = "<div class=\"container\">
+                <div class=\"row\">";
+$keys = array_rand($products, 4);
+
+    for($i=0; $i<4; $i++) {
+    $product = $products[$keys[$i]];
+    $arr = dbPhoto($product["StockItemID"]);
+    $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
+    if (!empty($specialdeal)) {
+        $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
+    }
+    $output .= '<div class="col-sm-3">
+    <a style="color: black" href="?page=product&action=show&id='.$product["StockItemID"].'">
+    <div class="card border-primary bg-light shadow" style="width: auto;">
+        <img class="card-img-top img-fluid" style="height: 190px" src="'.$arr[0]["Path"].'" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title card-title-cap">'.$product["StockItemName"].'</h5>';
+    if (empty($specialdeal)) {
+        $output .= '<h2 class="card-title">€'.$product["RecommendedRetailPrice"].'</h2>';
+    }
+    else {
+        $output .= '<div class="d-flex justify-content-between" >
+                    <h2 class="text-danger m-0" >
+                        <s > €'.$product["RecommendedRetailPrice"].'</s >
+                    </h2 >
+                    <h2 class="text-success" > €'.$discount.'</h2 >
+                </div >   ';
+    }
+    $output .= '
+        </div>
+        <form method="POST" class=" mb-0">
+            <input type="hidden" name="amount" value="1">
+            <input type="hidden" name="productID" value="'.$product["StockItemID"].'">
+            <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
+        </form>
+    </div>
+    </a>
+    </div>';
+    }
+$output .= "</div>
+</div>";
+
+return $output;
+}
+
+function showProduct($product, $detailed = true, $first = false, $withCarousel = false) 
+{
+    $id = $product["StockItemID"];
+    $specialdeal = selectSpecialDealByStockItemID($id);
+    $stock = selectProductStock($id);
+    $images = dbPhoto($product["StockItemID"]);
+
+    $discount = 0;
+    if (!empty($specialdeal)) {
+        $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
+    }
+
+    $customFields = json_decode($product["CustomFields"]);
+    $tags = json_decode($product["Tags"]);
+
+    $description = "";
+    if(is_array($tags)) {   
+        if(count($tags) == 0) {
+            $description = "none";
+        }
+
+        for ($i = 0; $i < count($tags); $i++) {
+            $comma = $i < (count($tags) - 1) ? "," : "";
+            $description .= $tags[$i] . $comma;
+        }
+    }
+
+    $stockAmount = $stock['LastStocktakeQuantity'];
+    $outputStock = "";
+    $stockClass = "";
+    if ($stockAmount == 0) {
+        $stockClass = 'danger';
+        $outputStock = 'Sold out!';
+    } else if ($stockAmount < 100) {
+        $stockClass = 'warning';
+        $outputStock = 'Be quick! Just a few left';
+    } 
+
+    $output = '';
+
+    if($detailed) {
+        
+        $output .= '<div class="row">
+        <div class="col-sm p-2">
+            <div id="productImageCarousel" class="carousel slide">
+                <h2>'.  $product["StockItemName"] .'</h2>';
+                if (!empty($specialdeal)) { 
+                    $output .= '<h3 class="text-success">'.  $specialdeal["DealDescription"] .'</h3>';
+                }
+                $output .= '<div class="carousel-inner">';
+                    
+                    for ($i = 0; $i < count($images); $i++) {
+                        $active = '';
+                        if($i == 0) $active = 'active';
+                        $output .= '<div class="carousel-item '.  $active .'" data-slide-number="'.  $i .'">
+                            <img class="d-block w-100" src="'.  $images[$i]["Path"] .'">
+                        </div>';
+                    }
+                $output .= '</div>';
+                if(count($images) > 1) { 
+                    $output .= ' 
+                    <a class="carousel-control-prev" href="#productImageCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#productImageCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>           
+                    <ol class="carousel-indicators">';
+                        for ($i = 0; $i < count($images); $i++) {
+                            $active = '';
+                            if( $i == 0) $active = 'active';
+                            $output .= '<li data-target="#productImageCarousel" data-slide-to="'.  $i .'" class="'. $active .'">
+                                <img class="d-block" src="'.  $images[$i]["Path"] .'">
+                            </li>';
+                        }
+                    $output .= '</ol>';
+                }
+
+                if(empty($customFields->CountryOfManufacture)) {
+                    $customFields->CountryOfManufacture = '';
+                }
+            $output .= '</div>
+        </div>
+        <div class="col-sm d-flex flex-column align-content-*-end">
+            <div>
+                <h4>'.  $product["MarketingComments"] .'</h4>
+                <p><b>Country of manufacture:</b> '. $customFields->CountryOfManufacture .'</p>
+                <p><b>Specifications:</b> '.  $description .'</p>
+                <p><b>Lead time days:</b> '.  $product["LeadTimeDays"] .'</p>
+                <p><b>Quantity per outer:</b> '.  $product["QuantityPerOuter"] .'</p>
+                <p><b>Weight</b> '.  $product["TypicalWeightPerUnit"] .' kg</p>
+                </br>
+                <div class="text-'.  $stockClass .'">'.  $outputStock .'</div>
+            </div>
+            <div>';
+                if(empty($specialdeal)) {
+                    $output .= '<h1> €'. $product["RecommendedRetailPrice"].'</h1>
+                    <h6>'. substr($product["TaxRate"], 0, -1).'% tax rate included</h6>';
+                } else {
+                   $output .=' <h2 class="text-danger">
+                        <s>€'. $product["RecommendedRetailPrice"].'</s>
+                    </h2>
+                    <h1 class="text-success">€'. $discount.'</h1>';
+                } 
+                $output .= '
+                <br>
+                <form method="POST">
+                    <input type="hidden" name="productID" value="'.  $product["StockItemID"] .'" >
+                    <div class="row">
+                        <div class="col-md-2">  
+                            <label for="tbxAmount">Aantal:</label>                          
+                            <input type="number" id="tbxAmount" name="amount"  class="form-control" value="1">   
+                        </div>
+                        <div class="col-md-3 my-3">
+                            <button type="submit" name="AddToCart" class="btn btn-success">Add tot Cart</button>
+                        </div>
+                    </div>
+                     </form>
+            </div>
+        </div>
+    </div>';
+
+    } else {
+
+        if($withCarousel) {
+            $active = '';
+            if($first) {
+                $active = 'active';
+            }
+            $output .= '<div class="carousel-item '. $active .'">';
+        }
+        
+        $output .= '
+            <div class="card my-2">
+                <a class="black-text" href="index.php?page=product&action=show&id='. $product['StockItemID'].'">
+                <div class="card-header">
+                    <h2>'.  $product["StockItemName"] .'</h2>
+                </div>
+                <div class="card-body row">
+                    <div class="col-sm p-2">
+                        <img class="d-block w-100" src="'.  $images[0]["Path"] .'">
+                    </div>
+                    <div class="col-sm d-flex flex-column align-content-*-end">
+                        <div>
+                            <h4>'.  $product["MarketingComments"] .'</h4>
+                            <p><b>Country of manufacture</b>: '.  $customFields->CountryOfManufacture ?? "" .'</p>
+                            <p><b>Specifications</b>: '.  $description .'
+                            </p>
+                            </br>
+                            <div class="text-'.  $stockClass .'">'.  $outputStock .'</div>
+                        </div>
+                        <div>';
+                            if (empty($specialdeal)) { 
+                                $output .= '<h1> €'.  $product["RecommendedRetailPrice"] .'</h1>';
+                            } else {
+                                $output .= '<h2 class="text-danger">
+                                    <s>€'.  $product["RecommendedRetailPrice"] .'</s>
+                                </h2>
+                                <h1 class="text-success">€'.  $discount .'</h1>';
+                            }
+                            
+                            $output .= '<br>
+                            <form method="POST" class=" mb-0">
+                                <input type="hidden" name="amount" value="1">
+                                <input type="hidden" name="productID" value="'. $product["StockItemID"] .'">
+                                <button type="submit" name="AddToCart" class="btn btn-success">Add to cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </a>';
+
+        if($withCarousel) {
+            $output .= '</div>';
+        }
+    }
+
+    return $output;
+} 
