@@ -281,7 +281,7 @@ function selectSpecialDealByStockItemID($id)
 function selectProductsByStockGroup($stockItemID) 
 {
     $connection = createConnection();
-    $sql = "SELECT DISTINCT * FROM stockitems S
+    $sql = "SELECT DISTINCT S.StockItemID FROM stockitems S
             JOIN stockitemstockgroups IG ON IG.StockItemID=S.StockItemID
             WHERE IG.StockGroupID IN (SELECT StockGroupID FROM stockitemstockgroups WHERE StockItemID = ?)
             AND NOT S.StockItemID = ?";
@@ -427,7 +427,7 @@ function getNextStockID(){
     $person_id = $fetch[0] + 1;
     return $person_id;
 }
-function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $outerPackageID,$leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom, $validTo, $stock, $recommendedRetailPrice){
+function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $outerPackageID,$leadTimeDays,$quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$weightPerUnit,$marketingComments,$searchDetails, $lastEditedBy,$validFrom, $validTo, $stock, $recommendedRetailPrice, $category){
     $connection = createConnection();
     $id = getNextStockID();
     $sql = "INSERT INTO stockitems (StockItemID, StockItemName, SupplierID,ColorID, UnitPackageID, OuterPackageID, LeadTimeDays, QuantityPerOuter,IsChillerStock,TaxRate,UnitPrice,TypicalWeightPerUnit,MarketingComments,SearchDetails, LastEditedBy, ValidFrom, ValidTo, RecommendedRetailPrice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -438,11 +438,33 @@ function createProduct($stockItemName, $supplierID,$colorID, $unitPackageID, $ou
         echo mysqli_error($connection);
     }
     $stmt->close();
+    insertCategory($id, $category, $lastEditedBy);
     insertStock($id, $stock, $lastEditedBy);
 
 
 }
 
+function getNextStockGroupID(){
+    $connection = createConnection();
+    $id_check_query = "SELECT MAX(StockItemStockGroupID) FROM stockitemstockgroups";
+    $query_result = mysqli_query($connection, $id_check_query);
+    $fetch = mysqli_fetch_array($query_result);
+    $person_id = $fetch[0] + 1;
+    return $person_id;
+}
+
+function insertCategory($id, $category, $lastEditedBy){
+    $connection = createConnection();
+    $groupID = getNextStockGroupID();
+    $sql = "INSERT INTO stockitemstockgroups VALUES (?, ?, ?, ?, NOW())";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('ssss',$groupID, $id, $category, $lastEditedBy);
+    $stmt->execute();
+    if(mysqli_error($connection)){
+        echo mysqli_error($connection);
+    }
+    $stmt->close();
+}
 
 function setStock($stock, $id, $lasteditedby){
     $connection = createConnection();
@@ -495,6 +517,13 @@ function deleteProductStock($id){
     $stmt->execute();
     $stmt->close();
 }
+function deleteProductCat($id){
+    $connection = createConnection();
+    $stmt = $connection->prepare("DELETE FROM stockitemstockgroups WHERE StockItemID=? ");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+}
 
 function suppliers(){
         $connection = createConnection();
@@ -503,6 +532,15 @@ function suppliers(){
         closeConnection($connection);
         return $result;
 }
+
+function category(){
+    $connection = createConnection();
+    $sql = "SELECT * FROM stockgroups";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+    closeConnection($connection);
+    return $result;
+}
+
 function editPeopleAccount($id, $admin){
     if(!empty($_POST['FullName']) && !empty($_POST['PreferredName']) && !empty($_POST['SearchName']) && !empty($_POST['LogonName'])) {
         $connection = createConnection();

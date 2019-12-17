@@ -75,6 +75,7 @@ if(isset($_SESSION['userName'])){
             $_GET["delete"] = "";
         }
         if (isset($_GET["deleteproduct"])) {
+            deleteProductCat($_GET["deleteproduct"]);
             deleteProductStock($_GET["deleteproduct"]);
             deleteProduct($_GET["deleteproduct"]);
             header('Location: ' . "?page=product&action=overview&deleteproduct=success");
