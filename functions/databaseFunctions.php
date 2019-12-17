@@ -289,12 +289,14 @@ function selectProductsByStockGroup($stockItemID)
     mysqli_stmt_bind_param($statement, 'ii', $stockItemID, $stockItemID);
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
-
-    $arr = setResultToArray($result);
+    $result = setResultToArray($result);
+    $result = array_rand($result, 4);
+    $sql = "SELECT * FROM stockitems WHERE StockItemID IN ($result[0], $result[1], $result[2], $result[3])";
+    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
     closeConnection($connection);
-
-    return $arr;
+    return $result;
 }
+
 
 function checkEmailIfExists($logonName, $id)
 {

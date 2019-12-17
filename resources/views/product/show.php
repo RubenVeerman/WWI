@@ -118,32 +118,27 @@ $images = dbPhoto($product["StockItemID"]);
     <div class="row">
 
         <?php
-        $randProduct = selectProductsByStockGroup($id);
-
-        echo "<pre>";
-        var_dump($randProduct);
-        echo "</pre>";
-
-            for($i=0; $i<4; $i++){
-                $arr = dbPhoto($randProduct[$i]["StockItemID"]);
-                $specialdeal = selectSpecialDealByStockItemID($randProduct[$i]["StockItemID"]);
+        $randomProduct = selectProductsByStockGroup($id);
+        foreach ($randomProduct as $randProduct){
+                $arr = dbPhoto($randProduct["StockItemID"]);
+                $specialdeal = selectSpecialDealByStockItemID($randProduct["StockItemID"]);
                 if (!empty($specialdeal)) {
-                    $discount = getDiscount($randProduct[$i]["RecommendedRetailPrice"], $specialdeal);
+                    $discount = getDiscount($randProduct["RecommendedRetailPrice"], $specialdeal);
                 }
                 echo
                 '<div class="col-sm-3">
-            <a style="color: black" href="?page=product&action=show&id='.$randProduct[$i]["StockItemID"].'">
+            <a style="color: black" href="?page=product&action=show&id='.$randProduct["StockItemID"].'">
                 <div class="card border-primary bg-light shadow" style="width: auto;">
                     <img class="card-img-top img-fluid" style="height: 190px" src="'.$arr[0]["Path"].'" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title card-title-cap">'.$randProduct[$i]["StockItemName"].'</h5>';
+                        <h5 class="card-title card-title-cap">'.$randProduct["StockItemName"].'</h5>';
                 if (empty($specialdeal)) {
-                    echo '<h2 class="card-title">€'.$randProduct[$i]["RecommendedRetailPrice"].'</h2>';
+                    echo '<h2 class="card-title">€'.$randProduct["RecommendedRetailPrice"].'</h2>';
                 }
                 else {
                     echo '<div class="d-flex justify-content-between" >
                                 <h2 class="text-danger m-0" >
-                                    <s > €'.$randProduct[$i]["RecommendedRetailPrice"].'</s >
+                                    <s > €'.$randProduct["RecommendedRetailPrice"].'</s >
                                 </h2 >
                                 <h2 class="text-success" > €'.$discount.'</h2 >
                             </div >   ';
@@ -152,7 +147,7 @@ $images = dbPhoto($product["StockItemID"]);
                     </div>
                     <form method="POST" class=" mb-0">
                         <input type="hidden" name="amount" value="1">
-                        <input type="hidden" name="productID" value="'.$randProduct[$i]["StockItemID"].'">
+                        <input type="hidden" name="productID" value="'.$randProduct["StockItemID"].'">
                         <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
                     </form>
                 </div>
