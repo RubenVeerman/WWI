@@ -136,7 +136,6 @@ $output = "<div class=\"container\">
     }
 $output .= "</div>
 </div>";
-
 return $output;
 }
 
