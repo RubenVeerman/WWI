@@ -6,7 +6,8 @@ $message = false;
 if(isset($_SESSION['userName'])){
 $peopleInfo  = selectOnePeople($_SESSION['userName']);
 if($peopleInfo['IsSalesperson'] == 1 || $peopleInfo['IsSystemUser'] == 1 || $peopleInfo['IsEmployee'] == 1){
-$suppliers = suppliers();
+    $suppliers = suppliers();
+    $categoryID = category();
 if(isset($_POST["submit"])){
 $stockItemName = $_POST["productname"];
 $supplierID = $_POST["supplierID"];
@@ -25,8 +26,9 @@ $lastEditedBy = selectOnePeople($_SESSION['userName']);
 $stock = $_POST["stock"];
 $validFrom = "2016-05-31 23:00:00";
 $validTo = "9999-12-31 23:59:59";
+$category = $_POST["category"];
 
-    $required = array('productname', 'supplierID', 'leadTimeDays', 'quantityPerOuter', 'taxRate', 'unitPrice','typicalWeightPerUnit','marketingcomments','searchDetails', 'stock');
+    $required = array('category','productname', 'supplierID', 'leadTimeDays', 'quantityPerOuter', 'taxRate', 'unitPrice','typicalWeightPerUnit','marketingcomments','searchDetails', 'stock');
 
 // Loop over field names, make sure each one exists and is not empty
     $error = false;
@@ -40,7 +42,7 @@ $validTo = "9999-12-31 23:59:59";
         echo '<div class="alert alert-danger text-center"><strong>Failed!</strong> All fields are required.</div>';
     } else {
         $recommendedRetailPrice = $unitPrice * ($taxRate/100+1);
-        createProduct($stockItemName,$supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays, $quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails,$lastEditedBy['PersonID'],$validFrom, $validTo, $stock, $recommendedRetailPrice);
+        createProduct($stockItemName,$supplierID,$colorID,$unitPackageID, $outerPackageID, $leadTimeDays, $quantityPerOuter,$isChillerStock,$taxRate,$unitPrice,$typicalWeightPerUnit,$marketingComments,$searchDetails,$lastEditedBy['PersonID'],$validFrom, $validTo, $stock, $recommendedRetailPrice, $category);
         $message = true;
     }
 } else {
@@ -64,6 +66,18 @@ $stock = "";
 <form class="form-group" method="post" action="?page=manage&action=add">
     Product Name:
     <input type="text" class="form-control" placeholder="Product Name" name="productname" value="<?= isset($_POST['productname']) ? $_POST['productname'] : '' ?>">
+    Category:
+    <select class="form-control" name="category" value="<?= isset($_POST['category']) ? $_POST['category'] : '' ?>">
+
+        <?php
+        foreach ($categoryID as $cat){
+            print("<option value='" . $cat["StockGroupID"] . "'>");
+            print($cat["StockGroupName"]);
+            print("</option>");
+        }
+        ?>
+    </select>
+
     Supplier ID:
     <select class="form-control" name="supplierID" value="<?= isset($_POST['supplierID']) ? $_POST['supplierID'] : '' ?>">
 
