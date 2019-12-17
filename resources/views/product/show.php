@@ -1,17 +1,12 @@
 <?php
 $id = getValueFromArray("id", $_GET, null);
 $product = selectProduct($id);
-$relatedProducts = selectProductsByStockGroup($product["StockItemID"]);
 $stock = selectProductStock($id);
 $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
 $discount = 0;
 if(!empty($specialdeal)) {
     $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
 }
-
-echo "<pre>";
-var_dump($relatedProducts);
-echo "</pre>";
 
 $customFields = json_decode($product["CustomFields"]);
 $tags = json_decode($product["Tags"]);
@@ -117,3 +112,54 @@ $images = dbPhoto($product["StockItemID"]);
 
     </div>
 </div>
+
+
+<div class="container">
+    <div class="row">
+
+        <?php
+        $randProduct = selectProductsByStockGroup($id);
+
+        echo "<pre>";
+        var_dump($randProduct);
+        echo "</pre>";
+
+            for($i=0; $i<4; $i++){
+                $arr = dbPhoto($randProduct[$i]["StockItemID"]);
+                $specialdeal = selectSpecialDealByStockItemID($randProduct[$i]["StockItemID"]);
+                if (!empty($specialdeal)) {
+                    $discount = getDiscount($randProduct[$i]["RecommendedRetailPrice"], $specialdeal);
+                }
+                echo
+                '<div class="col-sm-3">
+            <a style="color: black" href="?page=product&action=show&id='.$randProduct[$i]["StockItemID"].'">
+                <div class="card border-primary bg-light shadow" style="width: auto;">
+                    <img class="card-img-top img-fluid" style="height: 190px" src="'.$arr[0]["Path"].'" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title card-title-cap">'.$randProduct[$i]["StockItemName"].'</h5>';
+                if (empty($specialdeal)) {
+                    echo '<h2 class="card-title">€'.$randProduct[$i]["RecommendedRetailPrice"].'</h2>';
+                }
+                else {
+                    echo '<div class="d-flex justify-content-between" >
+                                <h2 class="text-danger m-0" >
+                                    <s > €'.$randProduct[$i]["RecommendedRetailPrice"].'</s >
+                                </h2 >
+                                <h2 class="text-success" > €'.$discount.'</h2 >
+                            </div >   ';
+                }
+                echo '
+                    </div>
+                    <form method="POST" class=" mb-0">
+                        <input type="hidden" name="amount" value="1">
+                        <input type="hidden" name="productID" value="'.$randProduct[$i]["StockItemID"].'">
+                        <button type="submit" name="AddToCart" class="btn btn-success btn-square" style="width: 100%; ">Add to cart</button>
+                    </form>
+                </div>
+            </a>
+        </div>';
+         }
+        ?>
+    </div>
+</div>
+
