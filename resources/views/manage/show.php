@@ -121,7 +121,7 @@ if(isset($_SESSION['userName'])){
             <input type="text" class="form-control" value="<?= $product["UnitPrice"] ?>" name="unitPrice">
             Tax Rate (in %):
             <input type="number" class="form-control" value="<?= $product["TaxRate"] ?>" name="taxRate">
-            Typical Weight Per Unit:
+            Typical Weight Per Unit (in kg):
             <input type="text" class="form-control" value="<?= $product["TypicalWeightPerUnit"] ?>" name="typicalWeightPerUnit">
             Marketing Comments:
             <input type="text" class="form-control" value="<?= $product["MarketingComments"] ?>" name="marketingcomments">

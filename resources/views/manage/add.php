@@ -83,7 +83,7 @@ $stock = "";
     <input type="text" class="form-control" placeholder="Unit Price" name="unitPrice" value="<?= isset($_POST['unitPrice']) ? $_POST['unitPrice'] : '' ?>"">
     Tax Rate (in %):
     <input type="number" class="form-control" placeholder="Tax Rate" name="taxRate" value="<?= isset($_POST['taxRate']) ? $_POST['taxRate'] : '' ?>">
-    Typical Weight Per Unit:
+    Typical Weight Per Unit (in kg):
     <input type="text" class="form-control" placeholder="Typical Weight Per Unit" name="typicalWeightPerUnit" value="<?= isset($_POST['typicalWeightPerUnit']) ? $_POST['typicalWeightPerUnit'] : '' ?>"">
     Marketing Comments:
     <input type="text" class="form-control" placeholder="Marketing Comments" name="marketingcomments" value="<?= isset($_POST['marketingcomments']) ? $_POST['marketingcomments'] : '' ?>"">

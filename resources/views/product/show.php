@@ -1,12 +1,17 @@
 <?php
 $id = getValueFromArray("id", $_GET, null);
 $product = selectProduct($id);
+$relatedProducts = selectProductsByStockGroup($product["StockItemID"]);
 $stock = selectProductStock($id);
 $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
 $discount = 0;
 if(!empty($specialdeal)) {
     $discount = getDiscount($product["RecommendedRetailPrice"], $specialdeal);
 }
+
+echo "<pre>";
+var_dump($relatedProducts);
+echo "</pre>";
 
 $customFields = json_decode($product["CustomFields"]);
 $tags = json_decode($product["Tags"]);

@@ -261,6 +261,24 @@ function selectSpecialDealByStockItemID($id)
     return $arr;
 }
 
+function selectProductsByStockGroup($stockItemID) 
+{
+    $connection = createConnection();
+    $sql = "SELECT DISTINCT * FROM stockitems S
+            JOIN stockitemstockgroups IG ON IG.StockItemID=S.StockItemID
+            WHERE IG.StockGroupID IN (SELECT StockGroupID FROM stockitemstockgroups WHERE StockItemID = ?)
+            AND NOT S.StockItemID = ?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, 'ii', $stockItemID, $stockItemID);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+
+    $arr = setResultToArray($result);
+    closeConnection($connection);
+
+    return $arr;
+}
+
 function checkEmailIfExists($logonName, $id)
 {
     $connection = createConnection();
