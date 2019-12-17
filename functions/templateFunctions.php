@@ -91,9 +91,15 @@ function getRelatedProducts($products)
     
 $output = "<div class=\"container\">
                 <div class=\"row\">";
-$keys = array_rand($products, 4);
 
-    for($i=0; $i<4; $i++) {
+    $count = 4;
+    if(count($products) < 4) {
+        $count = count($products);
+    }
+
+    $keys = count($products) > 0 ? array_rand($products, $count) : [];
+
+    for($i=0; $i<count($keys); $i++) {
     $product = $products[$keys[$i]];
     $arr = dbPhoto($product["StockItemID"]);
     $specialdeal = selectSpecialDealByStockItemID($product["StockItemID"]);
@@ -213,16 +219,16 @@ function showProduct($product, $detailed = true, $first = false, $withCarousel =
                         }
                     $output .= '</ol>';
                 }
-
-                if(empty($customFields->CountryOfManufacture)) {
-                    $customFields->CountryOfManufacture = '';
+                $CoM = '';
+                if(isset($customFields) && !empty($customFields->CountryOfManufacture)) {
+                    $CoM = $customFields->CountryOfManufacture = '';
                 }
             $output .= '</div>
         </div>
         <div class="col-sm d-flex flex-column align-content-*-end">
             <div>
                 <h4>'.  $product["MarketingComments"] .'</h4>
-                <p><b>Country of manufacture:</b> '. $customFields->CountryOfManufacture .'</p>
+                <p><b>Country of manufacture:</b> '. $CoM .'</p>
                 <p><b>Specifications:</b> '.  $description .'</p>
                 <p><b>Lead time days:</b> '.  $product["LeadTimeDays"] .'</p>
                 <p><b>Quantity per outer:</b> '.  $product["QuantityPerOuter"] .'</p>

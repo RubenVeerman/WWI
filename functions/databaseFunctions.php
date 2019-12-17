@@ -486,11 +486,13 @@ function insertStock($id, $stock, $lastEditedBy){
 }
 
 function deleteProduct($id){
-    $filename = getFilename($id);
+    $filenames = getFilename($id);
     deletePhoto($id);
-    unlink($filename[0]["Path"]);
-    unlink($filename[1]["Path"]);
-    unlink($filename[2]["Path"]);
+
+    foreach($filenames as $filename) {
+        unlink($filename["Path"]);
+    }
+    
     $connection = createConnection();
     $stmt = $connection->prepare("DELETE FROM StockItems WHERE StockItemID=? ");
     $stmt->bind_param('i', $id);
