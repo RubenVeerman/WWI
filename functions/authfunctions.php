@@ -45,10 +45,10 @@ function logOff() {
     header("location: index.php");
 }
 if (isset($_POST['submit_registration'])) {
-    validateRegistration();
+    validateRegistration('person');
 }
 
-function validateRegistration() {
+function validateRegistration($type) {
     if (!empty($_POST['email']) 
         && !empty($_POST['fname']) 
         && !empty($_POST['lname']) 
@@ -56,10 +56,22 @@ function validateRegistration() {
         && !empty($_POST['pass2'])) {
         if ($_POST['pass1'] == $_POST['pass2']) {
             if(checkEmailIfExists($_POST['email'], 999999999999999)) {
-                header("location: index.php?page=auth&action=registration&registration=failed");
+                if($type == 'person'){
+                    header("location: index.php?page=auth&action=registration&registration=failed");
+                }
+                else{
+                    header("location: index.php?page=user&action=add&add=fail");
+                }
             } else{
-                createCustomerAccount() ;
+                createCustomerAccount($type) ;
             }
+        }
+    }
+    else{
+        if($type == 'person'){
+        }
+        else{
+            header("location: index.php?page=user&action=add&add=failed");
         }
     }
 }

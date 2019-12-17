@@ -199,22 +199,39 @@ function getNextID(){
     $person_id = $fetch[0] + 1;
     return $person_id;
 }
-function createCustomerAccount(){
+function createCustomerAccount($type){
     $connection = createConnection();
     $personID = getNextID();
     $hashedPassword = password_hash($_POST["pass1"], PASSWORD_BCRYPT);
     $validToDate = '9999-12-31 23:59:59';
     $fullname = $_POST["fname"] . " " . $_POST["lname"];
     $searchName = $_POST["fname"] . " " . $fullname;
-    $sql = "INSERT INTO people(PersonID, FullName, PreferredName, SearchName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, EmailAddress, LastEditedBy, ValidFrom, ValidTo) 
+    if($type == 'person') {
+        $sql = "INSERT INTO people(PersonID, FullName, PreferredName, SearchName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, EmailAddress, LastEditedBy, ValidFrom, ValidTo) 
             VALUES (?, ?, ?, ?, 1, ?, 0, ?, 0, 0, 0, ?, 1, NOW(), ?)";
+    }
+    else{
+        $sql = "INSERT INTO people(PersonID, FullName, PreferredName, SearchName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, EmailAddress, LastEditedBy, ValidFrom, ValidTo, PhoneNumber, FaxNumber) 
+            VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
+    }
     $statement = mysqli_prepare($connection, $sql);
     if ( !$statement ) {
         die('mysqli error: '.mysqli_error($connection));
     }
-    mysqli_stmt_bind_param($statement, 'ssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $hashedPassword, $_POST["email"], $validToDate);
+    if($type == 'person') {
+        mysqli_stmt_bind_param($statement, 'ssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $hashedPassword, $_POST["email"], $validToDate);
+    }
+    else{
+        $peopleInfo  = selectOnePeople($_SESSION['userName']);
+        mysqli_stmt_bind_param($statement, 'sssssssssssssss', $personID, $fullname, $_POST["fname"], $searchName, $_POST["email"], $_POST['externalLogonProvider'], $hashedPassword, $_POST["systemUser"], $_POST["employee"], $_POST["salesperson"], $_POST["email"], $peopleInfo['PersonID'], $validToDate, $_POST['phoneNumber'], $_POST['faxNumber']);
+    }
     mysqli_stmt_execute($statement);
-    header("location: index.php?page=auth&action=login&registration=success");
+    if($type == 'person') {
+        header("location: index.php?page=auth&action=login&registration=success");
+    }
+    else{
+        header("location: index.php?page=user&action=add&add=success");
+    }
 }
 
 function dbPhoto($id, $defaultPicture = true)
@@ -485,16 +502,22 @@ function suppliers(){
         return $result;
 }
 function editPeopleAccount($id, $admin){
-    $connection = createConnection();
-    $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, IsPermittedToLogon=?, LogonName=?, EmailAddress=?, IsExternalLogonProvider=?, IsSystemUser=?, IsEmployee=?, IsSalesperson=?, PhoneNumber=?, FaxNumber=?, LastEditedBy=? WHERE PersonID = ?");
-    $stmt->bind_param('sssissiiiiiiii',$_POST['FullName'],$_POST['PreferredName'],$_POST['SearchName'],$_POST['IsPermittedToLogon'],$_POST['LogonName'],$_POST['LogonName'],$_POST['IsExternalLogonProvider'],$_POST['IsSystemUser'],$_POST['IsEmployee'],$_POST['IsSalesperson'],$_POST['PhoneNumber'],$_POST['FaxNumber'],$admin,$id);
-    $stmt->execute();
-    if(mysqli_error($connection)){
-        echo mysqli_error($connection);
-    }
-    $stmt->close();
+    if(!empty($_POST['FullName']) && !empty($_POST['PreferredName']) && !empty($_POST['SearchName']) && !empty($_POST['LogonName'])) {
+        $connection = createConnection();
+        $stmt = $connection->prepare("UPDATE people SET FullName=?, PreferredName=?, SearchName=?, IsPermittedToLogon=?, LogonName=?, EmailAddress=?, IsExternalLogonProvider=?, IsSystemUser=?, IsEmployee=?, IsSalesperson=?, PhoneNumber=?, FaxNumber=?, LastEditedBy=? WHERE PersonID = ?");
+        $stmt->bind_param('sssissiiiiiiii', $_POST['FullName'], $_POST['PreferredName'], $_POST['SearchName'], $_POST['IsPermittedToLogon'], $_POST['LogonName'], $_POST['LogonName'], $_POST['IsExternalLogonProvider'], $_POST['IsSystemUser'], $_POST['IsEmployee'], $_POST['IsSalesperson'], $_POST['PhoneNumber'], $_POST['FaxNumber'], $admin, $id);
+        $stmt->execute();
+        if (mysqli_error($connection)) {
+            echo mysqli_error($connection);
+        }
+        $stmt->close();
 
-    header("location: index.php?page=user&action=overview&edit=success");
+        header("location: index.php?page=user&action=overview&edit=success");
+    }
+    else{
+        header("location: index.php?page=user&action=overview&edit=failed");
+
+    }
 }
 
 

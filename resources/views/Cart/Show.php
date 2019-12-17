@@ -109,7 +109,7 @@
             <div class="d-flex justify-content-between">
                 <div class="col-md-4">
                     <p class="border-bottom"><b>Total:</b></p>
-                    <p><b>Total with discount:</b></p>
+                    <p><b>Total discount:</b></p>
                 </div>
                 <div class="col-md-4">
                     <div class="float-right">
@@ -123,7 +123,7 @@
             <h1>Total to pay:</h1>
             <div class="form-group mb-1">
                 <h1>€<?= $total ?></h1>
-                <button class="btn btn-success form-control">pay</button>
+                <button class="btn btn-success form-control">Checkout</button>
                 <div>
                 </div>
             </div>

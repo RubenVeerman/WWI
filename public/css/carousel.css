@@ -24,3 +24,9 @@
     max-width: 500px !important;
     /* max-height: 200px !important; */
   }
+.black-text {
+    color: #000000;
+}
+.black-text:hover {
+     color: #615d61;
+ }

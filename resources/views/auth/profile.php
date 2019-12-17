@@ -16,8 +16,8 @@ function classCheck($inputName)
                 case "email":
                     $condition = strpos($_POST["email"], '@');
                     break;
-                case "preffName":
-                    $condition = strlen($_POST['pname']) > 0;
+                case "pName":
+                    $condition = strlen($_POST['pName']) > 0;
                     break;
                 default:
                     break;
@@ -32,7 +32,14 @@ function classCheck($inputName)
 
 
 if(isset($_POST['updatePeople'])){
-    updatePeople();
+    if(!empty($_POST['email']) && !empty($_POST['pName'])){
+        updatePeople();
+    }
+    else{
+       echo '<div class="alert alert-danger text-center">
+                <strong>Failed!</strong> Not all fields were filled in correctly.
+             </div>';
+    }
 }
 
 if(isset($_POST['updatePass'])){
@@ -101,7 +108,7 @@ if(isset( $_SESSION['userName'])){?>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Email</label>
                             <div class="col-lg-9">
-                                <input class="form-control" name="email" type="email" value="<?= $peopleInfo["LogonName"] ?>">
+                                <input class="form-control <?= classCheck('email')?>" name="email" type="email" value="<?= $peopleInfo["LogonName"] ?>">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -113,7 +120,7 @@ if(isset( $_SESSION['userName'])){?>
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label form-control-label">Preferred name</label>
                             <div class="col-lg-9">
-                                <input class="form-control" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>" required>
+                                <input class="form-control <?= classCheck('pName')?>" name="pName" type="text" value="<?= $peopleInfo["PreferredName"] ?>" required>
                             </div>
                         </div>
                         <div class="form-group row">
