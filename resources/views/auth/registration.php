@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col">
                             <label for="email">First name:</label>
-                            <input type="text" name="fname" class="form-control <?= classCheck("fname") ?>" placeholder="First name" value="<?= isset($_POST['fname']) ? $_POST['fname'] : '' ?>"">
+                            <input type="text" name="fname" class="form-control <?= classCheck("fname") ?>" placeholder="First name" value="<?= isset($_POST['fname']) ? $_POST['fname'] : '' ?>">
                         </div>
                         <div class="col">
                             <label for="email">Last name:</label>

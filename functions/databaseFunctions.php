@@ -410,7 +410,7 @@ function deletePeople($people)
 
 function deletePhoto($id){
     $connection = createConnection();
-    $stmt = $connection->prepare("DELETE FROM photoid WHERE StockItemID=? ");
+    $stmt = $connection->prepare("DELETE FROM photoid WHERE PhotoID=? ");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->close();
@@ -563,9 +563,9 @@ function selectRandomStockItems()
     $connection = createConnection();
     $sql = "SELECT * FROM stockitems";
     $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
-    $result = array_rand($result, 4);
-    $sql = "SELECT * FROM stockitems WHERE StockItemID IN ($result[0], $result[1], $result[2], $result[3])";
-    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
+//    $result = array_rand($result, 4);
+//    $sql = "SELECT * FROM stockitems WHERE StockItemID IN ($result[0], $result[1], $result[2], $result[3])";
+//    $result = mysqli_fetch_all(mysqli_query($connection, $sql), MYSQLI_ASSOC);
     closeConnection($connection);
     return $result;
 }

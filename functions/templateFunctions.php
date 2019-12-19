@@ -136,7 +136,6 @@ $output = "<div class=\"container\">
     }
 $output .= "</div>
 </div>";
-
 return $output;
 }
 
@@ -185,7 +184,7 @@ function showProduct($product, $detailed = true, $first = false, $withCarousel =
         $output .= '<div class="row">
         <div class="col-sm p-2">
             <div id="productImageCarousel" class="carousel slide">
-                <h2>'.  $product["StockItemName"] .'</h2>';
+                <h2>'.  $product["StockItemName"] .' </h2>';
                 if (!empty($specialdeal)) { 
                     $output .= '<h3 class="text-success">'.  $specialdeal["DealDescription"] .'</h3>';
                 }
@@ -278,11 +277,11 @@ function showProduct($product, $detailed = true, $first = false, $withCarousel =
             <div class="card my-2">
                 <a class="black-text" href="index.php?page=product&action=show&id='. $product['StockItemID'].'">
                 <div class="card-header">
-                    <h2>'.  $product["StockItemName"] .'</h2>
+                    <h2>'.  $product["StockItemName"] .' <span class="badge badge-primary">Limited offer</span></h2>
                 </div>
                 <div class="card-body row">
                     <div class="col-sm p-2">
-                        <img class="d-block w-100" src="'.  $images[0]["Path"] .'">
+                        <img class="d-block w-100 h-100" src="'.  $images[0]["Path"] .'">
                     </div>
                     <div class="col-sm d-flex flex-column align-content-*-end">
                         <div>

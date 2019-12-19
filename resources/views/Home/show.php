@@ -3,6 +3,7 @@
         <div class="carousel-inner">
             <div class="container">
 
+
                 <?php
                 $products = getSpecialDeals();
                 $first = true;
@@ -24,5 +25,6 @@
         </a>
     </div>
 </div>
+
 
 <?= getRelatedProducts(selectRandomStockItems()); ?>

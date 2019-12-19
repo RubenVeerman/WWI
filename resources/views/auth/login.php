@@ -16,12 +16,12 @@
 
         <div class="card">
             <div class="card-header">
-                Voer gegevens in
+                Enter credentials
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <input type="email" class="form-control" name="userName" id="email" placeholder="Email address" required>
+                    <input type="email" class="form-control" name="userName" id="email" placeholder="Email address" value="<?= isset($_POST['userName']) ? $_POST['userName'] : '' ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password:</label>

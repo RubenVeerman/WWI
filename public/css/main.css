@@ -17,6 +17,22 @@ input::-webkit-inner-spin-button {
 	border-radius: 0;
 }
 
+.rotate {
+
+	/* Safari */
+	-webkit-transform: rotate(-90deg);
+
+	/* Firefox */
+	-moz-transform: rotate(-90deg);
+
+	/* IE */
+	-ms-transform: rotate(-90deg);
+
+	/* Opera */
+	-o-transform: rotate(-90deg);
+
+}
+
 h3 {
 	margin-bottom: 30px;
 	margin-top: 30px;
